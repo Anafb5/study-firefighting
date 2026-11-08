@@ -1,6 +1,7 @@
 (function(){
 "use strict";
-const FORMAT="fire-study-backup", STORAGE_PATTERN=/^study-firefighting-t[0-9]+-v1$/;
+const FORMAT="fire-study-backup", STORAGE_PATTERN=/^study-firefighting-(?:t[0-9]+-v1|j[0-9]+-v1|j[0-9]+-articles-v1)$/;
+const ARTICLE_PATTERN=/^study-firefighting-j[0-9]+-articles-v1$/;
 const isInt=x=>Number.isInteger(x)&&x>=0;
 function clean(x){
  if(!x||typeof x!=="object"||Array.isArray(x))throw Error("Datos de progreso incorrectos");
@@ -10,8 +11,26 @@ function clean(x){
  const history=(Array.isArray(x.history)?x.history:[]).filter(v=>v&&typeof v==="object"&&isInt(v.percent)&&v.percent<=100&&isInt(v.correct)&&isInt(v.total)&&typeof v.date==="string").slice(0,100).map(v=>({date:v.date.slice(0,80),percent:v.percent,correct:v.correct,total:v.total}));
  return {read:Array.from(new Set(read)),mastered:Array.from(new Set(mastered)),wrong:Array.from(new Set(wrong)),history};
 }
+function cleanArticle(x){
+ if(!x||typeof x!=="object"||Array.isArray(x))throw Error("Progreso jurídico de artículos incorrecto");
+ const valid=x=>typeof x==="string"&&/^[A-Za-zÁÉÍÓÚÑÜa-záéíóúñü0-9 /.-]{1,80}:[0-9]{1,4}(?:\\.[0-9]{1,4})?$/.test(x);
+ const mastered=Array.from(new Set((Array.isArray(x.mastered)?x.mastered:[]).filter(valid))).slice(0,600);
+ const repeat=Array.from(new Set((Array.isArray(x.repeat)?x.repeat:[]).filter(valid))).slice(0,600);
+ const attempts={};
+ if(x.attempts&&typeof x.attempts==="object"&&!Array.isArray(x.attempts)){
+  for(const [key,v] of Object.entries(x.attempts).slice(0,600)){
+   if(valid(key)&&v&&typeof v==="object"){
+    const clamp=y=>Number.isInteger(y)&&y>=0?Math.min(y,100000):0;
+    attempts[key]={seen:clamp(v.seen),correct:clamp(v.correct),aided:clamp(v.aided)};
+   }
+  }
+ }
+ return {mastered,repeat,attempts,direction:x.direction==="to-content"?"to-content":"to-number",
+  section:typeof x.section==="string"&&x.section.length<80?x.section:"all",pending:!!x.pending};
+}
+const safeEntry=(key,raw)=>ARTICLE_PATTERN.test(key)?cleanArticle(raw):clean(raw);
 function summary(key="study-firefighting-t11-v1"){
- try{return clean(JSON.parse(localStorage.getItem(key)||"{}"));}catch(e){return clean({});}
+ try{return safeEntry(key,JSON.parse(localStorage.getItem(key)||"{}"));}catch(e){return safeEntry(key,{});}
 }
 function notice(message,error=false){
  const t=document.getElementById("toast");
@@ -42,8 +61,8 @@ async function importFile(file){
  const entries=Object.entries(data.topics);
  if(!entries.length)throw Error("La copia no contiene ningún tema");
  if(entries.some(([key])=>!STORAGE_PATTERN.test(key)))throw Error("Identificador de tema no compatible");
- const safe=entries.map(([key,value])=>[key,clean(value)]);
- const report=safe.map(([key,value])=>key+": "+value.read.length+" apartados y "+value.mastered.length+" tarjetas").join("\n");
+ const safe=entries.map(([key,value])=>[key,safeEntry(key,value)]);
+ const report=safe.map(([key,value])=>key+": "+(ARTICLE_PATTERN.test(key)?value.mastered.length+" artículos dominados":value.read.length+" apartados y "+value.mastered.length+" tarjetas")).join("\n");
  if(!confirm("Esto sustituirá el progreso local de los temas contenidos en esta copia:\n\n"+report+"\n\n¿Continuar?"))return;
  for(const [key,value] of safe)localStorage.setItem(key,JSON.stringify(value));
  // Una copia restaurada no debe quedar sobrescrita por el estado temporal de
@@ -51,7 +70,7 @@ async function importFile(file){
  try{
   for(let i=0;i<sessionStorage.length;i++){
    const k=sessionStorage.key(i);
-   if(/^study-firefighting-resume-(?:t\d+-v1|v1)$/.test(k)){
+   if(/^study-firefighting-resume-(?:(?:t|j)\d+-v1|v1)$/.test(k)){
     sessionStorage.removeItem(k);
     i--;
    }
