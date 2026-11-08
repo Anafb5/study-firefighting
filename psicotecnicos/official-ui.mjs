@@ -90,7 +90,7 @@ export class OfficialExamController{
     '<div class="board-actions"><button class="btn accent" data-official-action="end-study">He memorizado · comenzar preguntas</button></div></div>';
   const qs=getOfficialQuestions(this.topicId,this.group);
   const selectable=qs.filter(q=>!(q.invalid&&q.number===10&&this.group==="D"));const done=selectable.filter(q=>this.answers[q.number]!=null).length;
-  return head+'<div class="board-head"><span class="pill">'+esc(g.label)+' · '+done+'/'+qs.length+' respuestas</span><span class="timer" id="official-time"></span></div>'+
+  return head+'<div class="board-head"><span class="pill">'+esc(g.label)+' · '+done+'/'+selectable.length+' respuestas</span><span class="timer" id="official-time"></span></div>'+
    '<div class="original-pages"><div class="board-head"><strong>Documento original · página '+page+'</strong><span class="source">Páginas '+pages[0]+'–'+pages[pages.length-1]+'</span></div>'+
    '<div class="board-actions" style="margin:8px 0">'+
    '<button class="btn secondary" data-official-action="prev-page" '+(this.pageIndex===0?"disabled":"")+'>← Página anterior</button><button class="btn secondary" data-official-action="next-page" '+(this.pageIndex===pages.length-1?"disabled":"")+'>Página siguiente →</button></div>'+
