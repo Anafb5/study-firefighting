@@ -8,7 +8,7 @@ const files = [
   "index.html", "catalog.css", "catalog.js", "progress.js", "mobile.js",
   "styles.css", "data.js", "questions.js", "study-layouts.js",
   "study-layouts.css", "review-data.js", "review.js", "review.css",
-  "app.js", "resume.js", "temas/11/index.html"
+  "app.js", "resume.js", "temas/11/index.html", "psicotecnicos/index.html"
 ];
 
 await rm(output, { recursive: true, force: true });
