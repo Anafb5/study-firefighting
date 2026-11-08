@@ -14,3 +14,16 @@
 .reader-formula strong{font-size:21px;color:#fac2a4;letter-spacing:-.03em;overflow-wrap:anywhere}
 .reader-note{font-size:11px;line-height:1.75;color:#65798c;background:#fafbfc;border-left:3px solid #bd7860;padding:11px 15px;margin:23px 0 3px}
 @media(max-width:700px){.reader-tiles,.reader-formulas{grid-template-columns:1fr}.reader-steps li{grid-template-columns:32px 1fr;padding:13px}}
+
+/* Comparaciones editoriales: una sola aparición de cada explicación */
+.reader-comparison{border:1px solid #dfe7ec;border-radius:10px;overflow:hidden;margin:12px 0 26px;background:#fff}
+.reader-comparison-row{display:grid;grid-template-columns:minmax(145px,.42fr) minmax(0,1fr);gap:0;border-bottom:1px solid #e5ecf0;line-height:1.75}
+.reader-comparison-row:last-child{border-bottom:0}
+.reader-comparison-row:nth-child(2n){background:#f8fafb}
+.reader-comp-label{font-size:12px;font-weight:850;color:#304c61;padding:17px 20px;border-right:1px solid #e5ecf0}
+.reader-comp-detail{font-size:12px;color:#4e6576;padding:17px 21px}
+.reader-steps li>strong{grid-column:2;font-size:13px;color:#29455a;align-self:center}
+.reader-steps li>p{grid-column:2;margin:0;color:#607787;font-size:12px;line-height:1.8}
+.reader-steps li:before{grid-column:1;grid-row:1/3;align-self:start}
+.reader-topic>.st-notice{margin-top:21px}
+@media(max-width:650px){.reader-comparison-row{grid-template-columns:1fr}.reader-comp-label{padding:12px 15px 2px;border-right:0}.reader-comp-detail{padding:4px 15px 14px}.reader-steps li{gap:8px}}
