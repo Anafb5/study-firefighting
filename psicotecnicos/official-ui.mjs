@@ -111,9 +111,9 @@ export class OfficialExamController{
  }
  onChange(target){
   if(target.id==="official-file"){this.fileChosen(target.files);return true;}
-  if(target.dataset.officialSet){if(this.phase==="config"&&this.doc.groups[target.value]){this.group=target.value;this.rerender();}return true;}
+  if(target.dataset?.officialSet){if(this.phase==="config"&&this.doc.groups[target.value]){this.group=target.value;this.rerender();}return true;}
   if(target.id==="official-set"){if(this.phase==="config"&&this.doc.groups[target.value]){this.group=target.value;this.rerender();}return true;}
-  if(target.dataset.officialAnswer){
+  if(target.dataset?.officialAnswer){
    const num=Number(target.dataset.officialAnswer);
    if(this.phase==="exam"&&getOfficialQuestions(this.topicId,this.group).some(q=>q.number===num)&&/^[ABCD]$/.test(target.value))this.answers[num]=target.value;
    const status=document.querySelector(".original-exam .pill");if(status){const qs=getOfficialQuestions(this.topicId,this.group);status.textContent=this.doc.groups[this.group].label+" · "+qs.filter(q=>this.answers[q.number]!=null).length+"/"+qs.length+" respuestas";}
