@@ -35,15 +35,20 @@ try{
  await page.locator('[data-action="close-demo"]').click();
  assert.equal(await page.locator("#demonstration").count(),0);
  await page.locator('[data-tab="examen"]').click();
- await page.locator("#variant").selectOption("cubeAdjacent");
- await page.locator("#length").selectOption("5");
- await page.locator('[data-action="start-session"]').click();
- for(let i=0;i<5;i++){
-  assert.equal(await page.locator("#demonstration").count(),0,"Sin demostración durante el examen");
-  assert.equal(await page.locator('[data-action="open-demo"]').count(),0);
-  await page.locator('[data-answer="0"]').click();
- }
- assert.equal(await page.getByText("Resultado del examen").count(),1);
+ assert.equal(await page.locator('[data-action="open-demo"]').count(),0);
+ assert.ok(await page.getByText("Pruebas del manual").count()>0);
+ assert.equal(await page.locator('[data-official-action="start"]').isDisabled(),true);
+ const samplePdf=Buffer.from("%PDF-1.4\n1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj\n2 0 obj<</Type/Pages/Count 0/Kids[]>>endobj\ntrailer<</Root 1 0 R>>\n%%EOF\n");
+ await page.locator("#official-file").setInputFiles({name:"FLO_04_PRUEBAS_APTITUD_ESPACIAL.pdf",mimeType:"application/pdf",buffer:samplePdf});
+ await page.locator('[data-official-action="start"]').waitFor({state:"visible"});
+ assert.equal(await page.locator('[data-official-action="start"]').isEnabled(),true);
+ await page.locator('[data-official-action="start"]').click();
+ assert.equal(await page.locator(".official-answer").count(),40);
+ assert.equal(await page.locator("#demonstration").count(),0);
+ await page.locator('input[name="official-q-1"][value="C"]').check();
+ await page.locator('input[name="official-q-2"][value="C"]').check();
+ await page.locator('[data-official-action="finish"]').click();
+ assert.equal(await page.getByText("Resultado · Prueba A").count(),1);
  assert.equal(await page.locator("#demonstration").count(),0);
  await page.goto(base+"/psicotecnicos/temas/memoria/");
  await page.locator('[data-tab="entrenamiento"]').click();
