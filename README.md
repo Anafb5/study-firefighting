@@ -9,6 +9,18 @@ Web estática, sin servidor ni registro, preparada para estudiar varios temas co
 - **Tema 10 — Vehículos contra incendios**: aparece como pendiente de preparar; todavía no tiene página de estudio.
 - Los futuros temas pueden crearse como `/temas/NUMERO/index.html` y añadirse a `catalog.js`.
 
+## Organización por áreas de oposición
+
+La portada organiza el estudio en **tres grandes apartados**:
+
+- **Técnica:** reúne los temas técnicos. Contiene el Tema 11 publicado y el Tema 10 como pendiente.
+- **Jurídica:** sección preparada para temarios de legislación y normativa; aún sin material publicado.
+- **Psicotécnicos:** espacio preparado para baterías de ejercicios de aptitudes y razonamiento; aún sin material publicado.
+
+La selección se realiza en la portada mediante tarjetas y queda reflejada en el fragmento de la URL (`#tecnica`, `#juridica`, `#psicotecnicos`). `catalog.js` mantiene la lista de áreas y metadatos de los temas. **No marques un tema como publicado hasta que exista su página**.
+
+Al incorporar futuros temas, usa un identificador estable y una clave de progreso única por tema: el Tema 11 existente usa `study-firefighting-t11-v1` y sus copias JSON deben seguir funcionando. Si varios bloques tienen temas con el mismo número, evita colisiones de progreso y amplía de forma compatible la lógica de exportación en `progress.js`.
+
 ## Tema 11
 
 El contenido se basa en el PDF del Tema 11 facilitado por la usuaria (44 páginas), **sin distribuir el PDF original**.
