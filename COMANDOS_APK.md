@@ -54,7 +54,8 @@ android\app\build\outputs\apk\debug\app-debug.apk
 Actualizar el nombre cuando cambie la versión:
 
 ```powershell
-Copy-Item -LiteralPath "android\app\build\outputs\apk\debug\app-debug.apk" -Destination "Study-Firefighting-1.0.2-v3-debug.apk" -Force
+New-Item -ItemType Directory -Force -Path "apks" | Out-Null
+Copy-Item -LiteralPath "android\app\build\outputs\apk\debug\app-debug.apk" -Destination "apks\Study-Firefighting-0.3.apk" -Force
 ```
 
 ## 7. Todo seguido
@@ -67,7 +68,8 @@ $env:JAVA_HOME = "C:\Program Files\Android\Android Studio\jbr"
 cd android
 .\gradlew.bat clean assembleDebug
 cd ..
-Copy-Item -LiteralPath "android\app\build\outputs\apk\debug\app-debug.apk" -Destination "Study-Firefighting-1.0.2-v3-debug.apk" -Force
+New-Item -ItemType Directory -Force -Path "apks" | Out-Null
+Copy-Item -LiteralPath "android\app\build\outputs\apk\debug\app-debug.apk" -Destination "apks\Study-Firefighting-0.3.apk" -Force
 ```
 
 ## 8. Instalar por USB (opcional)
@@ -87,7 +89,7 @@ Incrementar en `android/app/build.gradle`:
 
 ```gradle
 versionCode 4
-versionName "1.0.3"
+versionName "0.4"
 ```
 
 No reutilizar un `versionCode` anterior. Mantener siempre este identificador:
@@ -97,3 +99,15 @@ applicationId "com.studyfirefighting.app"
 ```
 
 Las APK generadas localmente en el mismo equipo utilizan normalmente la misma clave debug y pueden actualizarse entre sí. Las APK de GitHub Actions necesitan una clave estable configurada como secreto para garantizar actualizaciones entre ejecuciones.
+
+## 10. Convención de nombres local
+
+Guardar las compilaciones de prueba en `apks/`:
+
+```text
+apks\Study-Firefighting-0.1.apk
+apks\Study-Firefighting-0.2.apk
+apks\Study-Firefighting-0.3.apk
+```
+
+En cada nueva entrega deben incrementarse juntos `versionCode`, `versionName` y el nombre del archivo.
