@@ -15,12 +15,12 @@ const formulas=arr=>'<div class="reader-formulas">'+arr.map(([key,val])=>'<div c
 function render(t){
  if(!t)return"";
  let body="";
- if(t.format==="steps"){
+ if(t.table){
+  body=heading("Tabla de referencia",t.tableNote||"Según el PDF aportado")+table(t.table);
+ }else if(t.format==="steps"){
   body=heading("Cadena conceptual", "Secuencia de lectura, no necesariamente un protocolo operativo")+timeline(t.points);
  }else if(t.format==="compare"){
   body=heading("Conceptos para diferenciar")+compare(t.points);
- }else if(t.table){
-  body=heading("Tabla de referencia",t.tableNote||"Según el PDF aportado")+table(t.table)+heading("Explicación y matices")+notes(t.points);
  }else{
   body=heading("Conceptos y explicaciones")+notes(t.points);
  }
