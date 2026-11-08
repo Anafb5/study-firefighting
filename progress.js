@@ -46,7 +46,17 @@ async function importFile(file){
  const report=safe.map(([key,value])=>key+": "+value.read.length+" apartados y "+value.mastered.length+" tarjetas").join("\n");
  if(!confirm("Esto sustituirá el progreso local de los temas contenidos en esta copia:\n\n"+report+"\n\n¿Continuar?"))return;
  for(const [key,value] of safe)localStorage.setItem(key,JSON.stringify(value));
- try{sessionStorage.removeItem("study-firefighting-resume-v1");}catch(e){}
+ // Una copia restaurada no debe quedar sobrescrita por el estado temporal de
+ // navegación guardado antes de importarla (se aíslan las claves por tema).
+ try{
+  for(let i=0;i<sessionStorage.length;i++){
+   const k=sessionStorage.key(i);
+   if(/^study-firefighting-resume-(?:t\d+-v1|v1)$/.test(k)){
+    sessionStorage.removeItem(k);
+    i--;
+   }
+  }
+ }catch(e){}
  notice("Progreso restaurado. Recargando...");
  location.reload();
 }
