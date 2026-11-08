@@ -15,6 +15,8 @@ const formulas=arr=>'<div class="reader-formulas">'+arr.map(([key,val])=>'<div c
 function render(t){
  if(!t)return"";
  let body="";
+ const diagram=(window.LegalVisuals&&t.visual)?window.LegalVisuals.render(t):"";
+
  if(t.table){
   body=heading("Tabla de referencia",t.tableNote||"Según el PDF aportado")+table(t.table);
  }else if(t.format==="steps"){
@@ -26,7 +28,7 @@ function render(t){
  }
  if(t.formulas?.length)body=heading("Fórmulas y relaciones del apartado")+formulas(t.formulas)+body;
  const tail=t.tip?'<div class="st-notice"><strong>Idea clave</strong><p>'+esc(t.tip)+'</p></div>':"";
- return '<div class="reader-topic">'+body+tail+(t.note?'<p class="reader-note">'+esc(t.note)+'</p>':"")+'</div>';
+ return '<div class="reader-topic">'+(diagram?diagram+'<details class="legal-visual-details"><summary>Leer el contenido completo y sus matices (según el PDF)</summary><div>'+body+'</div></details>':body)+tail+(t.note?'<p class="reader-note">'+esc(t.note)+'</p>':"")+'</div>';
 }
 window.StudyLayouts={render,topicCount:TOPICS.length};
 })();
