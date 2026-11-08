@@ -25,13 +25,9 @@ function safeSelection(selector){
 function visible(el){return el&&!el.classList.contains("hidden");}
 function getVisualState(){
  const result={};
- document.querySelectorAll("#topic-list [data-sv-workbench]").forEach(root=>{
-  const active=root.querySelector('[data-sv-node].is-active');
-  result[root.dataset.svWorkbench]={
-   node:active?Number(active.dataset.svNode):0,
-   masked:root.classList.contains("sv-masked"),
-   answer:root.querySelector(".sv-recall-answer")?.hidden===false
-  };
+ document.querySelectorAll("#topic-list [data-st-workbench]").forEach(root=>{
+  const active=root.querySelector("[data-st-node].is-active");
+  result[root.dataset.stWorkbench]={node:active?Number(active.dataset.stNode):0};
  });
  return result;
 }
@@ -90,12 +86,10 @@ function setSelect(id,value){
 function restoreVisuals(visual){
  if(!visual||typeof visual!=="object")return;
  for(const [id,info] of Object.entries(visual)){
-  const root=Array.from(document.querySelectorAll("#topic-list [data-sv-workbench]")).find(x=>x.dataset.svWorkbench===id);
+  const root=Array.from(document.querySelectorAll("#topic-list [data-st-workbench]")).find(x=>x.dataset.stWorkbench===id);
   if(!root||!info)continue;
-  const active=Array.from(root.querySelectorAll("[data-sv-node]")).find(x=>Number(x.dataset.svNode)===info.node);
-  if(active&&info.node!==0)active.click();
-  if(info.masked)root.querySelector("[data-sv-mask]")?.click();
-  if(info.answer)root.querySelector("[data-sv-answer]")?.click();
+  const target=Array.from(root.querySelectorAll("[data-st-node]")).find(x=>Number(x.dataset.stNode)===info.node);
+  if(target&&info.node!==0)target.click();
  }
 }
 function apply(snapshot){
