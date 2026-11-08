@@ -29,6 +29,12 @@ jobs:
           node --check psicotecnicos/app.mjs
       - name: Pruebas y compilación web
         run: npm test
+      - name: Instalar navegador para pruebas reales
+        run: |
+          npm install --no-save playwright@1.58.2
+          npx playwright install --with-deps chromium
+      - name: Pruebas end-to-end en Chromium
+        run: node tests/psicotecnicos-browser.mjs
       - name: Revisar empaquetado offline
         run: |
           test -f www/psicotecnicos/index.html
