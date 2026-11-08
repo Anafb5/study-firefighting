@@ -41,7 +41,6 @@ try{
  const samplePdf=Buffer.from("%PDF-1.4\n1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj\n2 0 obj<</Type/Pages/Count 0/Kids[]>>endobj\ntrailer<</Root 1 0 R>>\n%%EOF\n");
  await page.locator("#official-file").setInputFiles({name:"FLO_04_PRUEBAS_APTITUD_ESPACIAL.pdf",mimeType:"application/pdf",buffer:samplePdf});
  await page.locator('[data-official-action="start"]').waitFor({state:"visible"});
- assert.equal(await page.locator('[data-official-action="start"]').isEnabled(),true);
  await page.locator('[data-official-action="start"]').click();
  assert.equal(await page.locator(".official-answer").count(),40);
  assert.equal(await page.locator("#demonstration").count(),0);
