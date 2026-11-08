@@ -1,4 +1,4 @@
-/* Repaso del Tema 10. Evita preguntas con la solución escrita en el enunciado. */
+/* Ejercicios de repaso revisados: enunciados sin pistas, correcciones y referencias al manual. */
 const REVIEW_CLASSIFY=[
  {
   "name": "Capacidad de paso y terreno",
@@ -340,7 +340,7 @@ const REVIEW_JUDGE=[
   "El temario cita el supuesto cuando omitir la señal acústica no entraña peligro (p. 37)."
  ],
  [
-  "Los vehículos de emergencia pueden desobedecer órdenes de agentes de tráfico.",
+  "En un servicio prioritario, el conductor puede dejar sin efecto indicaciones de agentes si lleva la señal V-1 activada.",
   false,
   "El apartado 5.2 exige respetar las órdenes en todo caso (p. 38)."
  ],
