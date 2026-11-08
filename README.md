@@ -6,11 +6,26 @@ Web estática, sin servidor ni registro, preparada para estudiar varios temas co
 
 - **Portada y dashboard:** `/`, con avance global, progreso por área, tarjetas dominadas, temas completos, errores por revisar y resultados de simulacros.
 - **Técnica:** diecinueve temas publicados, cada uno con su propia página `/temas/1/` … `/temas/19/`.
-- **Jurídica y Psicotécnicos:** áreas creadas, sin temas publicados de momento.
+- **Jurídica:** 26 temas catalogados, de tres volúmenes. Los tres primeros ya tienen apuntes, tarjetas, ejercicios, entrenador de artículos y tests; el resto figura como «En preparación». **Psicotécnicos:** área creada, sin temas publicados de momento.
 - **Ahora y a continuación:** muestra temas en curso y, si corresponde, el siguiente publicado todavía sin empezar.
 - **Archivo:** los temas cuyo temario se marcó íntegramente como estudiado pasan a un acordeón de **terminados**; se conservan sus datos y siempre es posible repasarlos.
 - **Próximos:** los temas restantes se mantienen en otro acordeón desplegable para evitar una portada interminable.
-- **Copias de seguridad:** ventana independiente, accesible desde el encabezado, sin botones duplicados ocupando menús y páginas.
+- **Copias de seguridad:** ventana independiente, accesible desde el encabezado, sin botones duplicados ocupando menús y páginas. El respaldo incorpora también el progreso de artículos de los temas jurídicos.
+
+### Parte jurídica · Fuente prioritaria: el PDF
+
+El ZIP recibido contiene **26 temas jurídicos**: Volumen I (1–8), II (9–14) y III (15–26). Las páginas se sitúan en `/juridica/N/`, con sus números separados de la parte Técnica.
+
+| Tema jurídico | Materia | Apartados | Artículos | Tarjetas | Test |
+|---:|---|---:|---:|---:|---:|
+| 1 | Constitución española de 1978 | 17 | 51 | 191 | 102 |
+| 2 | Tribunal Constitucional, reforma y Corona | 12 | 26 | 112 | 52 |
+| 3 | Cortes Generales y Defensor del Pueblo | 15 | 33 | 142 | 66 |
+| 4–26 | Temas del ZIP | — | — | — | **En preparación** |
+
+Hay **dos direcciones para memorizar artículos**: número a partir del contenido, preferiblemente sin pistas, y contenido a partir del número. La app **no marca automáticamente como dominado un artículo por acertar**: la persona decide si necesita repetirlo o si ya lo domina. Ambas decisiones se guardan, junto con las claves de progreso `study-firefighting-jN-v1` y `study-firefighting-jN-articles-v1`.
+
+**Regla editorial:** el PDF es la fuente principal de los tests y las tarjetas. Las correcciones legales posteriores aparecen como advertencias separadas con enlace oficial; **no alteran silenciosamente una respuesta basada en el manual**. Por ejemplo, el texto consolidado del BOE incluye la reforma del artículo 69.3 de 2026. Consulta `docs/JURIDICA_METODOLOGIA.md` para los criterios completos.
 
 ### Temas técnicos
 
