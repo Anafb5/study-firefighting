@@ -174,7 +174,25 @@ function handleClick(event){
  if(btn.dataset.section){switchView("temario");$("topic-search").value="";renderTopics(btn.dataset.section);return;}
  if(btn.dataset.toc){renderTopics(btn.dataset.toc);return;}
  if(btn.dataset.lesson){const lesson=$("lesson-"+btn.dataset.lesson);lesson.classList.toggle("open");btn.setAttribute("aria-expanded",String(lesson.classList.contains("open")));return;}
- if(btn.dataset.read){const id=btn.dataset.read;state.read=state.read.includes(id)?state.read.filter(v=>v!==id):state.read.concat([id]);save();renderStats();renderHome();const open=$("lesson-"+id);renderTopics();const again=$("lesson-"+id);if(again){again.classList.add("open");again.querySelector(".lesson-header").setAttribute("aria-expanded","true");}toast(state.read.includes(id)?"Apartado marcado como estudiado":"Apartado marcado como pendiente");return;}
+ if(btn.dataset.read){
+  const id=btn.dataset.read,done=!state.read.includes(id);
+  state.read=done?state.read.concat([id]):state.read.filter(v=>v!==id);
+  save();renderStats();renderHome();
+  // Actualizar solo el botón y su cabecera: NO destruir el esquema o la ficha
+  // interactiva que la persona está consultando.
+  btn.textContent=done?"✓ Estudiado":"Marcar como estudiado";
+  btn.classList.toggle("btn-outline",done);
+  btn.classList.toggle("btn-accent",!done);
+  const header=$("lesson-"+id)?.querySelector(".lesson-header");
+  const badge=header?.querySelector(".lesson-progress-mark");
+  if(done&&!badge&&header){
+   const span=document.createElement("span");
+   span.className="lesson-progress-mark";span.textContent="✓ Estudiado";
+   header.insertBefore(span,header.querySelector(".lesson-pages"));
+  }else if(!done&&badge)badge.remove();
+  toast(done?"Apartado marcado como estudiado":"Apartado marcado como pendiente");
+  return;
+ }
  if(btn.id==="flashcard-flip"||btn.id==="cards-flip"){cardFlipped=!cardFlipped;renderCards(false);return;}
  if(btn.id==="cards-prev"||btn.id==="cards-next"){cardIndex=(cardIndex+(btn.id==="cards-next"?1:-1)+cardOrder.length)%cardOrder.length;cardFlipped=false;renderCards(false);return;}
  if(btn.id==="cards-mark"){toggleMastered();return;}
