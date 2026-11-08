@@ -209,7 +209,7 @@ const REVIEW_VALUES=[
   "why": "Extintores portátiles y mantas según edición del PDF, pp. 16–28.",
   "items": [
    [
-    "¿Qué masa máxima tiene un extintor portátil, según el manual?",
+    "¿Qué masa máxima tiene un extintor portátil manual convencional, excluido el dorsal?",
     [
      "10 kg",
      "20 kg",
@@ -217,7 +217,7 @@ const REVIEW_VALUES=[
      "50 kg"
     ],
     1,
-    "Portátil: 20 kg máximo (pp. 16 y 19)."
+    "Portátil de mano: ≤20 kg; el manual también considera portátiles los dorsales de hasta 30 kg (p. 16)."
    ],
    [
     "¿Qué porcentaje del cuerpo debe ser rojo, según el documento?",
