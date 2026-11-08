@@ -9,7 +9,7 @@ const titles=[
 "Magnitudes físicas","Hidráulica y mecánica de fluidos","La electricidad","Naturaleza del fuego",
 "Agentes extintores y mecanismos de extinción","El agua como agente extintor","Espumas extintoras",
 "Extintores","Instalaciones fijas","Vehículos contra incendios","Prendas y equipos de protección personal"];
-const known={8:{topics:16,cards:99,questions:41},9:{topics:33,cards:159,questions:137},10:{topics:29,cards:88,questions:135},11:{topics:19,cards:63,questions:89}};
+const known={7:{topics:12,cards:66,questions:24},8:{topics:16,cards:99,questions:41},9:{topics:33,cards:159,questions:137},10:{topics:29,cards:88,questions:135},11:{topics:19,cards:63,questions:89}};
 const chapters=titles.map((title,i)=>{const id=i+1,k=known[id];return {id,title,area:"tecnica",published:!!k,href:k?"./temas/"+id+"/":null,...k};});
 let current="tecnica";const expanded={};
 function progress(t){
@@ -20,7 +20,7 @@ function progress(t){
  const wrong=t.published?new Set(Array.isArray(p.wrong)?p.wrong:[]).size:0;
  const exams=Array.isArray(p.history)?p.history:[];
  const started=read>0||mastered>0||wrong>0||exams.length>0;
- const complete=!!t.published&&read===t.topics;
+ const complete=!!t.published&&t.topics>0&&read===t.topics;
  return {...t,read,mastered,wrong,exams,started,complete,percent:t.published?Math.round(read/t.topics*100):0};
 }
 const areaTopics=id=>chapters.filter(t=>t.area===id).map(progress);
@@ -29,11 +29,12 @@ const bar=(p,title)=>'<div class="dash-bar" role="progressbar" aria-label="'+esc
 function renderDashboard(){
  const all=chapters.map(progress).filter(t=>t.published);
  const read=all.reduce((s,t)=>s+t.read,0),parts=all.reduce((s,t)=>s+t.topics,0),pct=parts?Math.round(read/parts*100):0;
+ const programCount=chapters.filter(t=>t.area==="tecnica").length,loaded=published("tecnica").length;
  const cards=all.reduce((s,t)=>s+t.cards,0),mastered=all.reduce((s,t)=>s+t.mastered,0);
  const exams=all.flatMap(t=>t.exams).filter(x=>Number.isFinite(Number(x.percent)));
  const avg=exams.length?Math.round(exams.reduce((s,x)=>s+Number(x.percent),0)/exams.length)+" %":"—";
  const stats=[[all.filter(t=>t.complete).length,"Temas terminados"],[all.filter(t=>t.started&&!t.complete).length,"En curso"],[mastered+" / "+cards,"Tarjetas dominadas"],[all.reduce((s,t)=>s+t.wrong,0),"Errores por repasar"],[exams.length,"Tests realizados"],[avg,"Media de los tests"]];
- document.getElementById("catalog-stats").innerHTML='<div class="dash-overview"><div class="dash-main"><span class="section-label">AVANCE DEL TEMARIO DISPONIBLE</span><div class="dash-number">'+pct+'<small>%</small></div>'+bar(pct,"Progreso global")+'<p>'+read+' de '+parts+' apartados estudiados en '+all.length+' temas disponibles.</p></div><div class="dash-metrics">'+stats.map(([n,l])=>'<div class="dash-metric"><strong>'+esc(n)+'</strong><span>'+esc(l)+'</span></div>').join("")+'</div></div>'+
+ document.getElementById("catalog-stats").innerHTML='<div class="dash-overview"><div class="dash-main"><span class="section-label">AVANCE DEL TEMARIO DISPONIBLE</span><div class="dash-number">'+pct+'<small>%</small></div>'+bar(pct,"Progreso global")+'<p>'+read+' de '+parts+' apartados estudiados. '+loaded+' de '+programCount+' temas técnicos publicados.</p></div><div class="dash-metrics">'+stats.map(([n,l])=>'<div class="dash-metric"><strong>'+esc(n)+'</strong><span>'+esc(l)+'</span></div>').join("")+'</div></div>'+
  '<div class="dash-areas">'+areas.map(area=>{
  const t=published(area.id),done=t.reduce((n,x)=>n+x.read,0),total=t.reduce((n,x)=>n+x.topics,0),pc=total?Math.round(done/total*100):0;
  return '<button type="button" data-area="'+area.id+'" class="dash-area"><span><strong>'+area.name+'</strong><small>'+t.filter(x=>x.complete).length+' archivados · '+t.filter(x=>x.started&&!x.complete).length+' en curso</small></span><b>'+pc+' %</b>'+bar(pc,area.name)+'</button>';
