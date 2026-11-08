@@ -65,7 +65,7 @@ function areaStatus(area){
 function renderAreas(){
  document.getElementById("catalog-areas").innerHTML=areas.map(area=>{
   const count=areaStatus(area),active=area.id===selectedArea;
-  const status=count.available?count.available+" tema disponible":count.pending?count.pending+" tema en preparación":"Sin temas publicados";
+  const status=count.available?count.available+(count.available===1?" tema disponible":" temas disponibles"):count.pending?count.pending+(count.pending===1?" tema en preparación":" temas en preparación"):"Sin temas publicados";
   return '<button type="button" role="tab" id="area-tab-'+area.id+'" aria-controls="area-panel" aria-selected="'+active+'" data-area="'+area.id+'" class="area-card area-'+area.id+(active?" active":"")+'">'+
    '<span class="area-top"><span class="area-number">ÁREA '+area.number+'</span><span class="area-icon">'+area.icon+'</span></span>'+
    '<span class="area-name">'+esc(area.name)+'</span><span class="area-description">'+esc(area.description)+'</span>'+
