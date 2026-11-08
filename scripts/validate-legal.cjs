@@ -6,7 +6,7 @@ const root=path.resolve(__dirname,"..");
 const read=p=>fs.readFileSync(path.join(root,p),"utf8");
 const catalog=read("catalog.js");
 assert(catalog.includes("const legalTitles="),"Falta listado de los 26 temas jurídicos");
-assert(catalog.includes('"j'+"" )||catalog.includes("study-firefighting-j"),"Falta clave jurídica aislada");
+assert(catalog.includes("study-firefighting-j"),"Falta clave jurídica aislada");
 for(const file of ["juridica/legal-builder.js","juridica/legal-study.js","juridica/legal.css","progress.js","app.js"])assert(fs.existsSync(path.join(root,file)),"Falta "+file);
 const audit=[];
 for(let i=1;i<=26;i++){
