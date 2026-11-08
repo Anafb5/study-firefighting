@@ -9,3 +9,24 @@
 @media(max-width:900px){.topic-layout{grid-template-columns:1fr}.side{position:static}.side-steps{display:none}.topic-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:640px){.shell{padding:16px 13px 60px}.site-head{padding:12px 16px;min-height:68px}.header-links{gap:9px}.hero{padding:29px 22px}.hero h1{font-size:36px}.topic-grid,.trainer-settings,.choices{grid-template-columns:1fr}.topic-card{padding:20px;min-height:auto}.main-panel,.side{padding:16px}.below-hero h2{font-size:23px}.tabs{gap:5px}.tab{flex:1;min-width:88px;padding:10px 7px;font-size:11px}.section-head{font-size:21px}.table-matrix{grid-template-columns:repeat(3,52px)}.net{grid-template-columns:repeat(4,52px);grid-template-rows:repeat(3,52px)}.columns{gap:10px}.columns span{font-size:12px;letter-spacing:0}.visual{padding:15px 7px}.fold-stage{transform:scale(.9)}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{transition-duration:0.001ms!important;animation-duration:0.001ms!important}}
+
+/* Exámenes que utilizan exclusivamente las láminas del PDF aportado. */
+.original-exam{min-width:0}
+.original-upload{border:1px dashed #bbcbd6;border-radius:11px;padding:20px;background:#f8fafb;margin:19px 0}
+.original-upload h3{margin:0 0 5px;font-size:16px}
+.original-upload p{margin:7px 0 14px}
+.original-upload .upload-ok{color:#177b57;font-weight:750}
+.original-pages{border:1px solid var(--line);padding:14px;border-radius:12px;margin:17px 0;background:#fafcfd}
+.original-viewer{border:1px solid #bccdd8;background:white;border-radius:8px;overflow:hidden;min-height:500px}
+.original-viewer iframe{display:block;width:100%;height:660px;border:0;background:white}
+.original-open{display:inline-block;text-decoration:underline;padding-top:9px}
+.official-answer-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:17px}
+.official-q{border:1px solid #dbe4e9;border-radius:9px;padding:12px;background:white;min-width:0}
+.official-q.ungraded{background:#fff9f3;border-color:#f0d9bc}
+.official-q-title{display:flex;justify-content:space-between;gap:7px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+.official-q-title .pill{font-size:9px}
+.official-q fieldset{display:flex;align-items:center;flex-wrap:wrap;gap:9px;padding:0;margin:0;border:0}
+.official-answer{display:inline-flex;gap:5px;align-items:center;justify-content:center;min-width:43px;border:1px solid #cdd9e1;border-radius:7px;padding:6px 9px;cursor:pointer;font-weight:800}
+.official-answer:has(input:checked),.official-answer.chosen{background:#e9f1f7;border-color:#6b9dc0;color:#194e75}
+.official-answer input{accent-color:#2f6b98}
+@media(max-width:640px){.original-pages{padding:10px}.official-answer-grid{grid-template-columns:1fr}.original-viewer{min-height:330px}.original-viewer iframe{height:490px}.official-q{padding:13px}}
