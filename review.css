@@ -1,0 +1,34 @@
+/* Ejercicios de repaso: diseños prácticos para la oposición */
+.rv-tabs{display:flex;gap:7px;border-bottom:1px solid #e3e9ec;padding-bottom:16px;margin:0 0 23px;flex-wrap:wrap}
+.rv-tabs button{border:1px solid #dfe6e9;background:#f7f9fa;color:#5e7281;padding:10px 15px;border-radius:7px;font-size:12px;font-weight:800;transition:.15s}
+.rv-tabs button:hover{background:#fff5ee;color:#ad5131;border-color:#edb9a2}
+.rv-tabs button.active{background:#1c3448;color:#fff;border-color:#1c3448}
+#review-workspace [hidden]{display:none!important}
+.rv-kicker{font-size:10px;color:#ae5d40;font-weight:900;letter-spacing:.12em;margin:8px 0 10px}
+.rv-prompt{border-left:3px solid #df8862;background:#fff8f4;padding:25px 23px;border-radius:0 8px 8px 0;font-size:clamp(16px,2vw,21px);line-height:1.5;color:#233e52;font-weight:790;margin:14px 0 18px}
+.rv-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:11px 0 19px}
+.rv-option{border-radius:8px;border:1px solid #dae3e7;background:#fff;color:#344c5f;padding:16px 14px;text-align:left;min-height:59px;font-size:12px;font-weight:740;line-height:1.5;transition:.14s}
+.rv-option:hover:not(:disabled){background:#f9fbfd;border-color:#e6a788}
+.rv-option.right{border-color:#86c8a7;background:#effaf4;color:#12694d}
+.rv-option.wrong{border-color:#dfa198;background:#fff2ef;color:#a64338}
+.rv-option:disabled{opacity:1;cursor:default}
+.rv-feedback{border-radius:8px;background:#f2f6f8;border-left:3px solid #6f96ac;padding:13px 16px;color:#446073;font-size:12px;line-height:1.75}
+.rv-btn{border:1px solid #d9e3e9;border-radius:7px;padding:10px 16px;background:#fff;color:#254357;font-size:12px;font-weight:790;margin-top:6px}
+.rv-btn.primary{background:#e85e36;color:white;border-color:#e85e36}
+.rv-hint{font-size:12px;color:#70808c;margin:4px 0 16px}
+.rv-ordered{display:flex;flex-direction:column;gap:8px;margin:14px 0 22px}
+.rv-sort{display:flex;align-items:center;gap:14px;padding:10px 12px;min-height:62px;background:#f9fbfc;border:1px solid #e1e7eb;border-radius:8px;color:#395166;font-size:12px}
+.rv-sort>span:nth-child(2){flex:1}
+.rv-sort.right{background:#eff9f3;border-color:#8ac5a5}
+.rv-sort.wrong{background:#fff3ef;border-color:#e3a092}
+.rv-rank{height:29px;min-width:29px;background:#e9f0f3;color:#486275;border-radius:6px;display:grid;place-items:center;font-weight:900;font-size:11px}
+.rv-sort>div{display:flex;gap:6px}
+.rv-sort button{min-width:33px;height:33px;background:white;color:#445e6f;border:1px solid #d6e0e5;border-radius:6px;font-size:17px}
+.rv-sort button:disabled{opacity:.25}
+.rv-score{background:#1a3448;padding:24px;border-radius:10px;color:white;margin-bottom:18px}
+.rv-score strong{font-size:40px;letter-spacing:-.05em}
+.rv-score p{font-size:12px;color:#d6e2e9}
+.rv-resultline{font-size:12px;border-bottom:1px solid #e6ebee;padding:10px 3px;color:#4c6272;margin:0}
+.study-back-link{margin-bottom:21px;border:1px solid #ffffff22}
+.topbar-actions [data-progress-export],.topbar-actions [data-progress-import]{font-size:11px}
+@media(max-width:680px){.rv-options{grid-template-columns:1fr}.rv-tabs button{flex:1;min-width:calc(50% - 6px);text-align:center}.rv-prompt{padding:16px;font-size:17px}.topbar-actions{gap:8px}.topbar-actions [data-progress-export],.topbar-actions [data-progress-import]{font-size:10px}}
