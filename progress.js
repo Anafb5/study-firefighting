@@ -50,7 +50,36 @@ async function importFile(file){
  notice("Progreso restaurado. Recargando...");
  location.reload();
 }
+let previousBackupFocus=null;
+function openBackup(){
+ const dialog=document.getElementById("backup-modal");if(!dialog)return;
+ previousBackupFocus=document.activeElement;dialog.hidden=false;document.body.classList.add("backup-modal-open");
+ dialog.querySelector("[data-backup-close]")?.focus();
+}
+function closeBackup(){
+ const dialog=document.getElementById("backup-modal");if(!dialog)return;
+ dialog.hidden=true;document.body.classList.remove("backup-modal-open");
+ previousBackupFocus?.focus?.();
+}
+function ensureBackupDialog(){
+ if(document.getElementById("backup-modal"))return;
+ const wrapper=document.createElement("div");
+ wrapper.innerHTML='<div class="backup-modal" id="backup-modal" role="dialog" aria-modal="true" aria-labelledby="backup-title" hidden>'+
+  '<div class="backup-curtain" data-backup-close></div><div class="backup-dialog" role="document">'+
+  '<div class="backup-dialog-head"><div><span class="section-label">COPIA DE SEGURIDAD</span><h2 id="backup-title">Tu progreso</h2></div><button type="button" data-backup-close class="backup-close" aria-label="Cerrar">×</button></div>'+
+  '<p>Guarda tus temas, tarjetas, errores y estadísticas en un archivo JSON. Podrás restaurarlo en cualquier dispositivo.</p>'+
+  '<div class="backup-actions"><button class="button dark" data-progress-export>↓ Descargar copia JSON</button><button class="button secondary" data-progress-import>↑ Restaurar archivo JSON</button></div>'+
+  '<div id="progress-status" role="status" aria-live="polite"></div>'+
+  '<div class="backup-warning"><strong>Antes de importar</strong><p>Restaurar sustituye el progreso local de los temas incluidos en la copia. Los tests aún sin terminar no se exportan.</p></div></div></div>';
+ document.body.appendChild(wrapper.firstElementChild);
+}
 function init(){
+ ensureBackupDialog();
+ document.addEventListener("click",event=>{
+  if(event.target.closest("[data-backup-open]")){event.preventDefault();openBackup();}
+  if(event.target.closest("[data-backup-close]")){event.preventDefault();closeBackup();}
+ });
+ document.addEventListener("keydown",event=>{if(event.key==="Escape"&&!document.getElementById("backup-modal")?.hidden)closeBackup();});
  let file=document.querySelector("[data-progress-file]");
  if(!file){file=document.createElement("input");file.type="file";file.accept=".json,application/json";file.hidden=true;file.setAttribute("data-progress-file","");document.body.appendChild(file);}
  document.addEventListener("click",event=>{
