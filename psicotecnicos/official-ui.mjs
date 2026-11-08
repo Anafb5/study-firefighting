@@ -89,7 +89,7 @@ export class OfficialExamController{
   if(this.phase==="study")return head+'<div class="board-head"><span class="pill">Memorización · prueba '+esc(this.group)+'</span><span class="timer" id="official-time"></span></div><p class="notice">Durante dos minutos observa la lista original del documento. Después se ocultará y no podrás regresar a esta página hasta entregar el examen.</p>'+this.pdfFrame(g.studyPage)+
     '<div class="board-actions"><button class="btn accent" data-official-action="end-study">He memorizado · comenzar preguntas</button></div></div>';
   const qs=getOfficialQuestions(this.topicId,this.group);
-  const done=qs.filter(q=>this.answers[q.number]!=null).length;
+  const selectable=qs.filter(q=>!(q.invalid&&q.number===10&&this.group==="D"));const done=selectable.filter(q=>this.answers[q.number]!=null).length;
   return head+'<div class="board-head"><span class="pill">'+esc(g.label)+' · '+done+'/'+qs.length+' respuestas</span><span class="timer" id="official-time"></span></div>'+
    '<div class="original-pages"><div class="board-head"><strong>Documento original · página '+page+'</strong><span class="source">Páginas '+pages[0]+'–'+pages[pages.length-1]+'</span></div>'+
    '<div class="board-actions" style="margin:8px 0">'+
@@ -116,7 +116,7 @@ export class OfficialExamController{
   if(target.dataset?.officialAnswer){
    const num=Number(target.dataset.officialAnswer);
    if(this.phase==="exam"&&getOfficialQuestions(this.topicId,this.group).some(q=>q.number===num)&&/^[ABCD]$/.test(target.value))this.answers[num]=target.value;
-   const status=document.querySelector(".original-exam .pill");if(status){const qs=getOfficialQuestions(this.topicId,this.group);status.textContent=this.doc.groups[this.group].label+" · "+qs.filter(q=>this.answers[q.number]!=null).length+"/"+qs.length+" respuestas";}
+   const status=document.querySelector(".original-exam .pill");if(status){const qs=getOfficialQuestions(this.topicId,this.group);status.textContent=this.doc.groups[this.group].label+" · "+qs.filter(q=>!(q.invalid&&q.number===10&&this.group==="D")&&this.answers[q.number]!=null).length+"/"+qs.filter(q=>!(q.invalid&&q.number===10&&this.group==="D")).length+" respuestas";}
    return true;
   }
   return false;
