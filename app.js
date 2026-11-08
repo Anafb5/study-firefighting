@@ -36,7 +36,7 @@ function init(){
   $("exam-count").addEventListener("change",renderAvailability);
   $("exam-start").addEventListener("click",startExam);
   $("menu-button").addEventListener("click",()=>$("sidebar").classList.toggle("open"));
-  $("reset-button").addEventListener("click",()=>{if(confirm("¿Quieres borrar las secciones vistas, tarjetas dominadas y resultados guardados en este dispositivo?")){state={read:[],mastered:[],wrong:[],history:[]};save();renderHome();renderStats();renderTopics();renderCards(true);toast("Progreso reiniciado");}});
+  $("reset-button").addEventListener("click",()=>{if(confirm("¿Quieres borrar las secciones vistas, tarjetas dominadas y resultados guardados en este dispositivo?")){state={read:[],mastered:[],wrong:[],history:[]};save();if(window.STUDY_CONFIG?.legal&&window.LegalStudy?.reset)window.LegalStudy.reset();renderHome();renderStats();renderTopics();renderCards(true);toast("Progreso reiniciado");}});
   document.addEventListener("click",handleClick);
   renderHome();renderStats();renderTopics();renderMatch();renderAvailability();
 }
