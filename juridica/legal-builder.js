@@ -9,7 +9,7 @@ const TOPICS=[];
 SOURCE.sections.forEach((section,i)=>{
  section.topics.forEach((topic,j)=>{
   if(!Array.isArray(topic.points)||topic.points.length<4)throw Error("Falta contenido revisado en "+topic.title);
-  TOPICS.push({id:(i+1)+"-"+(j+1),section:section.id,number:(i+1)+"."+(j+1),title:topic.title,pages:topic.pages,lead:topic.lead||topic.points[0][1],points:topic.points,format:topic.format||"default",tip:topic.tip||"",...(topic.table?{table:topic.table}:{}),...(topic.formulas?{formulas:topic.formulas}:{})});
+  TOPICS.push({id:(i+1)+"-"+(j+1),section:section.id,number:(i+1)+"."+(j+1),title:topic.title,pages:topic.pages,lead:topic.lead||topic.points[0][1],points:topic.points,format:topic.format||"default",tip:topic.tip||"",...(topic.table?{table:topic.table}:{}),...(topic.formulas?{formulas:topic.formulas}:{}),...(topic.visual?{visual:topic.visual}:{})});
  });
 });
 const ARTICLES=(SOURCE.articles||[]).map((a,i)=>({id:i,section:a[0],norm:a[1],art:String(a[2]),label:a[3],page:a[4],note:a[5]||""}));
