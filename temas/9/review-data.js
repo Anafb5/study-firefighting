@@ -1,4 +1,4 @@
-/* Tema 9 · Repaso basado en el PDF aportado, evita respuestas explícitas en los enunciados. */
+/* Ejercicios de repaso revisados: enunciados sin pistas, correcciones y referencias al manual. */
 const REVIEW_CLASSIFY=[
  {
   "name": "Elegir el detector por su comportamiento",
@@ -270,7 +270,7 @@ const REVIEW_ORDER=[
 ];
 const REVIEW_JUDGE=[
  [
-  "El sistema de detección tiene por cometido principal extinguir el incendio directamente.",
+  "La central de detección, por sí sola, sustituye a los dispositivos de descarga de un sistema de extinción automática.",
   false,
   "El SDA detecta y avisa; la extinción requiere otros sistemas (p. 7)."
  ],
@@ -305,7 +305,7 @@ const REVIEW_JUDGE=[
   "Regla indicada en p. 10."
  ],
  [
-  "En el manual, una alarma para ocupantes que duermen debe superar 60 dB.",
+  "En recintos destinados a dormir, la alarma se evalúa con el mismo umbral acústico que en el resto de ocupaciones.",
   false,
   "En esa situación indica >75 dB (p. 10)."
  ],
@@ -395,7 +395,7 @@ const REVIEW_JUDGE=[
   "Condición recogida en p. 33."
  ],
  [
-  "El abastecimiento de agua se compone solo del depósito, sin bombas ni red.",
+  "Un depósito de agua unido directamente a la red, sin equipo de impulsión, representa los tres componentes del abastecimiento que cita el manual.",
   false,
   "Fuentes de agua, equipos de impulsión y red general (p. 37)."
  ],
