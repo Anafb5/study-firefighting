@@ -11,7 +11,7 @@ const titles=[
 "Extintores","Instalaciones fijas","Vehículos contra incendios","Prendas y equipos de protección personal",
 "Materiales de rescate y salvamento","Transmisiones","Construcción e incendio","Señalización","Actividades del Servicio de Extinción y Salvamento","Tácticas de combate contra el fuego","Incendios forestales","Elementos estructurales y constructivos" ];
 const known={1:{topics:24,cards:143,questions:96},2:{topics:21,cards:126,questions:84},3:{topics:23,cards:138,questions:92},4:{topics:23,cards:138,questions:92},5:{topics:21,cards:126,questions:84},6:{topics:18,cards:108,questions:72},7:{topics:12,cards:66,questions:24},8:{topics:16,cards:99,questions:41},9:{topics:33,cards:159,questions:137},10:{topics:29,cards:88,questions:135},11:{topics:19,cards:63,questions:89},12:{topics:22,cards:109,questions:92},13:{topics:22,cards:115,questions:92},14:{topics:21,cards:109,questions:87},15:{topics:20,cards:100,questions:83},16:{topics:19,cards:99,questions:79},17:{topics:19,cards:97,questions:79},18:{topics:21,cards:110,questions:88},19:{topics:22,cards:112,questions:91}};
-const chapters=titles.map((title,i)=>{const id=i+1,k=known[id];return {id,title,area:"tecnica",published:!!k,href:k?"./temas/"+id+"/":null,...k};});
+const chapters=titles.map((title,i)=>{const id=i+1,k=known[id];return {id,title,area:"tecnica",volume:id<=13?"IV":"V",published:!!k,href:k?"./temas/"+id+"/":null,...k};});
 let current="tecnica";const expanded={};
 function progress(t){
  const k="study-firefighting-t"+t.id+"-v1";let p={};
