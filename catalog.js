@@ -11,18 +11,25 @@ const titles=[
 "Extintores","Instalaciones fijas","Vehículos contra incendios","Prendas y equipos de protección personal",
 "Materiales de rescate y salvamento","Transmisiones","Construcción e incendio","Señalización","Actividades del Servicio de Extinción y Salvamento","Tácticas de combate contra el fuego","Incendios forestales","Elementos estructurales y constructivos" ];
 const known={1:{topics:24,cards:143,questions:96},2:{topics:21,cards:126,questions:84},3:{topics:23,cards:138,questions:92},4:{topics:23,cards:138,questions:92},5:{topics:21,cards:126,questions:84},6:{topics:18,cards:108,questions:72},7:{topics:12,cards:66,questions:24},8:{topics:16,cards:99,questions:41},9:{topics:33,cards:159,questions:137},10:{topics:29,cards:88,questions:135},11:{topics:19,cards:63,questions:89},12:{topics:23,cards:116,questions:96},13:{topics:24,cards:160,questions:104},14:{topics:21,cards:110,questions:87},15:{topics:22,cards:113,questions:91},16:{topics:20,cards:107,questions:83},17:{topics:19,cards:97,questions:79},18:{topics:21,cards:110,questions:88},19:{topics:22,cards:113,questions:91}};
-const chapters=titles.map((title,i)=>{const id=i+1,k=known[id];return {id,title,area:"tecnica",volume:id<=13?"IV":"V",published:!!k,href:k?"./temas/"+id+"/":null,...k};});
+const legalTitles=["La Constitución española de 1978","El Tribunal Constitucional, la Corona y la reforma constitucional","Las Cortes Generales y el Defensor del Pueblo","El Poder Judicial","El Gobierno y la Administración","La Administración General del Estado","La organización territorial del Estado","Organización de la Unión Europea","Fuentes del Derecho Administrativo","La relación jurídico-administrativa","El acto administrativo","El procedimiento administrativo","Políticas de igualdad de género","Prevención de riesgos laborales","Formas de la acción administrativa","El régimen local español","El municipio","La provincia","Otras entidades locales","Ingresos tributarios locales","Presupuesto de las entidades locales","El gasto público local","Las haciendas locales","Los bienes de las entidades locales","Contratación administrativa local","Personal al servicio de las entidades locales"];
+const legalKnown={1:{topics:17,cards:191,questions:102,articles:51}};
+const chapters=[
+ ...titles.map((title,i)=>{const id=i+1,k=known[id];return {id,title,area:"tecnica",volume:id<=13?"IV":"V",published:!!k,href:k?"./temas/"+id+"/":null,...k};}),
+ ...legalTitles.map((title,i)=>{const id=i+1,k=legalKnown[id];return {id,title,area:"juridica",volume:id<=8?"I":id<=14?"II":"III",published:!!k,href:k?"./juridica/"+id+"/":null,...k};})
+];
 let current="tecnica";const expanded={};
 function progress(t){
- const k="study-firefighting-t"+t.id+"-v1";let p={};
+ const k=t.area==="juridica"?"study-firefighting-j"+t.id+"-v1":"study-firefighting-t"+t.id+"-v1";let p={};
  try{p=JSON.parse(localStorage.getItem(k)||"null")||{};}catch(e){}
  const read=t.published?Math.min(t.topics,new Set(Array.isArray(p.read)?p.read:[]).size):0;
  const mastered=t.published?Math.min(t.cards,new Set(Array.isArray(p.mastered)?p.mastered:[]).size):0;
  const wrong=t.published?new Set(Array.isArray(p.wrong)?p.wrong:[]).size:0;
  const exams=Array.isArray(p.history)?p.history:[];
+ let articlesMastered=0;
+ if(t.area==="juridica"&&t.published){try{const a=JSON.parse(localStorage.getItem("study-firefighting-j"+t.id+"-articles-v1")||"{}");articlesMastered=Array.isArray(a.mastered)?new Set(a.mastered).size:0;}catch(e){}}
  const started=read>0||mastered>0||wrong>0||exams.length>0;
  const complete=!!t.published&&t.topics>0&&read===t.topics;
- return {...t,read,mastered,wrong,exams,started,complete,percent:t.published?Math.round(read/t.topics*100):0};
+ return {...t,read,mastered,wrong,exams,started:started||articlesMastered>0,complete,articlesMastered,percent:t.published?Math.round(read/t.topics*100):0};
 }
 const areaTopics=id=>chapters.filter(t=>t.area===id).map(progress);
 const published=id=>areaTopics(id).filter(t=>t.published);
@@ -30,17 +37,17 @@ const bar=(p,title)=>'<div class="dash-bar" role="progressbar" aria-label="'+esc
 function renderDashboard(){
  const all=chapters.map(progress).filter(t=>t.published);
  const read=all.reduce((s,t)=>s+t.read,0),parts=all.reduce((s,t)=>s+t.topics,0),pct=parts?Math.round(read/parts*100):0;
- const programCount=chapters.filter(t=>t.area==="tecnica").length,loaded=published("tecnica").length;
+ const programCount=chapters.filter(t=>t.area==="tecnica").length,loaded=published("tecnica").length,legalCount=chapters.filter(t=>t.area==="juridica").length,legalLoaded=published("juridica").length;
  const cards=all.reduce((s,t)=>s+t.cards,0),mastered=all.reduce((s,t)=>s+t.mastered,0);
  const exams=all.flatMap(t=>t.exams).filter(x=>Number.isFinite(Number(x.percent)));
  const avg=exams.length?Math.round(exams.reduce((s,x)=>s+Number(x.percent),0)/exams.length)+" %":"—";
- const stats=[[all.filter(t=>t.complete).length,"Temas terminados"],[all.filter(t=>t.started&&!t.complete).length,"En curso"],[mastered+" / "+cards,"Tarjetas dominadas"],[all.reduce((s,t)=>s+t.wrong,0),"Errores por repasar"],[exams.length,"Tests realizados"],[avg,"Media de los tests"]];
- document.getElementById("catalog-stats").innerHTML='<div class="dash-overview"><div class="dash-main"><span class="section-label">AVANCE DEL TEMARIO DISPONIBLE</span><div class="dash-number">'+pct+'<small>%</small></div>'+bar(pct,"Progreso global")+'<p>'+read+' de '+parts+' apartados estudiados. '+loaded+' de '+programCount+' temas técnicos publicados.</p></div><div class="dash-metrics">'+stats.map(([n,l])=>'<div class="dash-metric"><strong>'+esc(n)+'</strong><span>'+esc(l)+'</span></div>').join("")+'</div></div>'+
+ const stats=[[all.filter(t=>t.complete).length,"Temas terminados"],[all.filter(t=>t.started&&!t.complete).length,"En curso"],[mastered+" / "+cards,"Tarjetas dominadas"],[all.reduce((s,t)=>s+t.wrong,0),"Errores por repasar"],[exams.length,"Tests realizados"],[avg,"Media de los tests"],[all.filter(t=>t.area==="juridica").reduce((n,t)=>n+t.articlesMastered,0)+" / "+all.filter(t=>t.area==="juridica").reduce((n,t)=>n+(t.articles||0),0),"Artículos dominados"]];
+ document.getElementById("catalog-stats").innerHTML='<div class="dash-overview"><div class="dash-main"><span class="section-label">AVANCE DEL TEMARIO DISPONIBLE</span><div class="dash-number">'+pct+'<small>%</small></div>'+bar(pct,"Progreso global")+'<p>'+read+' de '+parts+' apartados estudiados. '+loaded+' de '+programCount+' temas técnicos · '+legalLoaded+' de '+legalCount+' jurídicos disponibles.</p></div><div class="dash-metrics">'+stats.map(([n,l])=>'<div class="dash-metric"><strong>'+esc(n)+'</strong><span>'+esc(l)+'</span></div>').join("")+'</div></div>'+
  '<div class="dash-areas">'+areas.map(area=>{
  const t=published(area.id),done=t.reduce((n,x)=>n+x.read,0),total=t.reduce((n,x)=>n+x.topics,0),pc=total?Math.round(done/total*100):0;
  return '<button type="button" data-area="'+area.id+'" class="dash-area"><span><strong>'+area.name+'</strong><small>'+t.filter(x=>x.complete).length+' archivados · '+t.filter(x=>x.started&&!x.complete).length+' en curso</small></span><b>'+pc+' %</b>'+bar(pc,area.name)+'</button>';
  }).join("")+'</div>';
- const active=all.find(t=>t.started&&!t.complete)||all.find(t=>!t.started);
+ const areaPool=all.filter(t=>t.area===current);const active=areaPool.find(t=>t.started&&!t.complete)||areaPool.find(t=>!t.started)||all.find(t=>t.started&&!t.complete)||all.find(t=>!t.started);
  document.getElementById("study-focus").innerHTML=active?'<span class="section-label">TU SIGUIENTE PASO</span><h3>'+(active.started?"Continúa con el Tema ":"Empieza el Tema ")+active.id+'</h3><p>'+esc(active.title)+' · '+active.read+'/'+active.topics+' apartados</p><a class="focus-button" href="'+active.href+'">'+(active.started?"Continuar":"Empezar")+' →</a>':'<h3>Todos los temas publicados están completados</h3><p>Los encontrarás archivados en su área para poder repasarlos.</p>';
 }
 function renderAreas(){
@@ -53,7 +60,7 @@ function card(t,compact=false){
  const status=!t.published?"En preparación":t.complete?"Terminado":t.started?"En curso":"Sin empezar";
  const cls=!t.published?"waiting":t.complete?"complete":t.started?"ongoing":"new";
  return '<article class="topic-card '+(compact?"compact-topic":"")+'"><div class="topic-meta"><span>TEMA '+String(t.id).padStart(2,"0")+' · VOL. '+t.volume+'</span><span class="status '+cls+'">'+status+'</span></div><h3>'+esc(t.title)+'</h3>'+
- (t.published?'<div class="topic-features"><span>'+t.topics+' apartados</span><span>'+t.cards+' tarjetas</span><span>'+t.questions+' preguntas</span></div><div class="topic-progress"><span>'+t.read+' / '+t.topics+' estudiados</span><b>'+t.percent+' %</b></div>'+bar(t.percent,"Tema "+t.id):'<p>Este tema todavía no tiene contenido publicado.</p>')+
+ (t.published?'<div class="topic-features"><span>'+t.topics+' apartados</span><span>'+t.cards+' tarjetas</span><span>'+t.questions+' preguntas</span>'+(t.articles?'<span>'+t.articles+' artículos</span>':'')+'</div><div class="topic-progress"><span>'+t.read+' / '+t.topics+' estudiados</span><b>'+t.percent+' %</b></div>'+bar(t.percent,"Tema "+t.id):'<p>Este tema todavía no tiene contenido publicado.</p>')+
  '<div class="topic-footer"><strong>'+(!t.published?"Por preparar":t.complete?"Completado":t.started?"Retoma tu estudio":"Listo para empezar")+'</strong>'+(t.published?'<a href="'+t.href+'">'+(t.complete?"Repasar":t.started?"Continuar":"Empezar")+' →</a>':'<span>No disponible</span>')+'</div></article>';
 }
 function drawer(id,title,items){
@@ -75,7 +82,7 @@ function renderTopics(){
 }
 function selectArea(id,scroll=false,hash=false){
  if(!areas.some(a=>a.id===id))return;
- current=id;renderAreas();renderTopics();
+ current=id;renderDashboard();renderAreas();renderTopics();
  try{sessionStorage.setItem("study-firefighting-current-area",id);}catch(e){}
  if(hash)history.pushState({area:id},"","#"+id);
  if(scroll)document.getElementById("temas").scrollIntoView({behavior:"smooth",block:"start"});
