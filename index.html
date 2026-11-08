@@ -8,11 +8,18 @@
 <link rel="stylesheet" href="./catalog.css">
 </head>
 <body>
-<header class="site-head"><a class="logo" href="./"><span class="logo-square">F<span>·</span></span><span>FUEGO <small>& ESTUDIO</small></span></a><nav><a href="#temas">Temario</a><a href="#progreso">Mi progreso</a><a href="#copias">Copias de seguridad</a></nav></header>
+<header class="site-head"><a class="logo" href="./"><span class="logo-square">F<span>·</span></span><span>FUEGO <small>& ESTUDIO</small></span></a><nav><a href="#areas">Áreas</a><a href="#progreso">Mi progreso</a><a href="#copias">Copias de seguridad</a></nav></header>
 <main class="shell">
-  <section class="hero"><div class="section-label"><span class="live-dot"></span> PREPARACIÓN OPOSICIÓN A BOMBERO</div><h1>Tu biblioteca<br><em>de estudio.</em></h1><p>Todos los temas en un único lugar, cada uno con su propia página. Estudia con rigor, practica activamente y conserva tu progreso.</p><a class="primary-link" href="#temas">Ver los temas disponibles <span>↓</span></a><div class="big-mark" aria-hidden="true">11</div></section>
+  <section class="hero"><div class="section-label"><span class="live-dot"></span> PREPARACIÓN OPOSICIÓN A BOMBERO</div><h1>Tu biblioteca<br><em>de estudio.</em></h1><p>Tres áreas de preparación: Técnica, Jurídica y Psicotécnicos. Cada tema tendrá su propia página, sus recursos de estudio y su progreso.</p><a class="primary-link" href="#areas">Explorar áreas <span>↓</span></a><div class="big-mark" aria-hidden="true">3</div></section>
   <section id="progreso" class="progress"><div class="block-head"><div><span class="section-label">TU PREPARACIÓN</span><h2>Vista general</h2></div><span class="small">Datos guardados en este navegador</span></div><div class="stats" id="catalog-stats"><div class="stat"><strong>—</strong><span>Apartados completados</span></div></div></section>
-  <section id="temas" class="topics"><div class="block-head"><div><span class="section-label">BIBLIOTECA</span><h2>Temas de la oposición</h2><p>Accede al temario, esquemas y ejercicios de cada tema desde aquí.</p></div></div><div id="catalog-topic-list" class="topic-list"></div></section>
+  <section id="areas" class="areas">
+    <div class="block-head"><div><span class="section-label">ESTRUCTURA DE LA OPOSICIÓN</span><h2>Tres áreas de preparación</h2><p>Elige el bloque que quieres trabajar. Las áreas se irán completando con sus temas y ejercicios.</p></div></div>
+    <div class="area-grid" id="catalog-areas" role="tablist" aria-label="Áreas de estudio"></div>
+  </section>
+  <section id="temas" class="topics" aria-labelledby="area-title">
+    <div class="block-head"><div><span class="section-label" id="area-eyebrow">ÁREA TÉCNICA</span><h2 id="area-title">Temario técnico</h2><p id="area-intro">Temas, esquemas y ejercicios de la parte técnica.</p></div><span class="small" id="area-summary"></span></div>
+    <div id="area-panel" role="tabpanel" aria-live="polite" aria-labelledby="area-tab-tecnica"><div id="catalog-topic-list" class="topic-list"></div></div>
+  </section>
   <section id="copias" class="backups"><div class="backup-icon" aria-hidden="true">↥</div><div class="backup-info"><span class="section-label">DATOS PORTABLES</span><h2>Tu progreso, también en otro dispositivo</h2><p>Descarga un archivo JSON con los apartados estudiados, las tarjetas dominadas, los errores pendientes y las estadísticas de test. Guárdalo en Drive, correo o tu ordenador; impórtalo cuando quieras. No requiere cuenta ni servidor.</p><div class="backup-actions"><button class="button dark" data-progress-export>↓ Exportar mi progreso</button><button class="button secondary" data-progress-import>↑ Importar desde archivo</button></div><div id="progress-status" role="status" aria-live="polite"></div><small>La importación sustituye el progreso local de los temas incluidos en la copia. Los test aún sin terminar no forman parte del archivo.</small></div></section>
   <footer>FUEGO & ESTUDIO · PARA ESTUDIO PERSONAL · CONSULTA SIEMPRE LAS BASES DE TU CONVOCATORIA.</footer>
 </main>
