@@ -1,27 +1,32 @@
-/* Presentaciones de estudio para temas técnicos 1–8.
- * Cada subapartado elige concepto, tabla, proceso y comparación según contenido. */
+/* Maquetación editorial del estudio para los temas técnicos de lectura.
+ * La elección de formato es por contenido, sin repetir las mismas fichas y la lista.
+ * Se mantiene la interfaz sin dependencias externas. */
 (function(){
 "use strict";
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const h=(s,minor="")=>'<div class="st-caption"><h3>'+esc(s)+'</h3>'+(minor?'<span>'+esc(minor)+'</span>':"")+'</div>';
-const line=p=>'<div class="st-line"><h4>'+esc(p[0])+'</h4><p>'+esc(p[1])+'</p></div>';
-const list=a=>'<div class="st-lines">'+a.map(line).join("")+'</div>';
-const table=t=>t?'<div class="st-table-scroll"><table class="st-table"><thead><tr>'+t.headers.map(x=>'<th>'+esc(x)+'</th>').join("")+'</tr></thead><tbody>'+t.rows.map(row=>'<tr>'+row.map(x=>'<td>'+esc(x)+'</td>').join("")+'</tr>').join("")+'</tbody></table></div>':"";
-const process=a=>'<ol class="reader-steps">'+a.map(x=>'<li>'+line(x)+'</li>').join("")+'</ol>';
-const tiles=a=>'<div class="reader-tiles">'+a.map(([k,v])=>'<div class="reader-tile"><strong>'+esc(k)+'</strong><p>'+esc(v)+'</p></div>').join("")+'</div>';
-const formulas=a=>'<div class="reader-formulas">'+a.map(([k,v])=>'<div class="reader-formula"><span>'+esc(k)+'</span><strong>'+esc(v)+'</strong></div>').join("")+'</div>';
+const heading=(s,note="")=>'<div class="st-caption"><h3>'+esc(s)+'</h3>'+(note?'<span>'+esc(note)+'</span>':"")+'</div>';
+const item=([key,text])=>'<div class="st-line"><h4>'+esc(key)+'</h4><p>'+esc(text)+'</p></div>';
+const notes=arr=>'<div class="st-lines">'+arr.map(item).join("")+'</div>';
+const table=(t)=>'<div class="st-table-scroll"><table class="st-table"><thead><tr>'+t.headers.map(h=>'<th>'+esc(h)+'</th>').join("")+'</tr></thead><tbody>'+t.rows.map(row=>'<tr>'+row.map(c=>'<td>'+esc(c)+'</td>').join("")+'</tr>').join("")+'</tbody></table></div>';
+const compare=(items)=>'<div class="reader-comparison">'+items.map(([key,value])=>
+ '<div class="reader-comparison-row"><div class="reader-comp-label">'+esc(key)+'</div><div class="reader-comp-detail">'+esc(value)+'</div></div>').join("")+'</div>';
+const timeline=items=>'<ol class="reader-steps">'+items.map(([key,desc])=>'<li><strong>'+esc(key)+'</strong><p>'+esc(desc)+'</p></li>').join("")+'</ol>';
+const formulas=arr=>'<div class="reader-formulas">'+arr.map(([key,val])=>'<div class="reader-formula"><span>'+esc(key)+'</span><strong>'+esc(val)+'</strong></div>').join("")+'</div>';
 function render(t){
  if(!t)return"";
- let visual="";
- if(t.formulas?.length)visual=h("Relaciones y expresiones del apartado")+formulas(t.formulas);
- else if(t.table)visual=h("Tabla comparativa",t.tableNote||"Datos de referencia del manual")+table(t.table);
- else if(t.format==="steps")visual=h("Secuencia y procedimiento")+process(t.points);
- else if(t.format==="compare")visual=h("Diferencias que debes reconocer")+tiles(t.points.slice(0,4));
- else visual=t.points.length>4?h("Panorama de conceptos")+tiles(t.points.slice(0,Math.min(4,t.points.length))):"";
- return '<div class="reader-topic">'+visual+
- (t.format==="steps"?h("Explicación completa")+list(t.points):h("Conceptos y detalles")+list(t.points))+
- (t.tip?'<div class="st-notice"><strong>Recuerda</strong><p>'+esc(t.tip)+'</p></div>':"")+
- (t.note?'<p class="reader-note">'+esc(t.note)+'</p>':"")+'</div>';
+ let body="";
+ if(t.format==="steps"){
+  body=heading("Cadena conceptual", "Secuencia de lectura, no necesariamente un protocolo operativo")+timeline(t.points);
+ }else if(t.format==="compare"){
+  body=heading("Conceptos para diferenciar")+compare(t.points);
+ }else if(t.table){
+  body=heading("Tabla de referencia",t.tableNote||"Según el PDF aportado")+table(t.table)+heading("Explicación y matices")+notes(t.points);
+ }else{
+  body=heading("Conceptos y explicaciones")+notes(t.points);
+ }
+ if(t.formulas?.length)body=heading("Fórmulas y relaciones del apartado")+formulas(t.formulas)+body;
+ const tail=t.tip?'<div class="st-notice"><strong>Idea clave</strong><p>'+esc(t.tip)+'</p></div>':"";
+ return '<div class="reader-topic">'+body+tail+(t.note?'<p class="reader-note">'+esc(t.note)+'</p>':"")+'</div>';
 }
 window.StudyLayouts={render,topicCount:TOPICS.length};
 })();
