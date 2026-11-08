@@ -55,7 +55,6 @@ function renderStats(){
 function renderTopics(selected){
  const search=$("topic-search").value.trim().toLocaleLowerCase("es");
  const existingOpen=new Set(Array.from(document.querySelectorAll(".lesson.open")).map(el=>el.id.replace("lesson-","")));
- const expandedNotes=new Set(Array.from(document.querySelectorAll(".sv-study-details[open]")).map(el=>el.dataset.detailTopic));
  const selectedSection=selected||document.querySelector("#toc button.selected")?.dataset.toc||"all";
  document.querySelectorAll("#toc button").forEach(b=>b.classList.toggle("selected",b.dataset.toc===selectedSection));
  let count=0;
@@ -63,15 +62,12 @@ function renderTopics(selected){
   const lessons=TOPICS.filter(t=>t.section===s.id&&(!search||(t.number+" "+t.title+" "+t.lead+" "+t.points.map(p=>p.join(" ")).join(" ")).toLocaleLowerCase("es").includes(search)));
   count+=lessons.length;
   if(!lessons.length)return "";
-  return '<section id="group-'+s.id+'"><div class="group-heading"><span class="index">'+s.n+'</span><h2>'+esc(s.title)+'</h2><span class="range">PÁGS. '+esc(s.pages)+'</span></div>'+lessons.map((t,index)=>{
+  return '<section id="group-'+s.id+'"><div class="group-heading"><span class="index">'+s.n+'</span><h2>'+esc(s.title)+'</h2><span class="range">PÁGS. '+esc(s.pages)+'</span></div>'+
+  lessons.map((t,index)=>{
    const read=state.read.includes(t.id);
    const isOpen=!!search||existingOpen.has(t.id)||(selected===s.id&&index===0)||(selectedSection==="all"&&t.id==="1-1"&&!existingOpen.size&&!selected);
-   const detailOpen=!!search||expandedNotes.has(t.id);
-   const rows=t.table?'<div class="table-scroll"><table class="study-table"><thead><tr>'+t.table.headers.map(v=>'<th>'+esc(v)+'</th>').join("")+'</tr></thead><tbody>'+t.table.rows.map(row=>'<tr>'+row.map(v=>'<td>'+esc(v)+'</td>').join("")+'</tr>').join("")+'</tbody></table></div>':"";
-   const map=window.StudyVisuals?window.StudyVisuals.render(t):"";
-   const points='<div class="schematic">'+t.points.map((p,i)=>'<div class="keypoint"><strong>'+(i+1)+'. '+esc(p[0])+'</strong><p>'+esc(p[1])+'</p></div>').join("")+'</div>';
-   const details='<details class="sv-study-details" data-detail-topic="'+esc(t.id)+'" '+(detailOpen?'open':"")+'><summary><span class="sv-detail-toggle">▤ Apuntes completos y cifras de examen</span><span class="sv-detail-sub">'+t.points.length+' puntos'+(t.table?" · tabla de referencia":"")+'</span><span class="sv-detail-arrow">⌄</span></summary><div class="sv-details-inner">'+points+rows+'</div></details>';
-   return '<article class="lesson'+(isOpen?" open":"")+'" id="lesson-'+t.id+'"><button class="lesson-header" data-lesson="'+esc(t.id)+'" aria-expanded="'+(isOpen?"true":"false")+'"><span class="lesson-id">'+esc(t.number)+'</span><span class="lesson-title">'+esc(t.title)+'</span>'+(read?'<span class="lesson-progress-mark">✓ Estudiado</span>':"")+'<span class="lesson-pages">p. '+esc(t.pages)+'</span><span class="chevron">⌄</span></button><div class="lesson-body"><p class="lesson-lead">'+esc(t.lead)+'</p>'+map+details+'<div class="sv-focus-actions"><div class="sv-focus-tip"><b>CLAVE DE EXAMEN ·</b> '+esc(t.tip)+'</div><button class="btn btn-small '+(read?"btn-outline":"btn-accent")+'" data-read="'+esc(t.id)+'">'+(read?"✓ Estudiado":"Marcar como estudiado")+'</button></div><div class="lesson-footer"><span class="source">Referencia del PDF · pp. '+esc(t.pages)+'</span></div>'+(t.note?'<div class="lesson-note">Atención al temario: '+esc(t.note)+'</div>':"")+'</div></article>';
+   const study=window.StudyLayouts?window.StudyLayouts.render(t):'<div class="schematic">'+t.points.map(x=>'<div class="keypoint"><strong>'+esc(x[0])+'</strong><p>'+esc(x[1])+'</p></div>').join("")+'</div>';
+   return '<article class="lesson'+(isOpen?" open":"")+'" id="lesson-'+t.id+'"><button class="lesson-header" data-lesson="'+esc(t.id)+'" aria-expanded="'+(isOpen?"true":"false")+'"><span class="lesson-id">'+esc(t.number)+'</span><span class="lesson-title">'+esc(t.title)+'</span>'+(read?'<span class="lesson-progress-mark">✓ Estudiado</span>':"")+'<span class="lesson-pages">p. '+esc(t.pages)+'</span><span class="chevron">⌄</span></button><div class="lesson-body"><p class="lesson-lead">'+esc(t.lead)+'</p>'+study+'<div class="st-final-actions"><div class="st-takeaway"><b>Para recordar · </b>'+esc(t.tip)+'</div><button class="btn btn-small '+(read?"btn-outline":"btn-accent")+'" data-read="'+esc(t.id)+'">'+(read?"✓ Estudiado":"Marcar como estudiado")+'</button><div class="lesson-footer"><span class="source">Referencia del documento · pp. '+esc(t.pages)+'</span></div>'+(t.note?'<div class="lesson-note">Atención al temario: '+esc(t.note)+'</div>':"")+'</div></div></article>';
   }).join("")+'</section>';
  }).join("")||'<div class="workspace muted">No hay apartados que coincidan con la búsqueda.</div>';
  $("search-count").textContent=count+" apartados";
