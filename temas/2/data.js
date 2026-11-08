@@ -1,4 +1,4 @@
-/* Tema 2 · Mecánica de fluidos. Fuente: PDF aportado. Los principios se exponen con hipótesis y unidades. */
+/* Tema 2 · Mecánica de fluidos. Fuente: PDF aportado. */
 window.READER_SOURCE={
  "sections": [
   {
@@ -940,17 +940,6 @@ window.READER_SOURCE={
      ],
      2,
      "Un minuto contiene 60 s."
-    ],
-    [
-     "¿Qué magnitud de presión se anula aproximadamente en una superficie abierta a presión atmosférica: la manométrica o la absoluta?",
-     [
-      "0",
-      "1",
-      "10",
-      "100"
-     ],
-     0,
-     "La presión manométrica de referencia atmosférica puede expresarse como 0, pp. 23–24."
     ]
    ]
   }
