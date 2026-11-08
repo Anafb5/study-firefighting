@@ -23,7 +23,11 @@ const chapters=[
   features:["19 apartados","63 tarjetas","89 preguntas","Repaso interactivo"]},
  {id:10,area:"tecnica",title:"Vehículos contra incendios",
   description:"Clasificación, siglas, componentes, bombas hidráulicas, vehículos urbanos, rurales, forestales, nodrizas, salvamento y circulación.",
-  published:true,href:"./temas/10/",topics:29,cards:88,questions:135,features:["29 apartados","88 tarjetas","135 preguntas","Repaso interactivo"]}
+  published:true,href:"./temas/10/",topics:29,cards:88,questions:135,features:["29 apartados","88 tarjetas","135 preguntas","Repaso interactivo"]},
+ {id:9,area:"tecnica",title:"Instalaciones fijas",
+  description:"Detección y alarma, hidrantes, BIE, columna seca, bombas de presión, extinción automática y redes de abastecimiento.",
+  published:true,href:"./temas/9/",topics:33,cards:159,questions:137,
+  features:["33 apartados","159 tarjetas","137 preguntas","Repaso interactivo"]}
 ];
 const esc=v=>String(v??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 let selectedArea="tecnica";
