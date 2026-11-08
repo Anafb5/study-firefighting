@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 "use strict";
-/* Integridad estructural de los once temas, sin dependencias externas. */
+/* Integridad estructural de los diecinueve temas, sin dependencias externas. */
 const fs=require("node:fs"),path=require("node:path"),vm=require("node:vm"),assert=require("node:assert/strict");
 const root=path.resolve(__dirname,"..");
 const read=p=>fs.readFileSync(path.join(root,p),"utf8");
 const exists=p=>fs.existsSync(path.join(root,p));
 const report={};let errors=0;
-for(let id=1;id<=11;id++){
+for(let id=1;id<=19;id++){
  const prefix=id===11?"":"temas/"+id+"/";
  try{
-  const scripts=id<=6?[prefix+"data.js","reader-theme-builder.js","reader-questions.js","reader-review-data.js"]:
+  const scripts=(id<=6||id>=12)?[prefix+"data.js","reader-theme-builder.js","reader-questions.js","reader-review-data.js"]:
                 id===7?[prefix+"data.js","reader-questions.js","reader-review-data.js"]:
                 [prefix+"data.js",prefix+"questions.js",prefix+"review-data.js"];
   const ctx=vm.createContext({window:{},console});
@@ -53,6 +53,6 @@ for(let id=1;id<=11;id++){
  }catch(e){errors++;console.error("Tema "+id+": "+e.message);}
 }
 const catalog=read("catalog.js");
-for(let id=1;id<=11;id++)assert(new RegExp("(?:^|[,{}])"+id+":\\{topics:").test(catalog),"Tema "+id+" no publicado en índice");
+for(let id=1;id<=19;id++)assert(new RegExp("(?:^|[,{}])"+id+":\\{topics:").test(catalog),"Tema "+id+" no publicado en índice");
 if(errors){console.error(errors+" tema(s) con errores");process.exitCode=1;}
 else console.log("Temario completo: "+JSON.stringify(report,null,2));
