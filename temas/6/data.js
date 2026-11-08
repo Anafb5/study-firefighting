@@ -1,0 +1,793 @@
+/* Tema 6 · Agua como agente extintor. Redacción basada en PDF de 35 páginas. */
+window.READER_SOURCE={
+ "sections": [
+  {
+   "id": "fisicoquimica",
+   "title": "Estructura y propiedades del agua",
+   "sub": "Molécula polar, densidad, viscosidad, calores y expansión",
+   "pages": "7–9",
+   "topics": [
+    {
+     "title": "Estructura molecular y polaridad",
+     "pages": "7",
+     "points": [
+      [
+       "Molécula de agua",
+       "Compuesta por dos átomos de hidrógeno y uno de oxígeno (H₂O)."
+      ],
+      [
+       "Polaridad",
+       "Distribución asimétrica de carga debida a la estructura molecular."
+      ],
+      [
+       "Puentes de hidrógeno",
+       "Interacciones entre moléculas que contribuyen a propiedades particulares."
+      ],
+      [
+       "Cohesión",
+       "Atracción molecular que influye en comportamiento del líquido."
+      ],
+      [
+       "Capacidad térmica",
+       "Relacionado con la estructura e interacciones del agua."
+      ],
+      [
+       "Propiedades extintoras",
+       "La estructura permite absorber cantidades significativas de energía."
+      ]
+     ],
+     "format": "compare",
+     "lead": ""
+    },
+    {
+     "title": "Densidad y viscosidad",
+     "pages": "8",
+     "points": [
+      [
+       "Densidad",
+       "Relación de masa a volumen de líquido."
+      ],
+      [
+       "Agua como referencia",
+       "Se emplea como referencia para densidad relativa de otros líquidos."
+      ],
+      [
+       "Viscosidad",
+       "Resistencia interna que aparece entre capas en movimiento."
+      ],
+      [
+       "Temperatura",
+       "La densidad y la viscosidad del agua varían al calentarse."
+      ],
+      [
+       "Propiedad hidráulica",
+       "La viscosidad influye en pérdidas de presión de conductos."
+      ],
+      [
+       "Intervención",
+       "Las propiedades del líquido condicionan alcance, pulverización y bombeo."
+      ]
+     ],
+     "format": "compare",
+     "lead": ""
+    },
+    {
+     "title": "Calor específico y capacidad de enfriamiento",
+     "pages": "9",
+     "points": [
+      [
+       "Calor específico",
+       "Energía por masa necesaria para elevar una unidad la temperatura."
+      ],
+      [
+       "Calor sensible",
+       "Energía absorbida al aumentar temperatura de agua líquida."
+      ],
+      [
+       "Enfriamiento",
+       "La alta capacidad de absorber calor explica la eficacia del agua."
+      ],
+      [
+       "Temperatura inicial",
+       "Cuanto más fría entra, mayor margen de absorción térmica hasta ebullición."
+      ],
+      [
+       "Masa aplicada",
+       "La energía captada depende de cantidad de agua que realmente se calienta."
+      ],
+      [
+       "Condición",
+       "La energía específica depende de temperatura y fase."
+      ]
+     ],
+     "format": "default",
+     "lead": "",
+     "formulas": [
+      [
+       "Calor sensible",
+       "Q=m·c·ΔT"
+      ]
+     ]
+    },
+    {
+     "title": "Calor latente y vaporización",
+     "pages": "9",
+     "points": [
+      [
+       "Calor latente",
+       "Energía absorbida o cedida durante un cambio de estado."
+      ],
+      [
+       "Vaporización",
+       "Cambio de fase de líquido a vapor que absorbe energía."
+      ],
+      [
+       "Ebullición",
+       "Formación de vapor al alcanzarse condiciones de presión y temperatura compatibles."
+      ],
+      [
+       "Transferencia térmica",
+       "La evaporación total es crucial para utilizar el potencial del agua."
+      ],
+      [
+       "Calor latente de vapor",
+       "Aporta una fracción importante del efecto de enfriamiento."
+      ],
+      [
+       "Diferencia con calor sensible",
+       "La energía de cambio de fase no se expresa simplemente como subida de temperatura."
+      ]
+     ],
+     "format": "compare",
+     "lead": "",
+     "formulas": [
+      [
+       "Vaporización",
+       "Q=m·Lv"
+      ]
+     ]
+    },
+    {
+     "title": "Expansión de vapor y volumen",
+     "pages": "9",
+     "points": [
+      [
+       "Expansión",
+       "Al pasar a vapor, el agua ocupa volumen muy superior al estado líquido."
+      ],
+      [
+       "Vapor de agua",
+       "Fase gaseosa que puede desplazar otros gases de un volumen."
+      ],
+      [
+       "Sofocación",
+       "Una alta concentración de vapor puede reducir oxígeno disponible en un recinto."
+      ],
+      [
+       "Riesgo de sobrepresión",
+       "La expansión en espacios cerrados exige valorar escenario."
+      ],
+      [
+       "Ventilación",
+       "Modifica acumulación y desplazamiento de vapor."
+      ],
+      [
+       "Aplicación",
+       "La cantidad y forma de agua influyen en rapidez de evaporación."
+      ]
+     ],
+     "format": "default",
+     "lead": ""
+    }
+   ]
+  },
+  {
+   "id": "capacidad",
+   "title": "Capacidad extintora del agua",
+   "sub": "Enfriamiento, vapor, dilución y lugar de aplicación",
+   "pages": "10–13",
+   "topics": [
+    {
+     "title": "Enfriamiento como mecanismo principal",
+     "pages": "10–11",
+     "points": [
+      [
+       "Mecanismo dominante",
+       "El agua absorbe energía al calentarse y cambiar a vapor."
+      ],
+      [
+       "Superficie de contacto",
+       "Un mayor contacto con material caliente favorece intercambio térmico."
+      ],
+      [
+       "Vaporización",
+       "La fracción que se evapora transfiere mucha más energía que la que no lo hace."
+      ],
+      [
+       "Aplicación en superficie",
+       "Busca reducir temperatura del combustible."
+      ],
+      [
+       "Aplicación en gases",
+       "Gotas pueden absorber calor del volumen de humos."
+      ],
+      [
+       "Limitación",
+       "Un chorro que pasa sin calentarse ni evaporarse aprovecha menos su capacidad."
+      ]
+     ],
+     "format": "compare",
+     "lead": ""
+    },
+    {
+     "title": "Sofocación por vapor",
+     "pages": "11",
+     "points": [
+      [
+       "Vapor producido",
+       "Puede desplazar aire en una zona confinada."
+      ],
+      [
+       "Disminución de oxígeno",
+       "Contribuye a reducir disponibilidad de comburente en condiciones dadas."
+      ],
+      [
+       "Efecto complementario",
+       "No sustituye al enfriamiento como principal mecanismo."
+      ],
+      [
+       "Recinto",
+       "La eficacia depende de geometría y ventilación."
+      ],
+      [
+       "Riesgo humano",
+       "Las atmósferas deficientes de oxígeno no son respirables."
+      ],
+      [
+       "Reignición",
+       "Es importante mantener suficiente enfriamiento del combustible."
+      ]
+     ],
+     "format": "default",
+     "lead": ""
+    },
+    {
+     "title": "Dilución y miscibilidad",
+     "pages": "12",
+     "points": [
+      [
+       "Dilución",
+       "Mezcla de disolvente y soluto que reduce concentración inicial."
+      ],
+      [
+       "Agua disolvente",
+       "Puede mezclarse con determinadas sustancias solubles."
+      ],
+      [
+       "Combustibles miscibles",
+       "La adición de agua puede modificar su concentración de forma relevante."
+      ],
+      [
+       "Limitación",
+       "No todos los combustibles se mezclan con agua."
+      ],
+      [
+       "Riesgo físico",
+       "La adición a líquidos no miscibles puede desplazar o extender combustible."
+      ],
+      [
+       "Evaluación",
+       "Depende de naturaleza química y situación."
+      ]
+     ],
+     "format": "compare",
+     "lead": ""
+    },
+    {
+     "title": "Dónde se aplica el agua",
+     "pages": "12–13",
+     "points": [
+      [
+       "Sobre combustible",
+       "Busca enfriar directamente el material en combustión."
+      ],
+      [
+       "Sobre gases calientes",
+       "Favorece enfriamiento del volumen de humos mediante gota apropiada."
+      ],
+      [
+       "Sobre paredes",
+       "Enfría cerramientos y puede modificar temperatura interna del recinto."
+      ],
+      [
+       "En el entorno",
+       "Protege exposiciones y materiales próximos."
+      ],
+      [
+       "Vapor",
+       "Al formarse, modifica composición y temperatura del volumen."
+      ],
+      [
+       "Dosificación",
+       "Hay que adaptar caudal y técnica al foco y al recinto."
+      ]
+     ],
+     "format": "compare",
+     "lead": ""
+    }
+   ]
+  },
+  {
+   "id": "aplicacion",
+   "title": "Aplicación del agua",
+   "sub": "Gota, chorro, patrones y técnicas de intervención",
+   "pages": "14–18",
+   "topics": [
+    {
+     "title": "Tamaño de gota y eficacia térmica",
+     "pages": "14",
+     "points": [
+      [
+       "Gota fina",
+       "Presenta elevada superficie relativa al volumen y puede evaporarse rápidamente."
+      ],
+      [
+       "Gota grande",
+       "Conserva mayor momento y puede alcanzar superficie de combustible."
+      ],
+      [
+       "Pulverización",
+       "Distribuye caudal entre gotas y amplía área de intercambio."
+      ],
+      [
+       "Alcance",
+       "La dispersión fina suele estar más afectada por corrientes de aire."
+      ],
+      [
+       "Penetración",
+       "Depende de velocidad, tamaño de gota y condiciones de entorno."
+      ],
+      [
+       "Selección",
+       "No hay tamaño universal mejor para todos los escenarios."
+      ]
+     ],
+     "format": "compare",
+     "lead": ""
+    },
+    {
+     "title": "Chorro sólido frente a chorro pulverizado",
+     "pages": "15",
+     "points": [
+      [
+       "Chorro lleno",
+       "Corriente compacta con mayor capacidad de alcance y penetración."
+      ],
+      [
+       "Chorro pulverizado",
+       "Dispersión en gotas para cubrir volumen o superficie."
+      ],
+      [
+       "Cono",
+       "Patrón volumétrico de dispersión desde la lanza."
+      ],
+      [
+       "Cortina",
+       "Patrón amplio que puede emplearse con objetivos de cobertura."
+      ],
+      [
+       "Gota y superficie",
+       "El mismo caudal puede transferir calor de forma distinta según patrón."
+      ],
+      [
+       "Riesgo de desplazamiento",
+       "Chorros inadecuados pueden extender líquidos combustibles o producir efectos no deseados."
+      ]
+     ],
+     "format": "compare",
+     "lead": ""
+    },
+    {
+     "title": "Técnicas de aplicación y ventilación",
+     "pages": "16–18",
+     "points": [
+      [
+       "Ataque directo",
+       "Aplicación de agua al combustible para enfriarlo."
+      ],
+      [
+       "Ataque indirecto",
+       "Aplicación en volumen o cerramientos para aprovechar vapor y efectos térmicos."
+      ],
+      [
+       "Enfriamiento de gases",
+       "Aplicación de pulsos o niebla según escenario y técnica expuesta."
+      ],
+      [
+       "Ventilación",
+       "Condiciona gases, propagación y comportamiento del vapor."
+      ],
+      [
+       "Objetivo térmico",
+       "Reducir calor en combustible, gases o cerramientos."
+      ],
+      [
+       "Precaución",
+       "La técnica debe corresponder a situación real y formación profesional, no solo a un esquema textual."
+      ]
+     ],
+     "format": "compare",
+     "lead": "Nota: estudiar estas técnicas no sustituye el entrenamiento operativo del servicio."
+    }
+   ]
+  },
+  {
+   "id": "equipos",
+   "title": "Equipos para el agua",
+   "sub": "Redes, hidrantes, racores, mangajes, lanzas y monitores",
+   "pages": "19–29",
+   "topics": [
+    {
+     "title": "Redes de agua e hidrantes",
+     "pages": "19–21",
+     "points": [
+      [
+       "Red de suministro",
+       "Tuberías y elementos de control que aportan agua a puntos de utilización."
+      ],
+      [
+       "Hidrante",
+       "Punto de toma que conecta mangueras de extinción con una fuente de agua."
+      ],
+      [
+       "Presión de servicio",
+       "Condición necesaria para alcanzar el caudal requerido."
+      ],
+      [
+       "Señalización",
+       "La identificación de hidrantes permite localizar conexiones y características."
+      ],
+      [
+       "Accesibilidad",
+       "La toma debe poder alcanzarse por equipos de intervención."
+      ],
+      [
+       "Abastecimiento",
+       "Puede proceder de red general, depósito y equipos de bombeo."
+      ]
+     ],
+     "format": "default",
+     "lead": ""
+    },
+    {
+     "title": "Piezas de unión y racores",
+     "pages": "22–23",
+     "points": [
+      [
+       "Racor",
+       "Elemento destinado a conectar tramos de manguera o equipo."
+      ],
+      [
+       "Adaptador",
+       "Pieza para conectar diferentes tipos de acoplamiento."
+      ],
+      [
+       "Bifurcación",
+       "Distribuye un suministro hacia dos salidas independientes."
+      ],
+      [
+       "Reducción",
+       "Conecta diámetros diferentes disminuyendo la sección nominal."
+      ],
+      [
+       "Válvula",
+       "Permite controlar el paso del agua."
+      ],
+      [
+       "Estanqueidad",
+       "Juntas en buen estado evitan fugas y pérdidas de presión."
+      ]
+     ],
+     "format": "compare",
+     "lead": ""
+    },
+    {
+     "title": "Mangueras y material flexible",
+     "pages": "24–25",
+     "points": [
+      [
+       "Manguera",
+       "Conducción flexible para transportar agua bajo presión."
+      ],
+      [
+       "Diámetro interior",
+       "Condiciona caudal posible, pérdida de carga y manejo."
+      ],
+      [
+       "Longitud",
+       "A mayor recorrido suelen aumentar pérdidas por fricción."
+      ],
+      [
+       "Presión admisible",
+       "La manguera debe soportar condiciones de servicio especificadas."
+      ],
+      [
+       "Racores de extremo",
+       "Permiten conexión con bomba, bifurcación y lanza."
+      ],
+      [
+       "Revisión",
+       "La integridad de cubierta, racores y juntas es fundamental."
+      ]
+     ],
+     "format": "compare",
+     "lead": ""
+    },
+    {
+     "title": "Lanzas: chorro, niebla y cierre",
+     "pages": "26–27",
+     "points": [
+      [
+       "Lanza",
+       "Dispositivo terminal para controlar y orientar la descarga."
+      ],
+      [
+       "Lanza triple efecto",
+       "El manual diferencia cierre, chorro lleno y pulverización o niebla."
+      ],
+      [
+       "Chorro lleno",
+       "Favorece alcance y penetración."
+      ],
+      [
+       "Niebla",
+       "Favorece pulverización y contacto térmico."
+      ],
+      [
+       "Cierre",
+       "Interrumpe la descarga."
+      ],
+      [
+       "Regulación",
+       "Modifica patrón y, según modelo, caudal o presión."
+      ]
+     ],
+     "format": "compare",
+     "lead": ""
+    },
+    {
+     "title": "Retroceso y manejo de la lanza",
+     "pages": "27–28",
+     "points": [
+      [
+       "Fuerza de reacción",
+       "La descarga de agua genera reacción sobre lanza y operador."
+      ],
+      [
+       "Caudal",
+       "Aumentar el flujo puede incrementar reacción, según velocidad."
+      ],
+      [
+       "Presión",
+       "Influye en velocidad de salida y esfuerzo."
+      ],
+      [
+       "Estabilidad",
+       "La fuerza de retroceso exige agarre y apoyo adecuados."
+      ],
+      [
+       "Dirección del chorro",
+       "Modificarla cambia fuerzas sobre operador."
+      ],
+      [
+       "Seguridad",
+       "Evitar manipulación sin dotación y formación apropiada."
+      ]
+     ],
+     "format": "default",
+     "lead": ""
+    },
+    {
+     "title": "Monitores de agua",
+     "pages": "28–29",
+     "points": [
+      [
+       "Monitor",
+       "Dispositivo de descarga de gran caudal, fijo o móvil, orientable."
+      ],
+      [
+       "Aplicación",
+       "Permite enviar agua a gran alcance o cubrir grandes focos."
+      ],
+      [
+       "Caudal",
+       "Puede alcanzar varios miles de litros por minuto, superior a muchas lanzas manuales."
+      ],
+      [
+       "Soporte",
+       "Se requiere anclaje/instalación capaz de soportar reacción."
+      ],
+      [
+       "Manejo",
+       "Se controla dirección de descarga y suministro hidráulico."
+      ],
+      [
+       "Limitación",
+       "Un caudal elevado exige fuente de agua suficiente."
+      ]
+     ],
+     "format": "compare",
+     "lead": ""
+    }
+   ]
+  }
+ ],
+ "classify": [
+  {
+   "name": "¿Qué pieza o equipo se necesita?",
+   "groups": [
+    "Bifurcación",
+    "Reducción",
+    "Racor",
+    "Lanza",
+    "Monitor"
+   ],
+   "items": [
+    [
+     "Obtener dos salidas de un mismo caudal",
+     0
+    ],
+    [
+     "Conectar conducción de 70 a otra de 45 mm",
+     1
+    ],
+    [
+     "Acoplar extremos de dos tramos flexibles",
+     2
+    ],
+    [
+     "Seleccionar chorro o niebla desde punta",
+     3
+    ],
+    [
+     "Descargar grandes caudales desde soporte orientable",
+     4
+    ]
+   ],
+   "why": "Elementos de unión y aplicación, pp. 22–29."
+  },
+  {
+   "name": "Mecanismo predominante del agua",
+   "groups": [
+    "Enfriamiento",
+    "Sofocación por vapor",
+    "Dilución"
+   ],
+   "items": [
+    [
+     "Absorber calor al evaporarse",
+     0
+    ],
+    [
+     "Reducir disponibilidad de oxígeno con vapor en recinto",
+     1
+    ],
+    [
+     "Mezclar con una sustancia miscible y rebajar concentración",
+     2
+    ],
+    [
+     "Disminuir temperatura de cerramiento",
+     0
+    ]
+   ],
+   "why": "Capacidad extintora del agua, pp. 10–13."
+  }
+ ],
+ "order": [
+  {
+   "name": "Conexión hidráulica de un ataque con agua",
+   "prompt": "Ordena los componentes del recorrido del agua en un sistema de extinción alimentado por una bomba.",
+   "steps": [
+    "La fuente o hidrante entrega el agua al circuito",
+    "La bomba aporta la presión de impulsión necesaria",
+    "Las mangueras conducen el agua hasta la zona de aplicación",
+    "La lanza configura y dirige el chorro hacia el objetivo"
+   ],
+   "why": "Redes y equipos de agua de pp. 19–27. Es una cadena funcional, no un procedimiento táctico de ataque."
+  }
+ ],
+ "judge": [
+  [
+   "La vaporización del agua contribuye de manera importante al enfriamiento.",
+   true,
+   "Calor latente de vaporización, p. 9–10."
+  ],
+  [
+   "El agua extingue exclusivamente por sofocación y no puede enfriar combustible.",
+   false,
+   "El mecanismo principal es enfriamiento (pp. 10–11)."
+  ],
+  [
+   "La forma y tamaño de las gotas pueden modificar eficacia y alcance del agua.",
+   true,
+   "Tamaño de gota y chorro, pp. 14–15."
+  ],
+  [
+   "Una reducción se utiliza para crear dos derivaciones simultáneas de una única tubería.",
+   false,
+   "Esa función es de una bifurcación; la reducción cambia diámetro (pp. 22–23)."
+  ],
+  [
+   "La lanza de triple efecto puede cerrar además de generar chorro lleno o niebla.",
+   true,
+   "Tres posiciones funcionales descritas en p. 26."
+  ],
+  [
+   "El monitor es necesariamente una lanza manual de caudal muy bajo.",
+   false,
+   "Es equipo de gran caudal orientable (p. 28)."
+  ],
+  [
+   "Los racores y las juntas no influyen en la estanqueidad de una línea.",
+   false,
+   "Los acoplamientos deben mantener estanqueidad (pp. 22–24)."
+  ],
+  [
+   "El vapor de agua puede desplazar aire en determinadas condiciones de recinto.",
+   true,
+   "Sofocación complementaria, p. 11."
+  ],
+  [
+   "Una gota más fina conserva siempre mayor alcance que una grande, con independencia del viento.",
+   false,
+   "El tamaño y corrientes influyen en alcance (p. 14)."
+  ],
+  [
+   "Las mangueras largas pueden ocasionar mayores pérdidas de carga por rozamiento.",
+   true,
+   "Material de mangas y flujo en línea (pp. 24–25)."
+  ]
+ ],
+ "values": [
+  {
+   "name": "Molécula, fases y equipos",
+   "why": "Propiedades del agua y descripción de lanzas del PDF, pp. 7–29.",
+   "items": [
+    [
+     "¿Cuántos átomos de hidrógeno tiene cada molécula de H₂O?",
+     [
+      "1",
+      "2",
+      "3",
+      "4"
+     ],
+     1,
+     "Dos átomos de H junto a uno de O (p. 7)."
+    ],
+    [
+     "¿Cuántas posiciones funcionales cita el documento para lanza de triple efecto?",
+     [
+      "2",
+      "3",
+      "4",
+      "5"
+     ],
+     1,
+     "Chorro, niebla/pulverización y cierre (p. 26)."
+    ],
+    [
+     "¿Cuántas vías principales de transferencia de calor se estudian en la extinción por agua?",
+     [
+      "2",
+      "3",
+      "4",
+      "5"
+     ],
+     1,
+     "Conducción, convección y radiación como mecanismos de transferencia; el agua absorbe energía por calentamiento y vaporización."
+    ]
+   ]
+  }
+ ]
+};
