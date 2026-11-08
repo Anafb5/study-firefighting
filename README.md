@@ -2,25 +2,39 @@
 
 Web estática, sin servidor ni registro, preparada para estudiar varios temas con una página independiente para cada uno.
 
-## Estructura
+## Biblioteca y progreso
 
-- **Biblioteca de temas**: `/` (archivo `index.html`).
-- **Tema 11 — Prendas y equipos de protección personal**: `/temas/11/`.
-- **Tema 9 — Instalaciones fijas**: `/temas/9/`, completo y disponible en Técnica.
-- **Tema 10 — Vehículos contra incendios**: `/temas/10/`, completo y disponible en el área Técnica.
-- Los futuros temas pueden crearse como `/temas/NUMERO/index.html` y añadirse a `catalog.js`.
+- **Portada y dashboard:** `/`, con avance global, progreso por área, tarjetas dominadas, temas completos, errores por revisar y resultados de simulacros.
+- **Técnica:** once temas publicados, cada uno con su propia página `/temas/1/` … `/temas/11/`.
+- **Jurídica y Psicotécnicos:** áreas creadas, sin temas publicados de momento.
+- **Ahora y a continuación:** muestra temas en curso y, si corresponde, el siguiente publicado todavía sin empezar.
+- **Archivo:** los temas cuyo temario se marcó íntegramente como estudiado pasan a un acordeón de **terminados**; se conservan sus datos y siempre es posible repasarlos.
+- **Próximos:** los temas restantes se mantienen en otro acordeón desplegable para evitar una portada interminable.
+- **Copias de seguridad:** ventana independiente, accesible desde el encabezado, sin botones duplicados ocupando menús y páginas.
 
-## Organización por áreas de oposición
+### Temas técnicos
 
-La portada organiza el estudio en **tres grandes apartados**:
+| Nº | Materia | Apartados | Tarjetas | Test |
+| ---: | --- | ---: | ---: | ---: |
+| 1 | Magnitudes físicas | 24 | 143 | 96 |
+| 2 | Mecánica de fluidos e hidráulica | 21 | 126 | 84 |
+| 3 | Electricidad | 23 | 138 | 92 |
+| 4 | Naturaleza del fuego | 23 | 138 | 92 |
+| 5 | Agentes extintores | 21 | 126 | 84 |
+| 6 | El agua | 18 | 108 | 72 |
+| 7 | Espumas extintoras | 12 | 66 | 24 |
+| 8 | Extintores | 16 | 99 | 41 |
+| 9 | Instalaciones fijas | 33 | 159 | 137 |
+| 10 | Vehículos contra incendios | 29 | 88 | 135 |
+| 11 | Prendas y EPI | 19 | 63 | 89 |
 
-- **Técnica:** reúne los temas técnicos. Contiene los Temas 9, 10 y 11 publicados.
-- **Jurídica:** sección preparada para temarios de legislación y normativa; aún sin material publicado.
-- **Psicotécnicos:** espacio preparado para baterías de ejercicios de aptitudes y razonamiento; aún sin material publicado.
+**Total: 239 apartados de estudio, 1.254 tarjetas y 946 preguntas tipo test.**
 
-La selección se realiza en la portada mediante tarjetas y queda reflejada en el fragmento de la URL (`#tecnica`, `#juridica`, `#psicotecnicos`). `catalog.js` mantiene la lista de áreas y metadatos de los temas. **No marques un tema como publicado hasta que exista su página**.
+Los temas 1–6 utilizan `reader-theme-builder.js` a partir de datos **elaborados específicamente para los PDFs facilitados**. El constructor crea tarjetas, preguntas razonadas y correspondencias para cada apartado, conservando las fórmulas, esquemas y páginas referenciadas. La edición de contenido es un compendio de estudio **no una reproducción íntegra del texto** del PDF.
 
-Al incorporar futuros temas, usa un identificador estable y una clave de progreso única por tema: el Tema 11 existente usa `study-firefighting-t11-v1` y sus copias JSON deben seguir funcionando. Si varios bloques tienen temas con el mismo número, evita colisiones de progreso y amplía de forma compatible la lógica de exportación en `progress.js`.
+Los Temas 7–11 conservan las presentaciones particulares y sus bancos originales. Ninguna página depende de una API externa para funcionar.
+
+La navegación se realiza con `#tecnica`, `#juridica`, `#psicotecnicos`. Cada tema mantiene un identificador y una clave independiente de almacenamiento `study-firefighting-tN-v1`. La reanudación guarda la sección/página en que se estaba. Los archivos JSON exportados desde cualquier tema incluyen el progreso de todos los temas existentes en el dispositivo.
 
 ## Tema 9 — Instalaciones fijas
 
@@ -59,7 +73,7 @@ El contenido se basa en el PDF del Tema 11 facilitado por la usuaria (44 página
 
 ### Copias de seguridad y cambio de dispositivo
 
-La portada y los Temas 9, 10 y 11 ofrecen **Exportar progreso** e **Importar progreso**.
+La portada y los once temas técnicos permiten abrir una **ventana independiente** con las acciones **Exportar progreso** e **Importar progreso**.
 
 - Exportar descarga un archivo `.json` con apartados marcados, tarjetas dominadas, preguntas falladas e historial de tests de cada tema.
 - Guardar ese archivo fuera del navegador (ordenador, disco en la nube, etc.) permite restaurarlo si se pierde la caché o cambiar a otro dispositivo.
@@ -69,7 +83,7 @@ La portada y los Temas 9, 10 y 11 ofrecen **Exportar progreso** e **Importar pro
 
 ## Calidad pedagógica de los ejercicios
 
-El repaso de los Temas 9–11 se ha revisado para evitar que el enunciado revele la solución:
+El repaso de los Temas 9–11 se ha revisado de forma específica para evitar que el enunciado revele la solución. Los Temas 1–8 también incluyen ejercicios basados en sus fuentes:
 
 - **Relacionar:** correspondencias de normas, elementos, cifras y funciones.
 - **Clasificar:** se ocultan las denominaciones que antes desvelaban la categoría (por ejemplo, se pregunta por `BUL`, no «bomba urbana ligera»).
@@ -77,7 +91,7 @@ El repaso de los Temas 9–11 se ha revisado para evitar que el enunciado revele
 - **Cifras:** nueva modalidad de respuesta libre numérica. Admite `2000`/`2.000` y `4,5`/`4.5`. Solo muestra cuatro opciones si el estudiante solicita ayuda; distingue aciertos sin pistas, con pistas y errores.
 - **Detectar errores:** se mezclan las afirmaciones y se muestra un resultado final, además de justificación por respuesta.
 
-Ejecuta `node scripts/validate-review.cjs` para verificar estructuralmente los bancos, y consulta `docs/CRITERIOS_EJERCICIOS.md` antes de añadir ejercicios de otros temas. También existe una comprobación automática de GitHub Actions. El progreso principal no cambia; las sesiones temporales de repaso usan un esquema `version: 3` para no restaurar respuestas a ejercicios antiguos.
+Ejecuta `node scripts/validate-review.cjs` para verificar los bancos originales y `node scripts/validate-all-themes.cjs` para comprobar contenido y recursos de los **once temas**, y consulta `docs/CRITERIOS_EJERCICIOS.md` antes de añadir ejercicios de otros temas. También existe una comprobación automática de GitHub Actions. El progreso principal no cambia; las sesiones temporales de repaso usan un esquema `version: 3` para no restaurar respuestas a ejercicios antiguos.
 
 ## Ejecución
 
@@ -88,18 +102,15 @@ python -m http.server 8000
 ```
 
 Portada: http://localhost:8000/  
-Tema 9: http://localhost:8000/temas/9/  
-Tema 10: http://localhost:8000/temas/10/  
-Tema 11: http://localhost:8000/temas/11/
+Cada tema: http://localhost:8000/temas/N/ (N = 1 … 11)
 
 ## Publicación
 
-GitHub Pages desde la rama `main` mediante `.github/workflows/deploy.yml`.
+La configuración actual de GitHub Pages debe mantener como origen **Deploy from a branch → content/nuevos-temas → /(root)**, hasta integrar los cambios con la rama Android y definir publicación estable desde `main`. Los archivos también están separados del trabajo de Codex.
 
 - Biblioteca: https://anafb5.github.io/study-firefighting/
-- Tema 9: https://anafb5.github.io/study-firefighting/temas/9/
-- Tema 10: https://anafb5.github.io/study-firefighting/temas/10/
-- Tema 11: https://anafb5.github.io/study-firefighting/temas/11/
+- Tema 1: https://anafb5.github.io/study-firefighting/temas/1/
+- Temas 2–11: sustituir el último número de la URL por el del tema.
 
 ## Nota de rigor
 
@@ -107,4 +118,6 @@ El temario contiene discrepancias internas en las categorías NRBQ (p. 15 frente
 
 ### Integración pendiente con la rama Android de Codex
 
-La rama `content/nuevos-temas` contiene los Temas 9 y 10 sin tocar archivos nativos de Capacitor. Cuando se integre con la rama de APK, el build debe incorporar **todo** `temas/**` (no solo `temas/11/`), incluidos los Temas 9 y 10 y conservar rutas relativas de recursos web. Se generalizaron de forma compatible las claves de `app.js`, `resume.js` y `review.js` mediante `window.STUDY_CONFIG` (Tema 11 conserva claves antiguas por defecto; Tema 10 usa claves propias). Validar ambos temas en Android tras la integración.
+`content/nuevos-temas` mantiene la biblioteca completa de los once temas sin modificar los archivos nativos de Capacitor que prepara Codex. Al integrar ramas deben copiarse los recursos web **completos**: `temas/**`, `reader-theme-builder.js`, `reader-questions.js`, `reader-review-data.js`, `reader-layouts.js`, `reader.css`, `review.js`, `review.css`, `app.js`, `resume.js`, `progress.js`, `catalog.js`, `catalog.css` e `index.html`.
+
+Tras la integración, validar en Android la navegación desde la biblioteca, los once temas sin conexión, los tests, el progreso por tema y las copias JSON. **No se ha generado ni probado una nueva APK en esta rama.**
