@@ -193,5 +193,66 @@ function handleClick(event){
   if(btn.dataset.exam==="finish"){finishExam();return;}
  }
 }
+
+/* Puente de restauración de sesión: preserva el estado transitorio sin tocar el progreso. */
+window.FireStudySession={
+ snapshot(){
+  return {
+   cards:{order:cardOrder.map(x=>x.i),index:cardIndex,flipped:cardFlipped},
+   match:{set:matchSet,leftOrder:matchPairs.map(x=>x.id),rightOrder:(matchPairs._right||[]).map(x=>x.id),done:matchDone.slice(),left:matchLeft},
+   exam:exam?{ids:exam.items.map(q=>q.id),pos:exam.pos,answers:{...exam.answers},checked:{...exam.checked},mode:exam.mode,start:exam.start}:null
+  };
+ },
+ restore(snapshot){
+  if(!snapshot||typeof snapshot!=="object")return;
+  if(snapshot.cards&&Array.isArray(snapshot.cards.order)){
+   const available=new Set(getCards().map(x=>x.i));
+   cardOrder=snapshot.cards.order.filter(x=>Number.isInteger(x)&&available.has(x)).map(i=>({i,c:CARDS[i]}));
+   cardIndex=Math.max(0,Math.min(Number(snapshot.cards.index)||0,Math.max(cardOrder.length-1,0)));
+   cardFlipped=!!snapshot.cards.flipped;
+   if(cardOrder.length)renderCards(false);
+  }
+  if(snapshot.match){
+   const m=snapshot.match,selected=Number(m.set);
+   if(Number.isInteger(selected)&&MATCH_SETS[selected]){
+    matchSet=selected;$("match-filter").value=String(selected);
+    const base=MATCH_SETS[selected].pairs.map((p,i)=>({id:i,left:p[0],right:p[1]}));
+    const order=Array.isArray(m.leftOrder)?m.leftOrder:base.map(x=>x.id);
+    const seen=new Set();
+    matchPairs=order.map(id=>base.find(x=>x.id===id)).filter(p=>p&&!seen.has(p.id)&&seen.add(p.id));
+    for(const p of base)if(!seen.has(p.id))matchPairs.push(p);
+    const right=Array.isArray(m.rightOrder)?m.rightOrder:base.map(x=>x.id);
+    matchPairs._right=right.map(id=>base.find(x=>x.id===id)).filter(Boolean);
+    if(matchPairs._right.length!==base.length)matchPairs._right=base.slice().reverse();
+    matchDone=Array.isArray(m.done)?m.done.filter(id=>base.some(p=>p.id===id)):[];
+    matchLeft=base.some(p=>p.id===m.left&&!matchDone.includes(m.left))?m.left:null;
+    renderMatch();
+   }
+  }
+  if(snapshot.exam&&Array.isArray(snapshot.exam.ids)){
+   const x=snapshot.exam;
+   const byId=new Map(QUESTIONS.map(q=>[q.id,q]));
+   const items=x.ids.map(id=>byId.get(id)).filter(Boolean);
+   if(items.length){
+    const answers={};const checked={};
+    for(const q of items){
+     const a=x.answers?.[q.id];
+     if(Number.isInteger(a)&&a>=0&&a<4)answers[q.id]=a;
+     if(x.checked?.[q.id]===true)checked[q.id]=true;
+    }
+    exam={
+      items,pos:Math.max(0,Math.min(Number(x.pos)||0,items.length-1)),
+      answers,checked,mode:x.mode==="practice"?"practice":"exam",
+      start:Number.isFinite(x.start)?x.start:Date.now()
+    };
+    $("test-setup").classList.add("hidden");
+    $("test-results").classList.add("hidden");
+    $("test-session").classList.remove("hidden");
+    renderQuestion();
+   }
+  }
+ }
+};
+
 document.addEventListener("DOMContentLoaded",init);
 })();
