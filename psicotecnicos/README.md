@@ -21,15 +21,19 @@ Los PDF de introducción, enlaces y solucionarios se describen en **Material com
 - Página de tema: `/psicotecnicos/temas/<identificador>/`.
 - **Contenido**: síntesis didáctica por apartado, método y ejemplo con referencias a las secciones/páginas del PDF.
 - **Entrenamiento**: selección de subtipo y número de preguntas, corrección inmediata; demostración gráfica *solo después de responder* y únicamente si existe una visualización significativa.
-- **Examen**: 45 s por respuesta, sin pistas, correcciones ni demostrador hasta terminar. El resultado final lista respuesta dada/correcta. Los ejercicios de memoria permiten 25 s de observación antes de empezar su pregunta.
-- Los ejercicios son **originales, generados mediante reglas y verificados con pruebas**. No son copias de las figuras del manual ni un cuestionario oficial.
+- **Examen**: pruebas **originales del PDF** (A–D para siete temas y 55 preguntas de diagnóstico repartidas en cinco bloques para razonamiento gráfico), cronometradas, sin pistas ni demostraciones. Se presenta el PDF original, con sus figuras y opciones intactas, junto a una hoja de respuestas; las claves se extraen de las tablas de soluciones del material facilitado.
+- **Carga privada del documento**: el usuario selecciona el PDF de su ZIP una vez por tema. El fichero queda en IndexedDB del dispositivo cuando el navegador lo permite; no se sube a GitHub ni a ningún servidor. El lector PDF integrado puede depender del navegador; se proporciona un enlace para abrir la misma página en el visor del sistema.
+- **Memoria en examen**: 2 minutos para observar el listado original y después acceso solo a las páginas de preguntas. Las preguntas de la primera página se transcriben en la hoja de examen para no volver a mostrar el listado.
+- **Anomalías del solucionario**: no se puntúa la pregunta 6 de espacial A (clave ausente) ni la 4 de mecánica C (clave E pese a respuestas A–D). Se omiten del cuestionario las preguntas 10 de mecánica D y perceptiva D porque sus páginas comparten espacio con el solucionario impreso.
+- Los ejercicios de **entrenamiento** siguen siendo variantes didácticas generadas mediante reglas: no se confunden con los originales del manual. El material aportado no equivale a pruebas oficiales de una convocatoria.
 - El progreso de lectura y los resultados de respuestas se guardan en `localStorage` bajo `fire-study-psico-v2`. Esta clave **no se incluye todavía** en las copias JSON de la parte técnica.
 
 ## Implementación
 
 - `topics.mjs`: contenido y referencias académicas de los ocho temas.
 - `generator.mjs`: generadores puros sin DOM; respuestas y distracciones validadas.
-- `app.mjs`: biblioteca, navegación y los estados de entrenamiento/examen.
+- `app.mjs`: biblioteca, navegación y estados de contenido y entrenamiento.
+- `official-exams.mjs` y `official-ui.mjs`: páginas, claves verificadas, visor local y corrección de exámenes originales.
 - `styles.css`: estilo responsive y visualizaciones locales, sin dependencias externas.
 - `temas/*/index.html`: páginas estáticas de tema, compartiendo el mismo motor.
 
@@ -42,6 +46,6 @@ npm ci
 npm test
 ```
 
-Las pruebas `tests/psicotecnicos.test.mjs` verifican todos los subtipos de ejercicios de forma repetida, sus invariantes matemáticos, las ocho rutas, la navegación y la regresión de «duplicar demostración». La workflow `psicotecnicos-ci.yml` ejecuta las pruebas en la rama y en la Pull Request. La compilación `build:web` incluye los recursos para la APK offline.
+Las pruebas `tests/psicotecnicos.test.mjs` y `tests/official-exams.test.mjs` verifican las preguntas originales, claves, anomalías y todos los subtipos de ejercicios de forma repetida, sus invariantes matemáticos, las ocho rutas, la navegación y la regresión de «duplicar demostración». La workflow `psicotecnicos-ci.yml` ejecuta las pruebas y una navegación real con Chromium en la rama y en la Pull Request. La compilación `build:web` incluye los recursos para la APK offline.
 
 **Pendiente antes de fusionar:** revisión visual en navegador y móvil real; ampliar ejemplos con modelos geométricos reconstruidos manualmente a partir de las láminas del ZIP (no se han digitalizado esas láminas).
