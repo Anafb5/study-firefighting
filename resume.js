@@ -3,7 +3,7 @@
  * plazo sigue almacenado por app.js en localStorage. */
 (function () {
 "use strict";
-const KEY="study-firefighting-resume-v1";
+const KEY=window.STUDY_CONFIG?.resumeKey||"study-firefighting-resume-v1";
 const SCREENS=new Set(["inicio","temario","tarjetas","relacionar","test"]);
 const $=id=>document.getElementById(id);
 let ready=false,restoring=false,queued=false;
