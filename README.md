@@ -27,16 +27,16 @@ Web estática, sin servidor ni registro, preparada para estudiar varios temas co
 | 9 | Instalaciones fijas | 33 | 159 | 137 |
 | 10 | Vehículos contra incendios | 29 | 88 | 135 |
 | 11 | Prendas y EPI | 19 | 63 | 89 |
-| 12 | Materiales de rescate y salvamento | 22 | 109 | 92 |
-| 13 | Transmisiones | 22 | 115 | 92 |
-| 14 | Construcción e incendio | 21 | 109 | 87 |
-| 15 | Señalización | 20 | 100 | 83 |
-| 16 | Actividades del servicio | 19 | 99 | 79 |
+| 12 | Materiales de rescate y salvamento | 23 | 116 | 96 |
+| 13 | Transmisiones | 24 | 160 | 104 |
+| 14 | Construcción e incendio | 21 | 110 | 87 |
+| 15 | Señalización | 22 | 113 | 91 |
+| 16 | Actividades del servicio | 20 | 107 | 83 |
 | 17 | Tácticas de combate contra el fuego | 19 | 97 | 79 |
 | 18 | Incendios forestales | 21 | 110 | 88 |
-| 19 | Elementos estructurales y constructivos | 22 | 112 | 91 |
+| 19 | Elementos estructurales y constructivos | 22 | 113 | 91 |
 
-**Total: 405 apartados de estudio, 2.105 tarjetas y 1.637 preguntas tipo test.**
+**Total: 411 apartados de estudio, 2.180 tarjetas y 1.665 preguntas tipo test.**
 
 Los Temas 1–6 y 12–19 utilizan `reader-theme-builder.js` a partir de datos **elaborados específicamente para los PDFs facilitados**. El constructor crea tarjetas, preguntas razonadas y correspondencias para cada apartado, conservando las fórmulas, esquemas y páginas referenciadas. La edición de contenido es un compendio de estudio **no una reproducción íntegra del texto** del PDF.
 
@@ -144,3 +144,9 @@ El temario contiene discrepancias internas en las categorías NRBQ (p. 15 frente
 `content/nuevos-temas` mantiene la biblioteca completa de los diecinueve temas sin modificar los archivos nativos de Capacitor que prepara Codex. Al integrar ramas deben copiarse los recursos web **completos**: `temas/**`, `reader-theme-builder.js`, `reader-questions.js`, `reader-review-data.js`, `reader-layouts.js`, `reader.css`, `review.js`, `review.css`, `app.js`, `resume.js`, `progress.js`, `catalog.js`, `catalog.css` e `index.html`.
 
 Tras la integración, validar en Android la navegación desde la biblioteca, los diecinueve temas sin conexión, los tests, el progreso por tema y las copias JSON. **No se ha generado ni probado una nueva APK en esta rama.**
+
+## Auditoría de fidelidad al PDF (8 noviembre 2026)
+
+Se ha realizado una revisión sistemática de los **19 PDF disponibles**. Se ha verificado estructuralmente cada apartado y alternativa, revisado la correspondencia temática y las páginas de referencia, y comprobado manualmente cifras, tablas y fórmulas de los apartados de mayor riesgo de error.
+
+**Importante:** consultar `docs/AUDITORIA_PDFS_1_19.md` para hallazgos concretos, correcciones realizadas y límites de la comprobación. Las normas se citan **según la edición del manual**; no se han verificado como vigentes en noviembre de 2026. Una revisión automática de coincidencias terminológicas no demuestra, por sí sola, la exactitud factual de todas las afirmaciones ni la calidad pedagógica de todos los distractores.
