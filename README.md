@@ -28,7 +28,7 @@ Fuente: PDF facilitado *9. Instalaciones fijas*, Volumen IV, 1ª parte técnica 
 
 - **33 apartados**, en siete bloques: detección y alarma; hidrantes; BIE; columna seca; bombas de presión; extinción fija; abastecimiento.
 - **159 tarjetas** y **137 preguntas de tipo test** con cuatro opciones, justificación y referencias a páginas impresas.
-- **12 conjuntos de asociación**, 6 ejercicios de clasificación, 5 de ordenación y 30 afirmaciones para detectar errores.
+- **12 conjuntos de asociación**, 6 ejercicios de clasificación, **3 secuencias fundamentadas**, **31 preguntas de cifras sin pistas** y 30 afirmaciones para detectar errores.
 - Material variado: diagramas de flujo (detección, rociadores, espuma, abastecimiento), dibujo de columna seca, comparativas de BIE, hidrantes, detectores y bombas; tablas normativas, listas y cifras.
 - Progreso independiente con clave `study-firefighting-t9-v1`; sesiones y ejercicios también aislados; importación/exportación JSON de los tres temas compatible.
 - **Especial rigor normativo:** todas las cifras de umbrales, distancias, autonomías, periodicidades y UNE se atribuyen al **PDF aportado** y no deben confundirse con la legislación vigente. El tema incluye requisitos para establecimientos industriales que pueden estar desactualizados.
@@ -39,7 +39,7 @@ Fuente: PDF facilitado *10. Vehículos contra incendios*, Volumen IV, primera pa
 
 - 29 apartados detallados, organizados en clasificación, nomenclatura, componentes, vehículos y circulación.
 - 88 tarjetas y 135 preguntas tipo test, con corrección razonada y páginas del documento.
-- 12 conjuntos para relacionar, 5 ejercicios de clasificación, 5 de ordenación y 22 afirmaciones para detectar errores.
+- 12 conjuntos para relacionar, 5 ejercicios de clasificación, **2 secuencias fundamentadas**, **23 preguntas de cifras sin pistas** y 22 afirmaciones para detectar errores.
 - Esquema original de vehículo, diagrama hidráulico, comparativas detalladas por modelo, tablas técnicas, listas de dotación y medidas, fichas y checklists de seguridad.
 - Navegación, tarjetas, simulacros, progreso `study-firefighting-t10-v1`, reanudación de sesión y exportación JSON compatibles con el Tema 11.
 - El manual incluye anomalías de origen expresamente señaladas: presión BRL de p. 15 frente a p. 23; FAV/FAP para apeos (pp. 11 y 35); clasificación BNP p. 29, y posibles modificaciones normativas en circulación. No deben usarse como hechos legales vigentes sin comprobación.
@@ -52,7 +52,7 @@ El contenido se basa en el PDF del Tema 11 facilitado por la usuaria (44 página
 - Presentación **editorial y variada**: tablas, listas numeradas, comparaciones, diagramas técnicos y esquemas.
 - **Exploradores interactivos solo donde son útiles**: partes del casco y ocho familias de protección; la explicación aparece a la derecha, sin repetición posterior.
 - 63 tarjetas de memoria.
-- **Ejercicios de repaso**: 8 conjuntos para relacionar conceptos; 5 para clasificar; 5 para ordenar secuencias; 16 para detectar afirmaciones incorrectas.
+- **Ejercicios de repaso**: 8 conjuntos para relacionar conceptos; 5 para clasificar; **2 secuencias fundamentadas**; **19 preguntas de cifras sin pistas**; 16 para detectar afirmaciones incorrectas.
 - 89 preguntas tipo test, con simulacro al final o entrenamiento con corrección inmediata y referencias del PDF.
 - Progreso, preguntas falladas e historial guardados en `localStorage`.
 - Reanudación de página, apartado abierto, posición de lectura y ejercicio en curso al recargar la pestaña mediante `sessionStorage`.
@@ -66,6 +66,18 @@ La portada y los Temas 9, 10 y 11 ofrecen **Exportar progreso** e **Importar pro
 - Importar un archivo compatible restaura esos datos; **reemplaza** los datos locales de los temas contenidos en la copia, tras pedir confirmación.
 - El archivo no incluye preguntas de un examen incompleto, que siguen siendo temporales de la pestaña.
 - Los ficheros no se suben a un servidor: el navegador los genera y lee localmente.
+
+## Calidad pedagógica de los ejercicios
+
+El repaso de los Temas 9–11 se ha revisado para evitar que el enunciado revele la solución:
+
+- **Relacionar:** correspondencias de normas, elementos, cifras y funciones.
+- **Clasificar:** se ocultan las denominaciones que antes desvelaban la categoría (por ejemplo, se pregunta por `BUL`, no «bomba urbana ligera»).
+- **Ordenar:** únicamente secuencias funcionales o procedimientos; se han retirado escalas con cifras y niveles visibles.
+- **Cifras:** nueva modalidad de respuesta libre numérica. Admite `2000`/`2.000` y `4,5`/`4.5`. Solo muestra cuatro opciones si el estudiante solicita ayuda; distingue aciertos sin pistas, con pistas y errores.
+- **Detectar errores:** se mezclan las afirmaciones y se muestra un resultado final, además de justificación por respuesta.
+
+Ejecuta `node scripts/validate-review.cjs` para verificar estructuralmente los bancos, y consulta `docs/CRITERIOS_EJERCICIOS.md` antes de añadir ejercicios de otros temas. También existe una comprobación automática de GitHub Actions. El progreso principal no cambia; las sesiones temporales de repaso usan un esquema `version: 3` para no restaurar respuestas a ejercicios antiguos.
 
 ## Ejecución
 
