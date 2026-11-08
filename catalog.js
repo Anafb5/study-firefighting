@@ -9,7 +9,7 @@ const titles=[
 "Magnitudes físicas","Hidráulica y mecánica de fluidos","La electricidad","Naturaleza del fuego",
 "Agentes extintores y mecanismos de extinción","El agua como agente extintor","Espumas extintoras",
 "Extintores","Instalaciones fijas","Vehículos contra incendios","Prendas y equipos de protección personal"];
-const known={7:{topics:12,cards:66,questions:24},8:{topics:16,cards:99,questions:41},9:{topics:33,cards:159,questions:137},10:{topics:29,cards:88,questions:135},11:{topics:19,cards:63,questions:89}};
+const known={1:{topics:24,cards:143,questions:96},2:{topics:21,cards:126,questions:84},3:{topics:23,cards:138,questions:92},4:{topics:23,cards:138,questions:92},5:{topics:21,cards:126,questions:84},6:{topics:18,cards:108,questions:72},7:{topics:12,cards:66,questions:24},8:{topics:16,cards:99,questions:41},9:{topics:33,cards:159,questions:137},10:{topics:29,cards:88,questions:135},11:{topics:19,cards:63,questions:89}};
 const chapters=titles.map((title,i)=>{const id=i+1,k=known[id];return {id,title,area:"tecnica",published:!!k,href:k?"./temas/"+id+"/":null,...k};});
 let current="tecnica";const expanded={};
 function progress(t){
