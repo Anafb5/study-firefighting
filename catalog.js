@@ -1,124 +1,92 @@
-/* Índice de la oposición: áreas independientes y temas publicados.
-   Los temas en preparación nunca se muestran como disponibles. */
 (function(){
 "use strict";
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const areas=[
- {id:"tecnica",number:"01",name:"Técnica",title:"Temario técnico",
-  eyebrow:"ÁREA 01 · TÉCNICA",description:"Equipos, materiales, intervención y procedimientos operativos.",
-  intro:"Temas, esquemas, tablas, tarjetas y ejercicios sobre la parte técnica.",
-  icon:"<svg viewBox='0 0 24 24' aria-hidden='true'><path d='M12 2 4 6v6c0 5 3.4 8.1 8 10 4.6-1.9 8-5 8-10V6l-8-4Z'/><path d='m9 12 2 2 4-4'/></svg>"},
- {id:"juridica",number:"02",name:"Jurídica",title:"Temario jurídico",
-  eyebrow:"ÁREA 02 · JURÍDICA",description:"Legislación, normativa y organización administrativa.",
-  intro:"Aquí incorporaremos los temas jurídicos y sus ejercicios cuando dispongamos del material correspondiente.",
-  icon:"<svg viewBox='0 0 24 24' aria-hidden='true'><path d='M3 21h18M6 18h12M12 3l9 6H3l9-6Zm-6 6v9m4-9v9m4-9v9m4-9v9'/></svg>"},
- {id:"psicotecnicos",number:"03",name:"Psicotécnicos",title:"Psicotécnicos",
-  eyebrow:"ÁREA 03 · PSICOTÉCNICOS",description:"Práctica de aptitudes y razonamiento mediante ejercicios.",
-  intro:"Este espacio tendrá pruebas y ejercicios psicotécnicos organizados por tipo de habilidad.",
-  icon:"<svg viewBox='0 0 24 24' aria-hidden='true'><path d='M12 6.5a4.5 4.5 0 0 0-8.4 2.2A4.7 4.7 0 0 0 5 17.4M12 6.5a4.5 4.5 0 0 1 8.4 2.2 4.7 4.7 0 0 1-1.4 8.7M12 4v16M5 14a3.5 3.5 0 0 0 4 4m10-4a3.5 3.5 0 0 1-4 4M9 8.5c.8.9 1.8 1.3 3 1.3s2.2-.4 3-1.3'/></svg>"}
-];
-const chapters=[
- {id:11,area:"tecnica",title:"Prendas y equipos de protección personal",
-  description:"Categorías de EPI, prendas de intervención, protección respiratoria, NRBQ y RD 773/1997.",
-  published:true,href:"./temas/11/",topics:19,cards:63,questions:89,
-  features:["19 apartados","63 tarjetas","89 preguntas","Repaso interactivo"]},
- {id:10,area:"tecnica",title:"Vehículos contra incendios",
-  description:"Clasificación, siglas, componentes, bombas hidráulicas, vehículos urbanos, rurales, forestales, nodrizas, salvamento y circulación.",
-  published:true,href:"./temas/10/",topics:29,cards:88,questions:135,features:["29 apartados","88 tarjetas","135 preguntas","Repaso interactivo"]},
- {id:9,area:"tecnica",title:"Instalaciones fijas",
-  description:"Detección y alarma, hidrantes, BIE, columna seca, bombas de presión, extinción automática y redes de abastecimiento.",
-  published:true,href:"./temas/9/",topics:33,cards:159,questions:137,
-  features:["33 apartados","159 tarjetas","137 preguntas","Repaso interactivo"]}
-];
-const esc=v=>String(v??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-let selectedArea="tecnica";
-function getProgress(id){
- try{
-  const x=JSON.parse(localStorage.getItem("study-firefighting-t"+id+"-v1")||"null");
-  return x&&typeof x==="object"&&!Array.isArray(x)?x:{};
- }catch(e){return{};}
+{id:"tecnica",number:"01",name:"Técnica",description:"Materiales, intervenciones y protección contra incendios.",icon:"▤"},
+{id:"juridica",number:"02",name:"Jurídica",description:"Normativa, administración y legislación.",icon:"§"},
+{id:"psicotecnicos",number:"03",name:"Psicotécnicos",description:"Lógica, razonamiento y aptitudes.",icon:"◇"}];
+const titles=[
+"Magnitudes físicas","Hidráulica y mecánica de fluidos","La electricidad","Naturaleza del fuego",
+"Agentes extintores y mecanismos de extinción","El agua como agente extintor","Espumas extintoras",
+"Extintores","Instalaciones fijas","Vehículos contra incendios","Prendas y equipos de protección personal"];
+const known={9:{topics:33,cards:159,questions:137},10:{topics:29,cards:88,questions:135},11:{topics:19,cards:63,questions:89}};
+const chapters=titles.map((title,i)=>{const id=i+1,k=known[id];return {id,title,area:"tecnica",published:!!k,href:k?"./temas/"+id+"/":null,...k};});
+let current="tecnica";const expanded={};
+function progress(t){
+ const k="study-firefighting-t"+t.id+"-v1";let p={};
+ try{p=JSON.parse(localStorage.getItem(k)||"null")||{};}catch(e){}
+ const read=t.published?Math.min(t.topics,new Set(Array.isArray(p.read)?p.read:[]).size):0;
+ const mastered=t.published?Math.min(t.cards,new Set(Array.isArray(p.mastered)?p.mastered:[]).size):0;
+ const wrong=t.published?new Set(Array.isArray(p.wrong)?p.wrong:[]).size:0;
+ const exams=Array.isArray(p.history)?p.history:[];
+ const started=read>0||mastered>0||wrong>0||exams.length>0;
+ const complete=!!t.published&&read===t.topics;
+ return {...t,read,mastered,wrong,exams,started,complete,percent:t.published?Math.round(read/t.topics*100):0};
 }
-function progressCount(items){
- return items.reduce((sum,x)=>sum+(Array.isArray(getProgress(x.id).read)?getProgress(x.id).read.length:0),0);
-}
-function renderStats(){
- const published=chapters.filter(t=>t.published);
- let completed=0,total=0,mastered=0,cards=0,wrong=0,history=[];
- published.forEach(t=>{
-  const p=getProgress(t.id);
-  completed+=Array.isArray(p.read)?p.read.length:0;
-  total+=t.topics||0;
-  mastered+=Array.isArray(p.mastered)?p.mastered.length:0;
-  cards+=t.cards||0;
-  wrong+=Array.isArray(p.wrong)?p.wrong.length:0;
-  if(Array.isArray(p.history))history=history.concat(p.history);
- });
- const avg=history.length?Math.round(history.reduce((sum,x)=>sum+(Number(x.percent)||0),0)/history.length):null;
- document.getElementById("catalog-stats").innerHTML=[
-  [completed+"/"+total,"Apartados estudiados"],
-  [mastered+"/"+cards,"Tarjetas dominadas"],
-  [wrong,"Preguntas por repasar"],
-  [avg===null?"—":avg+" %","Media de "+history.length+" tests"]
- ].map(([n,label])=>'<div class="stat"><strong>'+esc(n)+'</strong><span>'+esc(label)+'</span></div>').join("");
-}
-function areaStatus(area){
- const items=chapters.filter(x=>x.area===area.id);
- const available=items.filter(x=>x.published).length;
- const pending=items.length-available;
- return {available,pending};
+const areaTopics=id=>chapters.filter(t=>t.area===id).map(progress);
+const published=id=>areaTopics(id).filter(t=>t.published);
+const bar=(p,title)=>'<div class="dash-bar" role="progressbar" aria-label="'+esc(title)+'" aria-valuenow="'+p+'" aria-valuemin="0" aria-valuemax="100"><span style="width:'+p+'%"></span></div>';
+function renderDashboard(){
+ const all=chapters.map(progress).filter(t=>t.published);
+ const read=all.reduce((s,t)=>s+t.read,0),parts=all.reduce((s,t)=>s+t.topics,0),pct=parts?Math.round(read/parts*100):0;
+ const cards=all.reduce((s,t)=>s+t.cards,0),mastered=all.reduce((s,t)=>s+t.mastered,0);
+ const exams=all.flatMap(t=>t.exams).filter(x=>Number.isFinite(Number(x.percent)));
+ const avg=exams.length?Math.round(exams.reduce((s,x)=>s+Number(x.percent),0)/exams.length)+" %":"—";
+ const stats=[[all.filter(t=>t.complete).length,"Temas terminados"],[all.filter(t=>t.started&&!t.complete).length,"En curso"],[mastered+" / "+cards,"Tarjetas dominadas"],[all.reduce((s,t)=>s+t.wrong,0),"Errores por repasar"],[exams.length,"Tests realizados"],[avg,"Media de los tests"]];
+ document.getElementById("catalog-stats").innerHTML='<div class="dash-overview"><div class="dash-main"><span class="section-label">AVANCE DEL TEMARIO DISPONIBLE</span><div class="dash-number">'+pct+'<small>%</small></div>'+bar(pct,"Progreso global")+'<p>'+read+' de '+parts+' apartados estudiados en '+all.length+' temas disponibles.</p></div><div class="dash-metrics">'+stats.map(([n,l])=>'<div class="dash-metric"><strong>'+esc(n)+'</strong><span>'+esc(l)+'</span></div>').join("")+'</div></div>'+
+ '<div class="dash-areas">'+areas.map(area=>{
+ const t=published(area.id),done=t.reduce((n,x)=>n+x.read,0),total=t.reduce((n,x)=>n+x.topics,0),pc=total?Math.round(done/total*100):0;
+ return '<button type="button" data-area="'+area.id+'" class="dash-area"><span><strong>'+area.name+'</strong><small>'+t.filter(x=>x.complete).length+' archivados · '+t.filter(x=>x.started&&!x.complete).length+' en curso</small></span><b>'+pc+' %</b>'+bar(pc,area.name)+'</button>';
+ }).join("")+'</div>';
+ const active=all.find(t=>t.started&&!t.complete)||all.find(t=>!t.started);
+ document.getElementById("study-focus").innerHTML=active?'<span class="section-label">TU SIGUIENTE PASO</span><h3>'+(active.started?"Continúa con el Tema ":"Empieza el Tema ")+active.id+'</h3><p>'+esc(active.title)+' · '+active.read+'/'+active.topics+' apartados</p><a class="focus-button" href="'+active.href+'">'+(active.started?"Continuar":"Empezar")+' →</a>':'<h3>Todos los temas publicados están completados</h3><p>Los encontrarás archivados en su área para poder repasarlos.</p>';
 }
 function renderAreas(){
- document.getElementById("catalog-areas").innerHTML=areas.map(area=>{
-  const count=areaStatus(area),active=area.id===selectedArea;
-  const status=count.available?count.available+(count.available===1?" tema disponible":" temas disponibles"):count.pending?count.pending+(count.pending===1?" tema en preparación":" temas en preparación"):"Sin temas publicados";
-  return '<button type="button" role="tab" id="area-tab-'+area.id+'" aria-controls="area-panel" aria-selected="'+active+'" data-area="'+area.id+'" class="area-card area-'+area.id+(active?" active":"")+'">'+
-   '<span class="area-top"><span class="area-number">ÁREA '+area.number+'</span><span class="area-icon">'+area.icon+'</span></span>'+
-   '<span class="area-name">'+esc(area.name)+'</span><span class="area-description">'+esc(area.description)+'</span>'+
-   '<span class="area-bottom"><span class="area-status">'+esc(status)+'</span><span class="area-cta" aria-hidden="true">Explorar ↗</span></span></button>';
+ document.getElementById("catalog-areas").innerHTML=areas.map(a=>{
+ const t=published(a.id),active=current===a.id;
+ return '<button type="button" id="area-tab-'+a.id+'" role="tab" aria-selected="'+active+'" data-area="'+a.id+'" class="area-card '+(active?"active":"")+'"><span class="area-top"><span class="area-number">ÁREA '+a.number+'</span><span class="area-icon" aria-hidden="true">'+a.icon+'</span></span><span class="area-name">'+a.name+'</span><span class="area-description">'+a.description+'</span><span class="area-bottom"><span class="area-status">'+t.length+' '+(t.length===1?"tema publicado":"temas publicados")+'</span><span class="area-cta">Explorar ↗</span></span></button>';
  }).join("");
 }
-function renderTopics(){
- const area=areas.find(a=>a.id===selectedArea)||areas[0];
- const items=chapters.filter(x=>x.area===area.id);
- const published=items.filter(x=>x.published);
- document.getElementById("area-eyebrow").textContent=area.eyebrow;
- document.getElementById("area-title").textContent=area.title;
- document.getElementById("area-intro").textContent=area.intro;
- document.getElementById("area-summary").textContent=published.length+" disponibles"+(items.length-published.length?" · "+(items.length-published.length)+" en preparación":"");
- const panel=document.getElementById("area-panel");
- panel.setAttribute("aria-labelledby","area-tab-"+area.id);
- document.getElementById("catalog-topic-list").innerHTML=items.length?items.map(x=>{
-  const read=x.published?Math.min(x.topics||0,Array.isArray(getProgress(x.id).read)?getProgress(x.id).read.length:0):0;
-  return '<article class="topic-card '+(x.published?"featured":"")+'"><div class="topic-meta"><span>TEMA '+x.id+'</span><span class="status '+(x.published?"":"waiting")+'">'+(x.published?"Disponible":"En preparación")+'</span></div><h3>'+esc(x.title)+'</h3><p>'+esc(x.description)+'</p><div class="topic-features">'+x.features.map(y=>'<span>'+esc(y)+'</span>').join("")+'</div><div class="topic-footer"><strong>'+(x.published?read+' de '+x.topics+' apartados vistos':"Próximamente")+'</strong>'+(x.published&&x.href?'<a href="'+esc(x.href)+'">Entrar al tema →</a>':'<span>No publicado</span>')+'</div></article>';
- }).join(""):'<div class="empty-area"><div class="empty-area-icon">'+area.icon+'</div><strong>Esta área está preparada para recibir contenidos</strong><p>Todavía no hemos incorporado temas de '+esc(area.name.toLowerCase())+'. En cuanto dispongamos del material, aparecerán aquí sus apuntes y ejercicios.</p><button type="button" class="area-empty-button" data-area="tecnica">Ver los temas de Técnica →</button></div>';
+function card(t,compact=false){
+ const status=!t.published?"En preparación":t.complete?"Terminado":t.started?"En curso":"Sin empezar";
+ const cls=!t.published?"waiting":t.complete?"complete":t.started?"ongoing":"new";
+ return '<article class="topic-card '+(compact?"compact-topic":"")+'"><div class="topic-meta"><span>TEMA '+String(t.id).padStart(2,"0")+'</span><span class="status '+cls+'">'+status+'</span></div><h3>'+esc(t.title)+'</h3>'+
+ (t.published?'<div class="topic-features"><span>'+t.topics+' apartados</span><span>'+t.cards+' tarjetas</span><span>'+t.questions+' preguntas</span></div><div class="topic-progress"><span>'+t.read+' / '+t.topics+' estudiados</span><b>'+t.percent+' %</b></div>'+bar(t.percent,"Tema "+t.id):'<p>Este tema todavía no tiene contenido publicado.</p>')+
+ '<div class="topic-footer"><strong>'+(!t.published?"Por preparar":t.complete?"Completado":t.started?"Retoma tu estudio":"Listo para empezar")+'</strong>'+(t.published?'<a href="'+t.href+'">'+(t.complete?"Repasar":t.started?"Continuar":"Empezar")+' →</a>':'<span>No disponible</span>')+'</div></article>';
 }
-function selectArea(id,scroll=false,changeUrl=false){
+function drawer(id,title,items){
+ if(!items.length)return"";
+ return '<details class="catalog-drawer" data-drawer="'+id+'" '+(expanded[id]?"open":"")+'><summary><span class="drawer-icon">'+(id.endsWith("archive")?"✓":"＋")+'</span><span><strong>'+title+'</strong><small>'+items.length+' '+(items.length===1?"tema":"temas")+'</small></span><span class="drawer-open">Mostrar / ocultar</span></summary><div class="topic-list drawer-list">'+items.map(t=>card(t,true)).join("")+'</div></details>';
+}
+function renderTopics(){
+ const area=areas.find(x=>x.id===current)||areas[0],t=areaTopics(area.id),done=t.filter(x=>x.complete),ongoing=t.filter(x=>x.published&&x.started&&!x.complete),newOnes=t.filter(x=>x.published&&!x.started);
+ const next=newOnes[0],visible=[...ongoing,...(next?[next]:[])],future=[...newOnes.slice(next?1:0),...t.filter(x=>!x.published)];
+ document.getElementById("area-eyebrow").textContent="ÁREA "+area.number+" · "+area.name.toUpperCase();
+ document.getElementById("area-title").textContent=area.id==="tecnica"?"Temario técnico":area.name;
+ document.getElementById("area-intro").textContent=area.description;
+ document.getElementById("area-summary").textContent=t.filter(x=>x.published).length+" publicados · "+done.length+" archivados";
+ document.getElementById("area-panel").setAttribute("aria-labelledby","area-tab-"+area.id);
+ document.getElementById("catalog-topic-list").innerHTML=
+ '<div class="catalog-group"><div class="catalog-group-head"><div><span class="section-label">EN TU MESA DE ESTUDIO</span><h3>Ahora y a continuación</h3></div><span class="small">'+visible.length+' destacados</span></div>'+
+ (visible.length?'<div class="topic-list">'+visible.map(x=>card(x)).join("")+'</div>':'<div class="empty-current">No tienes temas en curso en esta área. Los terminados se conservan en el archivo.</div>')+'</div>'+
+ drawer(area.id+"-archive","Temas terminados · Archivo",done)+drawer(area.id+"-future","Próximos temas y sin empezar",future);
+}
+function selectArea(id,scroll=false,hash=false){
  if(!areas.some(a=>a.id===id))return;
- selectedArea=id;
- renderAreas();
- renderTopics();
+ current=id;renderAreas();renderTopics();
  try{sessionStorage.setItem("study-firefighting-current-area",id);}catch(e){}
- if(changeUrl){history.pushState({area:id},"","#"+id);}
+ if(hash)history.pushState({area:id},"","#"+id);
  if(scroll)document.getElementById("temas").scrollIntoView({behavior:"smooth",block:"start"});
 }
-function initialArea(){
- const hash=decodeURIComponent(location.hash.slice(1));
- if(areas.some(a=>a.id===hash))return hash;
- try{const saved=sessionStorage.getItem("study-firefighting-current-area");if(areas.some(a=>a.id===saved))return saved;}catch(e){}
- return "tecnica";
-}
 function init(){
- selectedArea=initialArea();
- renderStats();
- renderAreas();
- renderTopics();
- document.addEventListener("click",event=>{
-  const btn=event.target.closest("[data-area]");
-  if(btn)selectArea(btn.dataset.area,true,true);
- });
- window.addEventListener("popstate",()=>{
-  const id=decodeURIComponent(location.hash.slice(1));
-  if(areas.some(a=>a.id===id))selectArea(id,false,false);
- });
+ const h=decodeURIComponent(location.hash.slice(1));
+ try{current=areas.some(a=>a.id===h)?h:sessionStorage.getItem("study-firefighting-current-area")||"tecnica";}catch(e){current="tecnica";}
+ if(!areas.some(a=>a.id===current))current="tecnica";
+ renderDashboard();renderAreas();renderTopics();
+ document.addEventListener("click",e=>{const b=e.target.closest("[data-area]");if(b)selectArea(b.dataset.area,true,true)});
+ document.addEventListener("toggle",e=>{const b=e.target.closest?.("[data-drawer]");if(b)expanded[b.dataset.drawer]=b.open},true);
+ window.addEventListener("popstate",()=>{const area=decodeURIComponent(location.hash.slice(1));if(areas.some(a=>a.id===area))selectArea(area)});
+ document.addEventListener("visibilitychange",()=>{if(!document.hidden){renderDashboard();renderAreas();renderTopics()}});
 }
 document.addEventListener("DOMContentLoaded",init);
 })();
