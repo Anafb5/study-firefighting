@@ -10,6 +10,7 @@ const files = [
   "study-layouts.css", "review-data.js", "review.js", "review.css",
   "app.js", "resume.js", "temas/11/index.html", "psicotecnicos/index.html",
   "psicotecnicos/app.mjs",
+  "psicotecnicos/official-exams.mjs", "psicotecnicos/official-ui.mjs",
   "psicotecnicos/generator.mjs",
   "psicotecnicos/topics.mjs",
   "psicotecnicos/styles.css",
