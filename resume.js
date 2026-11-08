@@ -36,7 +36,7 @@ function getVisualState(){
  return result;
 }
 function nearestLesson(){
- if(!visible($("view-temario")))return null;
+ if(!$("view-temario")?.classList.contains("active"))return null;
  const lessons=Array.from(document.querySelectorAll("#topic-list .lesson"));
  let active=null;
  for(const item of lessons){
