@@ -7,7 +7,7 @@ const read=p=>fs.readFileSync(path.join(root,p),"utf8");
 const catalog=read("catalog.js");
 assert(catalog.includes("const legalTitles="),"Falta listado de los 26 temas jurídicos");
 assert(catalog.includes("study-firefighting-j"),"Falta clave jurídica aislada");
-for(const file of ["juridica/legal-builder.js","juridica/legal-study.js","juridica/legal.css","progress.js","app.js"])assert(fs.existsSync(path.join(root,file)),"Falta "+file);
+for(const file of ["juridica/legal-builder.js","juridica/legal-study.js","juridica/legal-visuals.js","juridica/legal.css","progress.js","app.js"])assert(fs.existsSync(path.join(root,file)),"Falta "+file);
 const audit=[];
 for(let i=1;i<=26;i++){
  const file="juridica/"+i+"/data.js";
@@ -16,6 +16,8 @@ for(let i=1;i<=26;i++){
  new vm.Script(read(file),{filename:file}).runInContext(ctx,{timeout:1000});
  assert(win.LEGAL_SOURCE?.sections?.length>0,"Tema "+i+": sin contenido");
  new vm.Script(read("juridica/legal-builder.js"),{filename:"juridica/legal-builder.js"}).runInContext(ctx,{timeout:1000});
+ new vm.Script(read("juridica/legal-visuals.js"),{filename:"juridica/legal-visuals.js"}).runInContext(ctx,{timeout:1000});
+ new vm.Script(read("reader-layouts.js"),{filename:"reader-layouts.js"}).runInContext(ctx,{timeout:1000});
  const data=vm.runInContext("({SECTIONS,TOPICS,CARDS,ARTICLES,QUESTIONS,MATCH_SETS,REVIEW_CLASSIFY,REVIEW_ORDER,REVIEW_JUDGE,REVIEW_VALUES})",ctx);
  assert(data.TOPICS.length>=6,"Tema "+i+": número insuficiente de apartados revisados");
  const sections=new Set(data.SECTIONS.map(s=>s.id)),keys=new Set();
@@ -27,9 +29,21 @@ for(let i=1;i<=26;i++){
   keys.add(key);
   assert(!/^(?:art[.íi]culo)?\s*\d+[.:]/i.test(a.label),"Tema "+i+": el enunciado da el número de artículo");
  }
+ let visualCount=0;
  for(const t of data.TOPICS){
   assert(t.points.length>=4&&t.pages&&t.title&&t.lead,"Tema "+i+": apartado incompleto");
+  const rendered=win.StudyLayouts.render(t);
+  assert(rendered.length>100,"Tema "+i+": apartado no representado "+t.title);
+  if(t.visual){
+   visualCount++;
+   assert(rendered.includes('class="legal-diagram'),"Tema "+i+": falta esquema "+t.title);
+   assert(rendered.includes('class="legal-visual-details"'),"Tema "+i+": se oculta el acceso a los matices del PDF");
+   assert(rendered.includes("Leer el contenido completo"),"Tema "+i+": falta acceso al texto");
+  }else{
+   assert(!rendered.includes('class="legal-diagram'),"Tema "+i+": gráfico no solicitado "+t.title);
+  }
  }
+ if(i<=3)assert(visualCount>0,"Tema "+i+": no tiene esquemas educativos seleccionados");
  for(const q of data.QUESTIONS){
   assert(sections.has(q.section),"Tema "+i+": sección incorrecta");
   assert(q.options.length===4&&new Set(q.options).size===4,"Tema "+i+": alternativas duplicadas");
@@ -45,7 +59,7 @@ for(let i=1;i<=26;i++){
  const dir=path.join(root,"juridica",String(i));
  const refs=[...doc.matchAll(/(?:href|src)="([^"]+\.(?:js|css))"/g)].map(x=>x[1]).filter(x=>x.startsWith("."));
  for(const ref of refs)assert(fs.existsSync(path.resolve(dir,ref)),"Tema "+i+": recurso roto "+ref);
- audit.push({tema:i,apartados:data.TOPICS.length,articulos:data.ARTICLES.length,tarjetas:data.CARDS.length,preguntas:data.QUESTIONS.length});
+ audit.push({tema:i,apartados:data.TOPICS.length,diagramas:visualCount,articulos:data.ARTICLES.length,tarjetas:data.CARDS.length,preguntas:data.QUESTIONS.length});
 }
 assert(audit.length===26,"Faltan temas en la biblioteca");
 console.log("Jurídica validada estructuralmente: "+JSON.stringify(audit));
