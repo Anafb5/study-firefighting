@@ -167,6 +167,7 @@ function finishExam(){
 }
 function handleClick(event){
  const btn=event.target.closest("button");if(!btn)return;
+ if(btn.id==="reset-button-alt"){$("reset-button").click();return;}
  if(btn.dataset.view){switchView(btn.dataset.view);return;}
  if(btn.dataset.action==="start-study"){switchView("temario");return;}
  if(btn.dataset.action==="start-exam"){switchView("test");return;}
