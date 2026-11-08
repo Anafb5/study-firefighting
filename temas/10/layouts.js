@@ -20,11 +20,11 @@ const hotspots=[
  {x:6,y:86,title:"Protecciones"}
 ];
 const legends=[
- ["Autobastidor","Bastidor, motor, transmisiones, suspensión, frenos, ruedas, dirección e instalación eléctrica."],
- ["Cisternas y compartimentos","Contienen agentes extintores y material de intervención; su posición depende del tipo de vehículo."],
- ["Cabina","Aloja al conductor y los efectivos de la dotación."],
- ["Equipo hidráulico","Bomba, bocas de llenado, aspiración y salidas de impulsión."],
- ["Señalización","Iluminación y dispositivos de aviso/medida de la unidad."]
+ ["Cisterna y armarios","La cisterna contiene agua u otros agentes; los armarios guardan herramientas y materiales. Sus ubicaciones varían según el modelo."],
+ ["Carrocería y compartimentos","Estructura que facilita transportar y alojar los equipos de intervención."],
+ ["Cabina","Aloja al conductor y a los bomberos de la dotación. El documento cita una capacidad mínima de un conductor y dos bomberos."],
+ ["Autobastidor y ruedas","El chasis integra bastidor, motor, suspensiones, frenos, ruedas, dirección y sistema eléctrico."],
+ ["Protecciones","Parachoques destinados, entre otros fines, a proteger el sistema de bombeo."]
 ];
 function anatomy(t){
  const marks=hotspots.map((p,i)=>'<button class="t10-hotspot '+(i===0?"active":"")+'" type="button" data-t10-hotspot="'+i+'" style="--x:'+p.x+'%;--y:'+p.y+'%" aria-label="'+e(p.title)+'" aria-pressed="'+(i===0?"true":"false")+'">'+(i+1)+'</button>').join("");
