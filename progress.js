@@ -70,7 +70,7 @@ async function importFile(file){
  try{
   for(let i=0;i<sessionStorage.length;i++){
    const k=sessionStorage.key(i);
-   if(/^study-firefighting-resume-(?:(?:t|j)\d+-v1|v1)$/.test(k)){
+   if(/^study-firefighting-resume-(?:(?:t|j)\d+-v1|v1)$/.test(k)||/^study-firefighting-j\d+-articles-v1-session$/.test(k)){
     sessionStorage.removeItem(k);
     i--;
    }
