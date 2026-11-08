@@ -3,7 +3,7 @@
 "use strict";
 const $=id=>document.getElementById(id);
 const esc=v=>String(v??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const shuffle=a=>a.slice().sort(()=>Math.random()-.5),KEY="fire-study-review-v1";
+const shuffle=a=>a.slice().sort(()=>Math.random()-.5),KEY=window.STUDY_CONFIG?.reviewKey||"fire-study-review-v1";
 let tab="matching",ci=0,oi=0,cs=null,os=null,ji=0,ja=null;
 function save(){try{sessionStorage.setItem(KEY,JSON.stringify({tab,ci,oi,cs,os,ji,ja}));}catch(e){}}
 function load(){try{const x=JSON.parse(sessionStorage.getItem(KEY)||"null");if(!x)return;tab=["matching","classify","order","judge"].includes(x.tab)?x.tab:"matching";ci=Number(x.ci)||0;oi=Number(x.oi)||0;cs=x.cs||null;os=x.os||null;ji=Number(x.ji)||0;ja=x.ja??null;}catch(e){}}
