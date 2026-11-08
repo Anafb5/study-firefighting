@@ -55,3 +55,13 @@
 .rv-btn{cursor:pointer}
 .rv-btn:focus-visible,.rv-option:focus-visible,.rv-sort button:focus-visible{outline:3px solid #c56a49;outline-offset:2px}
 @media(max-width:680px){.rv-task{padding:12px;font-size:12px}.rv-sort{gap:8px}.rv-sort>div{flex-shrink:0}}
+
+.rv-freeanswer{margin:18px 0 11px}
+.rv-freeanswer>label{display:block;margin-bottom:8px;font-size:12px;font-weight:750;color:#4e697b}
+.rv-freeanswer>div{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.rv-freeanswer input{width:min(100%,280px);min-height:42px;border:1px solid #cfdce3;border-radius:7px;background:#fff;font:inherit;font-size:15px;color:#233e52;padding:10px 12px;outline:none}
+.rv-freeanswer input:focus{border-color:#db855f;box-shadow:0 0 0 3px #e9976c33}
+.rv-freeanswer .rv-btn{margin:0;min-height:42px}
+.rv-hintbutton{display:block;background:transparent;border:1px dashed #bbcbd5;color:#58758b;margin:10px 0 22px}
+.rv-hintbutton:hover{border-color:#ce8163;color:#ac6042}
+@media(max-width:680px){.rv-freeanswer>div{align-items:stretch}.rv-freeanswer input{width:100%}.rv-freeanswer .rv-btn{width:100%}}
