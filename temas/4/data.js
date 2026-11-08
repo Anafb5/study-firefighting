@@ -1,4 +1,4 @@
-/* Tema 4 · Naturaleza del fuego. Redacción para repaso basada en el PDF de 57 páginas. */
+/* Tema 4. Apuntes y ejercicios basados exclusivamente en el PDF aportado. */
 window.READER_SOURCE={
  "sections": [
   {
@@ -939,52 +939,63 @@ window.READER_SOURCE={
  ],
  "values": [
   {
-   "name": "Clasificación y condiciones básicas",
-   "why": "Sección 6 de clases de fuego y sección 4 de límites de inflamabilidad.",
+   "name": "Límites de inflamabilidad citados en la tabla",
+   "why": "Valores impresos en tabla de LII y LSI, pp. 27–28 del Tema 4. Los porcentajes dependen de condiciones de medida.",
    "items": [
     [
-     "¿Cuántos elementos representa el triángulo del fuego?",
+     "¿Cuál es el LII del hidrógeno de la tabla del manual?",
      [
-      "2",
-      "3",
-      "4",
-      "5"
+      "2,1 %",
+      "4 %",
+      "5 %",
+      "12,5 %"
      ],
      1,
-     "Combustible, comburente y energía (p. 18)."
+     "Hidrógeno: LII de 4 % (p. 27)."
     ],
     [
-     "¿Cuántos factores representa el tetraedro?",
+     "¿Cuál es el LSI del hidrógeno de la tabla del manual?",
      [
-      "2",
-      "3",
-      "4",
-      "5"
+      "9,5 %",
+      "33 %",
+      "50 %",
+      "75 %"
+     ],
+     3,
+     "Hidrógeno: LSI de 75 % (p. 27)."
+    ],
+    [
+     "¿Cuál es el LII del propano en la tabla de mezclas?",
+     [
+      "0,4 %",
+      "1,9 %",
+      "2,1 %",
+      "4 %"
      ],
      2,
-     "Añade reacción en cadena a los tres del triángulo (p. 19)."
+     "Propano: LII 2,1 % (p. 27)."
     ],
     [
-     "¿Cuántas clases de fuego principales enumera el manual A, B, C, D y F?",
+     "¿Cuál es el LSI del butano en la tabla del tema?",
      [
-      "3",
-      "4",
-      "5",
-      "6"
-     ],
-     2,
-     "A, B, C, D y F (pp. 41–43)."
-    ],
-    [
-     "¿Cuántos mecanismos de transmisión térmica se explican en el tema?",
-     [
-      "2",
-      "3",
-      "4",
-      "5"
+      "7,4 %",
+      "8,5 %",
+      "9,5 %",
+      "13 %"
      ],
      1,
-     "Conducción, convección y radiación (pp. 32–36)."
+     "Butano: LSI 8,5 % (p. 27)."
+    ],
+    [
+     "¿Cuál es el LII de la gasolina según la tabla del PDF?",
+     [
+      "0,4 %",
+      "1,9 %",
+      "2,5 %",
+      "4 %"
+     ],
+     0,
+     "Gasolina: LII 0,4 % (p. 27)."
     ]
    ]
   }
