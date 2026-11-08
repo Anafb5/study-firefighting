@@ -1,4 +1,4 @@
-/* Tema 9 · ejercicio activo a partir del documento aportado. Valores normativos del manual: verificar vigencia. */
+/* Tema 9 · ejercicios de repaso fieles al PDF, sin asociaciones ambiguas. */
 const REVIEW_CLASSIFY=[
  {
   "name": "Tipos de detectores y señal",
@@ -113,10 +113,6 @@ const REVIEW_CLASSIFY=[
     2
    ],
    [
-    "UNE-EN 14384 y marcado CE",
-    0
-   ],
-   [
     "Salida de planta con racores de 45 mm",
     3
    ]
@@ -150,10 +146,6 @@ const REVIEW_CLASSIFY=[
    [
     "Tipo C con umbral instalación ≥1.000 m²",
     1
-   ],
-   [
-    "Tipo A ≥300 m² (sin subdivisión indicada)",
-    0
    ]
   ],
   "why": "Página 23. El requisito tipo A no se subdivide por riesgo; se utiliza como contraste con bajo en este ejercicio."
