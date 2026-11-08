@@ -29,6 +29,19 @@ function getVisualState(){
   const active=root.querySelector("[data-st-node].is-active");
   result[root.dataset.stWorkbench]={node:active?Number(active.dataset.stNode):0};
  });
+ document.querySelectorAll("#topic-list [data-t10-vehicles],#topic-list [data-t10-units],#topic-list [data-t10-anatomy]").forEach(root=>{
+  const article=root.closest("article.lesson");
+  const active=root.querySelector("button.active[data-t10-vehicle],button.active[data-t10-unit],button.active[data-t10-hotspot]");
+  if(article&&active){
+   const type=active.dataset.t10Vehicle!==undefined?"vehicle":active.dataset.t10Unit!==undefined?"unit":"hotspot";
+   const value=Number(active.dataset.t10Vehicle??active.dataset.t10Unit??active.dataset.t10Hotspot);
+   result["t10:"+article.id]={type,value};
+  }
+ });
+ document.querySelectorAll("#topic-list .t10-details[open]").forEach(node=>{
+  const article=node.closest("article.lesson");
+  if(article)result["t10-details:"+article.id]=true;
+ });
  return result;
 }
 function nearestLesson(){
@@ -90,6 +103,20 @@ function restoreVisuals(visual){
   if(!root||!info)continue;
   const target=Array.from(root.querySelectorAll("[data-st-node]")).find(x=>Number(x.dataset.stNode)===info.node);
   if(target&&info.node!==0)target.click();
+ }
+ for(const [id,info] of Object.entries(visual)){
+  if(id.startsWith("t10:")&&info&&typeof info==="object"){
+   const article=document.getElementById(id.slice(4));if(!article)continue;
+   const kind=info.type==="vehicle"?"[data-t10-vehicle]":info.type==="unit"?"[data-t10-unit]":info.type==="hotspot"?"[data-t10-hotspot]":null;
+   if(!kind)continue;
+   const target=Array.from(article.querySelectorAll(kind)).find(node=>Number(node.dataset.t10Vehicle??node.dataset.t10Unit??node.dataset.t10Hotspot)===info.value);
+   if(target)target.click();
+  }
+  if(id.startsWith("t10-details:")&&info===true){
+   const article=document.getElementById(id.slice(12));
+   const details=article?.querySelector(".t10-details");
+   if(details)details.open=true;
+  }
  }
 }
 function apply(snapshot){
