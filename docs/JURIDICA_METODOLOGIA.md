@@ -27,6 +27,28 @@ Los 26 aparecen en la biblioteca con su título y volumen. Los pendientes muestr
 
 Total inicial: **44 apartados, 110 referencias de artículo, 445 tarjetas y 220 preguntas**. Se suman ejercicios de clasificación, ordenación cuando existe una secuencia real, detección de errores y recuperación de cifras.
 
+## Visualización selectiva y fiel al PDF
+
+**Solo se crean diagramas cuando existe una relación visual significativa**: cronología documentada, jerarquía, reparto cuantitativo, comparación de reglas o secuencia explícita. No se convierte automáticamente cada lista de conceptos en una cuadrícula de tarjetas. La imagen no sustituye el contenido normativo; debajo del esquema se puede desplegar **«Leer el contenido completo y sus matices (según el PDF)»**.
+
+Se han incorporado inicialmente **9 diagramas en 9 epígrafes** de los tres temas publicados:
+
+| Tema | Epígrafe | Función pedagógica |
+|---|---|---|
+| Jurídica 1 | Proceso constituyente | Cronología de aprobación, referéndum, sanción, publicación y vigencia. |
+| Jurídica 1 | Estructura de la Constitución | Jerarquía de apartados y disposiciones sin perder texto completo. |
+| Jurídica 1 | Mapa de derechos | Rango de artículos 14, 15–29, 30–38 y 39–52. |
+| Jurídica 1 | Garantías | Diferenciar apartados 53.1, 53.2, 53.3 y artículo 54. |
+| Jurídica 2 | Composición del Tribunal Constitucional | Reparto verificable: 4 Congreso + 4 Senado + 2 Gobierno + 2 CGPJ = 12. |
+| Jurídica 2 | Reforma constitucional | Comparar 167 y 168 CE; no confundir el límite del 169 con otro procedimiento. |
+| Jurídica 3 | Cortes Generales | Contraste Congreso (68 CE) / Senado (69 CE), con nota de reforma posterior. |
+| Jurídica 3 | Estatuto parlamentario | Diferenciar inviolabilidad, inmunidad, fuero e incompatibilidades. |
+| Jurídica 3 | Procedimiento legislativo | Hitos del procedimiento ordinario según ejercicio de ordenación del propio PDF. |
+
+Las representaciones se definen **expresamente y por tema** en el campo opcional `topic.visual`; no se infieren por el título. El generador `juridica/legal-builder.js` conserva los metadatos y el componente `juridica/legal-visuals.js` los presenta sin dependencias externas. El lector compartido `reader-layouts.js` los usa **únicamente** cuando hay un diseño especificado; los demás temas, incluidos los 19 técnicos, siguen intactos. Los estilos están en `juridica/legal.css`.
+
+Comprobar con `node scripts/validate-legal.cjs` que los nueve diagramas se renderizan y que los detalles de cada artículo siguen accesibles. **El gráfico es una orientación para estudiar**: números, fechas, excepciones y palabras legales deben contrastarse siempre con el epígrafe completo del PDF.
+
 ## Entrenador de artículos
 
 El modo **Memorizar artículos** usa el banco jurídico revisado del tema, no genera numeraciones por aproximación. Dos direcciones:
