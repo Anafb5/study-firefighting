@@ -52,7 +52,7 @@ function renderAreas(){
 function card(t,compact=false){
  const status=!t.published?"En preparación":t.complete?"Terminado":t.started?"En curso":"Sin empezar";
  const cls=!t.published?"waiting":t.complete?"complete":t.started?"ongoing":"new";
- return '<article class="topic-card '+(compact?"compact-topic":"")+'"><div class="topic-meta"><span>TEMA '+String(t.id).padStart(2,"0")+'</span><span class="status '+cls+'">'+status+'</span></div><h3>'+esc(t.title)+'</h3>'+
+ return '<article class="topic-card '+(compact?"compact-topic":"")+'"><div class="topic-meta"><span>TEMA '+String(t.id).padStart(2,"0")+' · VOL. '+t.volume+'</span><span class="status '+cls+'">'+status+'</span></div><h3>'+esc(t.title)+'</h3>'+
  (t.published?'<div class="topic-features"><span>'+t.topics+' apartados</span><span>'+t.cards+' tarjetas</span><span>'+t.questions+' preguntas</span></div><div class="topic-progress"><span>'+t.read+' / '+t.topics+' estudiados</span><b>'+t.percent+' %</b></div>'+bar(t.percent,"Tema "+t.id):'<p>Este tema todavía no tiene contenido publicado.</p>')+
  '<div class="topic-footer"><strong>'+(!t.published?"Por preparar":t.complete?"Completado":t.started?"Retoma tu estudio":"Listo para empezar")+'</strong>'+(t.published?'<a href="'+t.href+'">'+(t.complete?"Repasar":t.started?"Continuar":"Empezar")+' →</a>':'<span>No disponible</span>')+'</div></article>';
 }
