@@ -43,6 +43,10 @@ python -m http.server 8000
 Portada: http://localhost:8000/  
 Tema 11: http://localhost:8000/temas/11/
 
+## Android
+
+La aplicación se empaqueta offline con Capacitor y conserva la misma web y el formato de copias de seguridad. Consulta [docs/ANDROID_BUILD.md](docs/ANDROID_BUILD.md) para compilar, descargar e instalar la APK.
+
 ## Publicación
 
 GitHub Pages desde la rama `main` mediante `.github/workflows/deploy.yml`.

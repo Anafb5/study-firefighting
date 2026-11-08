@@ -1,0 +1,8 @@
+{
+  "appId": "com.studyfirefighting.app",
+  "appName": "Fuego & Estudio",
+  "webDir": "www",
+  "android": {
+    "backgroundColor": "#fffaf2"
+  }
+}
