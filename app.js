@@ -2,7 +2,7 @@
    Progreso en localStorage del navegador. */
 (function(){
 "use strict";
-const STORE="study-firefighting-t11-v1";
+const STORE=window.STUDY_CONFIG?.store||"study-firefighting-t11-v1";
 const abc=["A","B","C","D"];
 const $=id=>document.getElementById(id);
 const esc=value=>String(value==null?"":value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
