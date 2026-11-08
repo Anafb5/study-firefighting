@@ -39,6 +39,10 @@ ARTICLES.forEach((a,i)=>{
  if(labels)QUESTIONS.push({id:"a"+i+"c",section:a.section,q:"Según el PDF, ¿qué contenido corresponde al artículo "+a.art+" de "+a.norm+"?",
   options:labels.options,correct:labels.correct,why:"Este artículo trata de: "+a.label+". "+a.note,page:"p. "+a.page,difficulty:"Contenido"});
 });
+(SOURCE.extraQuestions||[]).forEach((item,i)=>{
+ if(!item||!Array.isArray(item.options)||item.options.length!==4||!Number.isInteger(item.correct)||item.correct<0||item.correct>3||new Set(item.options).size!==4)throw Error("Pregunta jurídica manual inválida: "+i);
+ QUESTIONS.push({id:"manual-"+i,section:item.section,q:item.q,options:item.options,correct:item.correct,why:item.why,page:item.page,difficulty:item.difficulty||"Comprensión"});
+});
 const REVIEW_CLASSIFY=SOURCE.classify||[];
 const REVIEW_ORDER=SOURCE.order||[];
 const REVIEW_JUDGE=SOURCE.judge||[];
