@@ -6,20 +6,31 @@ Web estática, sin servidor ni registro, preparada para estudiar varios temas co
 
 - **Biblioteca de temas**: `/` (archivo `index.html`).
 - **Tema 11 — Prendas y equipos de protección personal**: `/temas/11/`.
-- **Tema 10 — Vehículos contra incendios**: aparece como pendiente de preparar; todavía no tiene página de estudio.
+- **Tema 10 — Vehículos contra incendios**: `/temas/10/`, completo y disponible en el área Técnica.
 - Los futuros temas pueden crearse como `/temas/NUMERO/index.html` y añadirse a `catalog.js`.
 
 ## Organización por áreas de oposición
 
 La portada organiza el estudio en **tres grandes apartados**:
 
-- **Técnica:** reúne los temas técnicos. Contiene el Tema 11 publicado y el Tema 10 como pendiente.
+- **Técnica:** reúne los temas técnicos. Contiene los Temas 10 y 11 publicados.
 - **Jurídica:** sección preparada para temarios de legislación y normativa; aún sin material publicado.
 - **Psicotécnicos:** espacio preparado para baterías de ejercicios de aptitudes y razonamiento; aún sin material publicado.
 
 La selección se realiza en la portada mediante tarjetas y queda reflejada en el fragmento de la URL (`#tecnica`, `#juridica`, `#psicotecnicos`). `catalog.js` mantiene la lista de áreas y metadatos de los temas. **No marques un tema como publicado hasta que exista su página**.
 
 Al incorporar futuros temas, usa un identificador estable y una clave de progreso única por tema: el Tema 11 existente usa `study-firefighting-t11-v1` y sus copias JSON deben seguir funcionando. Si varios bloques tienen temas con el mismo número, evita colisiones de progreso y amplía de forma compatible la lógica de exportación en `progress.js`.
+
+## Tema 10 — Vehículos contra incendios
+
+Fuente: PDF facilitado *10. Vehículos contra incendios*, Volumen IV, primera parte técnica (46 páginas).
+
+- 29 apartados detallados, organizados en clasificación, nomenclatura, componentes, vehículos y circulación.
+- 88 tarjetas y 135 preguntas tipo test, con corrección razonada y páginas del documento.
+- 12 conjuntos para relacionar, 5 ejercicios de clasificación, 5 de ordenación y 22 afirmaciones para detectar errores.
+- Esquema original de vehículo, diagrama hidráulico, comparativas detalladas por modelo, tablas técnicas, listas de dotación y medidas, fichas y checklists de seguridad.
+- Navegación, tarjetas, simulacros, progreso `study-firefighting-t10-v1`, reanudación de sesión y exportación JSON compatibles con el Tema 11.
+- El manual incluye anomalías de origen expresamente señaladas: presión BRL de p. 15 frente a p. 23; FAV/FAP para apeos (pp. 11 y 35); clasificación BNP p. 29, y posibles modificaciones normativas en circulación. No deben usarse como hechos legales vigentes sin comprobación.
 
 ## Tema 11
 
@@ -36,7 +47,7 @@ El contenido se basa en el PDF del Tema 11 facilitado por la usuaria (44 página
 
 ### Copias de seguridad y cambio de dispositivo
 
-La portada y el Tema 11 ofrecen **Exportar progreso** e **Importar progreso**.
+La portada y los Temas 10 y 11 ofrecen **Exportar progreso** e **Importar progreso**.
 
 - Exportar descarga un archivo `.json` con apartados marcados, tarjetas dominadas, preguntas falladas e historial de tests de cada tema.
 - Guardar ese archivo fuera del navegador (ordenador, disco en la nube, etc.) permite restaurarlo si se pierde la caché o cambiar a otro dispositivo.
@@ -53,6 +64,7 @@ python -m http.server 8000
 ```
 
 Portada: http://localhost:8000/  
+Tema 10: http://localhost:8000/temas/10/  
 Tema 11: http://localhost:8000/temas/11/
 
 ## Publicación
@@ -60,8 +72,13 @@ Tema 11: http://localhost:8000/temas/11/
 GitHub Pages desde la rama `main` mediante `.github/workflows/deploy.yml`.
 
 - Biblioteca: https://anafb5.github.io/study-firefighting/
+- Tema 10: https://anafb5.github.io/study-firefighting/temas/10/
 - Tema 11: https://anafb5.github.io/study-firefighting/temas/11/
 
 ## Nota de rigor
 
 El temario contiene discrepancias internas en las categorías NRBQ (p. 15 frente al apartado 3.4.1, p. 32), señaladas en los apuntes. Las referencias a normas UNE, filtros y factores de protección se presentan según la edición facilitada. Contrasta su vigencia con la convocatoria y la legislación y normas aplicables: esta web es un recurso de estudio, no una fuente normativa oficial.
+
+### Integración pendiente con la rama Android de Codex
+
+La rama `content/nuevos-temas` contiene el Tema 10 sin tocar archivos nativos de Capacitor. Cuando se integre con la rama de APK, el build debe incorporar **todo** `temas/**` (no solo `temas/11/`) y conservar rutas relativas de recursos web. Se generalizaron de forma compatible las claves de `app.js`, `resume.js` y `review.js` mediante `window.STUDY_CONFIG` (Tema 11 conserva claves antiguas por defecto; Tema 10 usa claves propias). Validar ambos temas en Android tras la integración.
