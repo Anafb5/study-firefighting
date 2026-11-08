@@ -14,6 +14,8 @@ Web estática de estudio para oposición a bombero basada en el PDF **11. Prenda
 - Modo **simulacro** (corrección al terminar) y **entrenamiento** (corrección inmediata con explicación).
 - Revisión de errores, historial local y progreso persistente en el navegador.
 
+- **Reanudación automática al recargar**: vuelve a la misma sección y posición de lectura, conserva apartados y esquemas abiertos, tarjetas, asociaciones y preguntas de un simulacro en curso. El estado temporal de la pestaña se conserva mediante `sessionStorage`.
+
 El contenido toma como fuente el temario facilitado, no una revisión de normativa vigente. El PDF original contiene discrepancias en las categorías NRBQ (tabla de p. 15 frente a apartado 3.4.1, p. 32), indicadas de forma expresa en la web. Las denominaciones y cifras de filtros/normas siguen el documento, incluso si las normas han cambiado desde su edición. **Conviene contrastar la vigencia de los textos legales y UNE con las bases de la convocatoria.**
 
 ## Desarrollo local
