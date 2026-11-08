@@ -1,4 +1,4 @@
-/* Tema 6. Apuntes y ejercicios basados exclusivamente en el PDF aportado. */
+/* Tema 6 · Agua como agente extintor. Datos de la edición aportada. */
 window.READER_SOURCE={
  "sections": [
   {
@@ -768,13 +768,13 @@ window.READER_SOURCE={
     [
      "¿Cuál es el calor latente de vaporización del agua citado?",
      [
-      "2,26·10³ J/kg",
-      "2,26·10⁴ J/kg",
-      "2,26·10⁵ J/kg",
-      "2,26·10⁶ J/kg"
+      "2.260 J/kg",
+      "22.600 J/kg",
+      "226.000 J/kg",
+      "2.260.000 J/kg"
      ],
      3,
-     "Calor de vaporización: 2,26 ×10⁶ J/kg (p. 9)."
+     "El calor de vaporización es 2,26 × 10⁶ J/kg, es decir, 2.260.000 J/kg (p. 9)."
     ],
     [
      "A 100 °C, ¿cuántas veces se expande el agua al convertirse en vapor según el documento?",
