@@ -1,0 +1,37 @@
+/* Tema 9 · equipamiento fijo de protección contra incendios */
+.n9-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:12px 0 24px}
+.n9-fact{display:flex;flex-direction:column;gap:6px;border:1px solid #e0e7ed;border-radius:9px;background:linear-gradient(135deg,#fff,#f8fafb);padding:17px;min-width:0}
+.n9-fact small{font-size:10px;color:#6b8090;font-weight:780}
+.n9-fact b{font-size:clamp(18px,2.5vw,27px);line-height:1.2;color:#bb5436;letter-spacing:-.04em;overflow-wrap:anywhere}
+.n9-fact span{font-size:10px;line-height:1.6;color:#7b8b99}
+.n9-flow{display:flex;align-items:stretch;gap:8px;margin:14px 0 27px}
+.n9-step{background:#f8fafb;border:1px solid #e0e8ed;border-radius:9px;padding:17px 13px;min-width:0;flex:1;display:flex;flex-direction:column;gap:7px}
+.n9-step>span{font-size:10px;color:#b45737;font-weight:900}
+.n9-step>strong{font-size:12px;color:#233c50}
+.n9-step>small{font-size:10px;color:#6c8190;line-height:1.6}
+.n9-arrow{align-self:center;color:#ce6743;font-size:22px}
+.n9-selector{display:grid;grid-template-columns:minmax(220px,1fr) minmax(0,1.12fr);border:1px solid #dce6eb;border-radius:11px;margin:13px 0 26px;overflow:hidden}
+.n9-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-content:center;gap:8px;padding:14px;background:#f7fafb}
+.n9-option{border:1px solid #dae5eb;border-radius:7px;background:white;text-align:left;padding:13px 10px;min-width:0;display:flex;gap:7px;align-items:center;min-height:62px}
+.n9-option small{font-size:10px;font-weight:900;color:#c56845}
+.n9-option strong{font-size:11px;line-height:1.4;flex:1;color:#2c485e}
+.n9-option>span{font-size:17px;color:#d48d73}
+.n9-option:hover{border-color:#e4ad91}
+.n9-option.active{background:#fff6f1;border-color:#e28e65;box-shadow:inset 0 0 0 1px #edb89d}
+.n9-option:focus-visible{outline:3px solid #df9d7b;outline-offset:2px}
+.n9-panel{display:flex;flex-direction:column;justify-content:center;gap:11px;background:#1b3348;color:white;padding:28px 25px;min-height:240px;min-width:0}
+.n9-panel small{font-size:10px;color:#f4ad89;letter-spacing:.12em;font-weight:900}
+.n9-panel h4{font-size:23px;color:white;line-height:1.3;letter-spacing:-.04em;margin:0}
+.n9-panel strong{font-size:12px;color:#fac7a9}
+.n9-panel p{font-size:12px;line-height:1.85;color:#dbe6ed;margin:2px 0 0}
+.n9-panel>span{font-size:10px;color:#9eb4c2;margin-top:auto}
+.n9-illustration{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:0;border:1px solid #dce5eb;border-radius:10px;overflow:hidden;margin:14px 0 27px}
+.n9-svgbox{display:grid;place-items:center;background:#f8fafb;background-image:linear-gradient(#e6edf2 1px,transparent 1px),linear-gradient(90deg,#e6edf2 1px,transparent 1px);background-size:23px 23px;padding:15px}
+.n9-svgbox svg{width:100%;max-height:320px}
+.n9-diagram-copy{background:#1b3348;color:white;padding:30px 26px;display:flex;flex-direction:column;justify-content:center}
+.n9-diagram-copy h4{font-size:20px;color:#fff;margin:0 0 13px}
+.n9-diagram-copy p{font-size:12px;color:#dce8ef;line-height:1.85}
+.n9-diagram-copy p:last-child{color:#f4ab89;font-size:11px}
+@media(max-width:1050px){.n9-selector{grid-template-columns:1fr}.n9-panel{min-height:180px}.n9-illustration{grid-template-columns:1fr}.n9-svgbox svg{max-height:250px}.n9-flow{flex-wrap:wrap}.n9-step{flex:1 1 28%}.n9-arrow{display:none}}
+@media(max-width:650px){.n9-facts{grid-template-columns:1fr}.n9-fact{padding:12px 15px}.n9-fact b{font-size:23px}.n9-flow{flex-direction:column}.n9-step{min-height:unset}.n9-choices{padding:8px;gap:6px}.n9-option{padding:10px 8px;min-height:58px}.n9-option strong{font-size:10px}.n9-panel{padding:22px 18px}.n9-panel h4{font-size:20px}.n9-diagram-copy{padding:23px}.n9-svgbox{padding:8px}}
+@media(max-width:380px){.n9-choices{grid-template-columns:1fr}}
