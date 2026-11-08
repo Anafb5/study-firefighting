@@ -1,0 +1,34 @@
+name: Validar ejercicios de repaso
+
+on:
+  push:
+    branches: [main, content/nuevos-temas]
+    paths:
+      - review.js
+      - review-data.js
+      - scripts/validate-review.cjs
+      - 'temas/**'
+      - '.github/workflows/validate-review.yml'
+  pull_request:
+    paths:
+      - review.js
+      - review-data.js
+      - scripts/validate-review.cjs
+      - 'temas/**'
+      - '.github/workflows/validate-review.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  review-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Preparar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Comprobar bancos de repaso
+        run: node scripts/validate-review.cjs
