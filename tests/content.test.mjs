@@ -21,7 +21,7 @@ test("la navegación y todos los recursos de las páginas son locales", async ()
   const home = await readFile("index.html", "utf8");
   const catalog = await readFile("catalog.js", "utf8");
   const topic = await readFile("temas/11/index.html", "utf8");
-  assert.match(catalog, /href:["']\.\/temas\/11\/["']/);
+  assert.match(catalog, /href:["']\.\/temas\/11\/index\.html["']/);
   assert.match(topic, /<base href=["']\.\.\/\.\.\/["']>/);
   assert.match(topic, /class=["']nav-link study-back-link["'][^>]*href=["']\.\/["']|href=["']\.\/["'][^>]*class=["']nav-link study-back-link["']/);
   assert.doesNotMatch(home + topic, /(?:src|href)=["']https?:\/\//i);

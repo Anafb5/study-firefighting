@@ -54,7 +54,7 @@ android\app\build\outputs\apk\debug\app-debug.apk
 Actualizar el nombre cuando cambie la versión:
 
 ```powershell
-Copy-Item -LiteralPath "android\app\build\outputs\apk\debug\app-debug.apk" -Destination "Study-Firefighting-1.0.1-v2-debug.apk" -Force
+Copy-Item -LiteralPath "android\app\build\outputs\apk\debug\app-debug.apk" -Destination "Study-Firefighting-1.0.2-v3-debug.apk" -Force
 ```
 
 ## 7. Todo seguido
@@ -67,7 +67,7 @@ $env:JAVA_HOME = "C:\Program Files\Android\Android Studio\jbr"
 cd android
 .\gradlew.bat clean assembleDebug
 cd ..
-Copy-Item -LiteralPath "android\app\build\outputs\apk\debug\app-debug.apk" -Destination "Study-Firefighting-1.0.1-v2-debug.apk" -Force
+Copy-Item -LiteralPath "android\app\build\outputs\apk\debug\app-debug.apk" -Destination "Study-Firefighting-1.0.2-v3-debug.apk" -Force
 ```
 
 ## 8. Instalar por USB (opcional)
@@ -86,8 +86,8 @@ Con la depuración USB activada y el teléfono autorizado:
 Incrementar en `android/app/build.gradle`:
 
 ```gradle
-versionCode 3
-versionName "1.0.2"
+versionCode 4
+versionName "1.0.3"
 ```
 
 No reutilizar un `versionCode` anterior. Mantener siempre este identificador:

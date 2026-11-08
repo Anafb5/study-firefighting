@@ -1,7 +1,7 @@
 (function(){
 "use strict";
 const chapters=[
-{id:11,title:"Prendas y equipos de protección personal",description:"Categorías de EPI, prendas de intervención, protección respiratoria, NRBQ y RD 773/1997.",published:true,href:"./temas/11/",topics:19,cards:63,questions:89,features:["19 apartados","63 tarjetas","89 preguntas","Repaso interactivo"]},
+{id:11,title:"Prendas y equipos de protección personal",description:"Categorías de EPI, prendas de intervención, protección respiratoria, NRBQ y RD 773/1997.",published:true,href:"./temas/11/index.html",topics:19,cards:63,questions:89,features:["19 apartados","63 tarjetas","89 preguntas","Repaso interactivo"]},
 {id:10,title:"Vehículos contra incendios",description:"Espacio reservado para incorporar el tema y sus ejercicios cuando preparemos y publiquemos el contenido.",published:false,href:null,features:["Pendiente de preparar"]}
 ];
 const esc=v=>String(v??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
