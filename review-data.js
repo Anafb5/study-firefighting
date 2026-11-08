@@ -1,4 +1,4 @@
-/* Repaso activo Tema 11. Los datos se mantienen tal como los indica el PDF. */
+/* Ejercicios de repaso revisados: enunciados sin pistas, correcciones y referencias al manual. */
 const REVIEW_CLASSIFY=[
  {
   "name": "Categorías de EPI de intervención",
@@ -211,6 +211,20 @@ const REVIEW_ORDER=[
    "Revisar la elección si cambian los riesgos o las características técnicas"
   ],
   "why": "El artículo 6 del RD 773/1997 sigue la evaluación, definición de características, comparación de equipos, verificación y revisión posterior (pp. 35–37)."
+ },
+ {
+  "name": "Espectro electromagnético",
+  "prompt": "Ordena estas radiaciones desde menor hasta mayor energía, sin valores numéricos que desvelen la posición.",
+  "steps": [
+   "Radio",
+   "Microondas",
+   "Infrarrojos",
+   "Visible",
+   "Ultravioleta",
+   "Rayos X",
+   "Gamma"
+  ],
+  "why": "Orden de las radiaciones electromagnéticas que presenta el Tema 11, p. 29."
  }
 ];
 const REVIEW_JUDGE=[
@@ -250,7 +264,7 @@ const REVIEW_JUDGE=[
   "Artículo 3.c del RD 773/1997 (p. 35)."
  ],
  [
-  "El trabajador debe reparar personalmente cualquier EPI defectuoso.",
+  "Al detectar un defecto, el trabajador debe notificarlo directamente al fabricante antes de avisar a su superior.",
   false,
   "Debe notificar de inmediato el defecto al superior directo (art. 10.c, p. 38)."
  ],
@@ -260,7 +274,7 @@ const REVIEW_JUDGE=[
   "−20/−30/−40 °C corresponden a 2/3/4 estrellas (p. 16)."
  ],
  [
-  "El traje NRBQ blinda de toda radiación ionizante penetrante.",
+  "La barrera del traje NRBQ contra contaminación radiactiva proporciona también blindaje suficiente ante radiación gamma penetrante.",
   false,
   "Protege frente a contaminación, no es blindaje directo (p. 32)."
  ],
@@ -270,9 +284,9 @@ const REVIEW_JUDGE=[
   "Una de las tres vías junto a inhalación e ingestión (p. 31)."
  ],
  [
-  "Pueden compartirse EPI sin tomar medidas higiénicas.",
+  "El artículo 7 prohíbe compartir un EPI en cualquier circunstancia, incluso adoptando medidas de higiene.",
   false,
-  "El art. 7.3 exige que no haya problemas higiénicos ni sanitarios (p. 37)."
+  "El art. 7.3 admite compartirlo si se evitan problemas higiénicos/sanitarios (p. 37)."
  ],
  [
   "La categoría II es residual respecto a I y III.",
@@ -536,7 +550,7 @@ const REVIEW_MATCH_EXTRA=[
   "pairs": [
    [
     "14",
-    "Calor radiante de 14 kW/m²"
+    "Marcado térmico especial de protección radiante"
    ],
    [
     "7 kW/m²",
@@ -647,4 +661,4 @@ const REVIEW_MATCH_EXTRA=[
   ]
  }
 ];
-for(const item of REVIEW_MATCH_EXTRA)if(!MATCH_SETS.some(set=>set.title===item.title))MATCH_SETS.push(item);
+for(const item of REVIEW_MATCH_EXTRA)if(!MATCH_SETS.some(s=>s.title===item.title))MATCH_SETS.push(item);
