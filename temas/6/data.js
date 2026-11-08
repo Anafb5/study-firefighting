@@ -1,4 +1,4 @@
-/* Tema 6 · Agua como agente extintor. Redacción basada en PDF de 35 páginas. */
+/* Tema 6. Apuntes y ejercicios basados exclusivamente en el PDF aportado. */
 window.READER_SOURCE={
  "sections": [
   {
@@ -751,41 +751,52 @@ window.READER_SOURCE={
  ],
  "values": [
   {
-   "name": "Molécula, fases y equipos",
+   "name": "Propiedades cuantitativas del agua",
    "why": "Propiedades del agua y descripción de lanzas del PDF, pp. 7–29.",
    "items": [
     [
-     "¿Cuántos átomos de hidrógeno tiene cada molécula de H₂O?",
+     "¿Cuál es el calor específico del agua líquida citado en el manual?",
      [
-      "1",
-      "2",
-      "3",
-      "4"
+      "1.840 J/kg·K",
+      "2.260 J/kg·K",
+      "4.180 J/kg·K",
+      "8.360 J/kg·K"
      ],
-     1,
-     "Dos átomos de H junto a uno de O (p. 7)."
+     2,
+     "Calor específico agua: 4.180 J/(kg·K) (p. 9)."
     ],
     [
-     "¿Cuántas posiciones funcionales cita el documento para lanza de triple efecto?",
+     "¿Cuál es el calor latente de vaporización del agua citado?",
      [
-      "2",
-      "3",
-      "4",
-      "5"
+      "2,26·10³ J/kg",
+      "2,26·10⁴ J/kg",
+      "2,26·10⁵ J/kg",
+      "2,26·10⁶ J/kg"
      ],
-     1,
-     "Chorro, niebla/pulverización y cierre (p. 26)."
+     3,
+     "Calor de vaporización: 2,26 ×10⁶ J/kg (p. 9)."
     ],
     [
-     "¿Cuántas vías principales de transferencia de calor se estudian en la extinción por agua?",
+     "A 100 °C, ¿cuántas veces se expande el agua al convertirse en vapor según el documento?",
      [
-      "2",
-      "3",
-      "4",
-      "5"
+      "800",
+      "1.000",
+      "1.700",
+      "3.000"
+     ],
+     2,
+     "El manual indica expansión hasta 1.700 veces al vaporizar a presión constante (p. 9)."
+    ],
+    [
+     "¿Qué calor específico se cita para vapor de agua en los cálculos?",
+     [
+      "840 J/kg·K",
+      "1.840 J/kg·K",
+      "4.180 J/kg·K",
+      "8.360 J/kg·K"
      ],
      1,
-     "Conducción, convección y radiación como mecanismos de transferencia; el agua absorbe energía por calentamiento y vaporización."
+     "El PDF indica 1.840 J/(kg·K) para vapor de agua (p. 10)."
     ]
    ]
   }
