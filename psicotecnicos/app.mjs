@@ -1,5 +1,6 @@
 import {TOPICS,TOPIC_BY_ID,EXTRA_MATERIAL} from "./topics.mjs";
 import {createSession,VARIANTS,VARIANT_LABELS} from "./generator.mjs";
+import {OfficialExamController} from "./official-ui.mjs";
 
 const $=id=>document.getElementById(id);
 const root=$("app");
@@ -100,8 +101,10 @@ else if(mode==="examen"){options=renderChoices(q,null,false);actions='<p class="
 else {options=renderChoices(q,selected,answered);if(answered){actions=btn(sess.index+1===sess.questions.length?"Ver resultados":"Siguiente pregunta →","next-question","accent")+(q.demo&&!sess.shownDemo?btn("Ver demostración","open-demo"):"");}}
 const feedback=mode==="entrenamiento"&&answered?'<div class="feedback '+(selected===q.answer?"right":"wrong")+'"><h3>'+(selected===q.answer?"Respuesta correcta":"Respuesta incorrecta")+'</h3><p>La respuesta es <strong>'+escapeHTML(q.answer)+'</strong>. '+escapeHTML(q.explanation)+'</p></div>':"";
 return '<div role="tabpanel" class="board">'+heading+'<h2 class="q-title">'+escapeHTML(q.title)+'</h2><p class="prompt">'+escapeHTML(isObservation?"Memoriza las palabras; la pregunta aparecerá al ocultarlas.":q.prompt)+'</p><div class="visual">'+renderVisual(q,mode,sess.stage)+'</div>'+options+feedback+'<div class="board-actions">'+actions+'</div>'+(mode==="entrenamiento"&&answered&&sess.shownDemo?showDemo(q):"")+'</div>';}
-function renderTopic(){if(!topic)return renderHub();stopTicker();const body=view==="contenido"?renderContent():current[view]?renderSession(view):renderConfig(view);root.innerHTML=topicShell(body);installTicker();}
+function renderTopic(){if(!topic)return renderHub();stopTicker();const body=view==="contenido"?renderContent():view==="examen"?official.render():current[view]?renderSession(view):renderConfig(view);root.innerHTML=topicShell(body);installTicker();}
+const official=topic?new OfficialExamController(id,renderTopic,record):null;
 root.addEventListener("click",event=>{
+ if(view==="examen"&&official){const o=event.target.closest("[data-official-action]");if(o&&official.onAction(o.dataset.officialAction))return;}
  const tab=event.target.closest("[data-tab]");if(tab&&topic){view=tab.dataset.tab;renderTopic();window.scrollTo({top:0,behavior:"instant"});return;}
  const answer=event.target.closest("[data-answer]");if(answer&&view!=="contenido"){const sess=current[view];if(sess&&!sess.complete&&sess.stage==="answer"){respond(sess.questions[sess.index].options[Number(answer.dataset.answer)]);}return;}
  const action=event.target.closest("[data-action]");if(!action||!topic)return;
@@ -118,6 +121,7 @@ root.addEventListener("click",event=>{
  case"play-rotation":{const el=$("rotate-demo"),sess=current.entrenamiento;if(el&&sess){el.style.transition="none";el.style.transform="rotate(0deg)";requestAnimationFrame(()=>requestAnimationFrame(()=>{el.style.transition="transform .9s ease";el.style.transform="rotate("+(sess.questions[sess.index].demo.steps*90)+"deg)";}));}break;}
  case"trace":{const path=root.querySelector(".demo-path");if(path){path.classList.remove("play");requestAnimationFrame(()=>requestAnimationFrame(()=>path.classList.add("play")));}break;}
  }});
-root.addEventListener("change",event=>{const field=event.target.closest("[data-setting]");if(!field||!topic||view==="contenido")return;const kind=field.dataset.setting;if(kind==="variant"&&(field.value==="todos"||VARIANTS[id].includes(field.value)))settings[view].variant=field.value;if(kind==="length"&&[5,10,15].includes(Number(field.value)))settings[view].length=Number(field.value);});
-window.addEventListener("pagehide",stopTicker);
+root.addEventListener("change",event=>{if(view==="examen"&&official&&official.onChange(event.target))return;const field=event.target.closest("[data-setting]");if(!field||!topic||view==="contenido")return;const kind=field.dataset.setting;if(kind==="variant"&&(field.value==="todos"||VARIANTS[id].includes(field.value)))settings[view].variant=field.value;if(kind==="length"&&[5,10,15].includes(Number(field.value)))settings[view].length=Number(field.value);});
+window.addEventListener("pagehide",()=>{stopTicker();if(official)official.dispose();});
+window.addEventListener("focus",()=>{if(view==="examen"&&official)official.handleVisibility();});
 if(topic)renderTopic();else renderHub();
