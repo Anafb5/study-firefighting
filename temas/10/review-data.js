@@ -1,4 +1,4 @@
-/* Tema 10 · Ejercicios de clasificación, secuencias y afirmaciones según PDF aportado. */
+/* Repaso del Tema 10. Evita preguntas con la solución escrita en el enunciado. */
 const REVIEW_CLASSIFY=[
  {
   "name": "Capacidad de paso y terreno",
@@ -9,35 +9,35 @@ const REVIEW_CLASSIFY=[
   ],
   "items": [
    [
-    "BUL — bomba urbana ligera",
+    "BUL",
     0
    ],
    [
-    "BUP — bomba urbana pesada",
+    "BUP",
     0
    ],
    [
-    "BRL — bomba rural ligera",
+    "BRL",
     1
    ],
    [
-    "BRP — bomba rural pesada",
+    "BRP",
     1
    ],
    [
-    "BFL — bomba forestal ligera",
+    "BFL",
     2
    ],
    [
-    "BFP — bomba forestal pesada",
+    "BFP",
     2
    ],
    [
-    "Carretera practicable",
-    0
+    "Vehículo de extinción pensado para pistas poco accidentadas",
+    1
    ],
    [
-    "Campo a través",
+    "Autobomba que debe poder desplazarse campo a través",
     2
    ]
   ],
@@ -95,31 +95,31 @@ const REVIEW_CLASSIFY=[
   ],
   "items": [
    [
-    "UMJ: traslado de jefatura",
+    "UMJ",
     0
    ],
    [
-    "UMC: coordinación con emisoras y planos",
+    "UMC",
     1
    ],
    [
-    "UIV: análisis de riesgos y vigilancia",
+    "UIV",
     2
    ],
    [
-    "UIS: avituallamiento en siniestro largo",
+    "UIS",
     3
    ],
    [
-    "UTP: transporte de material pesado",
+    "UTP",
     4
    ],
    [
-    "UMJ: desplazar mandos",
+    "Vehículo cuyo equipo permite ejercer jefatura in situ",
     0
    ],
    [
-    "UIS: ropa y material de apoyo",
+    "Vehículo para mantener operativos víveres y suministros",
     3
    ]
   ],
@@ -135,35 +135,35 @@ const REVIEW_CLASSIFY=[
   ],
   "items": [
    [
-    "FEA — rescate subacuático",
+    "FEA",
     0
    ],
    [
-    "BSA — barca de salvamento",
+    "BSA",
     0
    ],
    [
-    "AEA — autoescalera automática",
+    "AEA",
     1
    ],
    [
-    "ABE — autobrazo extensible",
+    "ABE",
     1
    ],
    [
-    "FSV — furgón de salvamentos varios",
+    "FSV",
     2
    ],
    [
-    "FER — espeleología y montaña",
+    "FER",
     2
    ],
    [
-    "VAU — agente extintor único",
+    "VAU",
     3
    ],
    [
-    "VMA — agentes múltiples",
+    "VMA",
     3
    ]
   ],
@@ -179,35 +179,35 @@ const REVIEW_CLASSIFY=[
   ],
   "items": [
    [
-    "Comprobar cesta abatida y escalera recogida",
+    "Verificar que los apoyos hidráulicos están recogidos",
     0
    ],
    [
-    "Toma de fuerza auxiliar desconectada",
+    "Confirmar desconexión de toma de fuerza",
     0
    ],
    [
-    "Prestar atención al radio de giro y altura",
+    "Vigilar el gálibo al aproximarse a un túnel",
     1
    ],
    [
-    "Comprobar limitaciones en túneles",
+    "Prever el barrido de la escalera al girar",
     1
    ],
    [
-    "Señalizar y acordonar la zona de trabajo",
+    "Acordonar el perímetro de operación",
     2
    ],
    [
-    "Accionar los frenos de estacionamiento",
+    "Accionar freno de estacionamiento en el emplazamiento",
     2
    ],
    [
-    "Revisar escalera por posibles daños",
+    "Inspeccionar la escalera por posibles daños de maniobra",
     3
    ],
    [
-    "Cerrar los armarios tras recoger el equipo",
+    "Recoger el material y cerrar armarios",
     3
    ]
   ],
@@ -216,53 +216,26 @@ const REVIEW_CLASSIFY=[
 ];
 const REVIEW_ORDER=[
  {
-  "name": "Seguridad en vehículos de altura",
+  "name": "Seguridad de una autoescalera en servicio",
+  "prompt": "Ordena actuaciones de una salida con autoescalera, desde la preparación hasta finalizar el servicio.",
   "steps": [
-   "Comprobar equipos y escalera antes de salir",
-   "Desplazarse valorando radio de giro y altura",
-   "Estacionar, señalizar y acordonar en la intervención",
-   "Recoger, revisar la escalera y guardar material"
+   "Verificar que el equipo, apoyos y cesta están correctamente recogidos",
+   "Prestar atención al gálibo y al radio de giro durante el recorrido",
+   "Estacionar, asegurar frenos y señalizar el perímetro de intervención",
+   "Recoger el equipo y comprobar daños en la escalera, apoyos y conexiones"
   ],
-  "why": "Cuatro momentos del apartado 4.9, pp. 34–35."
+  "why": "Procedimiento antes, durante el desplazamiento, en la intervención y al terminar, apartado 4.9, pp. 34–35."
  },
  {
-  "name": "Masa: tabla UNE-EN 1846-1:2011",
+  "name": "Circuito hidráulico de una autobomba",
+  "prompt": "Organiza la cadena funcional del agua, desde su origen hasta la lanza de ataque.",
   "steps": [
-   "Ligero: 3–7,5 t",
-   "Medio: 7,5–16 t",
-   "Superior: más de 16 t"
+   "Abastecer desde depósito, red o aspiración",
+   "Conducir el agua a la bomba centrífuga",
+   "Proporcionarle presión y caudal por la bomba",
+   "Enviar el agua por salidas y mangueras hacia las lanzas"
   ],
-  "why": "Clases ordenadas por MTC, p. 8."
- },
- {
-  "name": "Capacidad de paso: menos a más terreno",
-  "steps": [
-   "Categoría 1: urbano",
-   "Categoría 2: rural",
-   "Categoría 3: todoterreno"
-  ],
-  "why": "Categorías de paso por capacidad para circular campo a través, p. 9."
- },
- {
-  "name": "Cisternas: capacidad creciente",
-  "steps": [
-   "BUL / BRL: 800 L",
-   "BRP / BFP: 2.400 L",
-   "BUP: 3.200 L",
-   "BNL: 5.500 L",
-   "BNP: 8.000 L"
-  ],
-  "why": "Capacidades mínimas de las fichas de pp. 20–29; se excluye BFL, descrita con 300–600 L."
- },
- {
-  "name": "Procedimiento hidráulico de autobomba",
-  "steps": [
-   "Elegir fuente de agua: cisterna, red o aspiración",
-   "Alimentar la bomba centrífuga",
-   "Generar presión y caudal en la bomba",
-   "Impulsar el agua por salidas hacia lanzas"
-  ],
-  "why": "Secuencia conceptual del apartado 3.5, pp. 14–15."
+  "why": "Aspiración/abastecimiento, bombeo e impulsión según apartado 3.5, pp. 14–15. Es una secuencia funcional, no protocolo de actuación en emergencias."
  }
 ];
 const REVIEW_JUDGE=[
@@ -376,6 +349,285 @@ const REVIEW_JUDGE=[
   true,
   "Cifra del manual, pendiente de verificación de vigencia (p. 40)."
  ]
+];
+const REVIEW_VALUES=[
+ {
+  "name": "Capacidades mínimas de las autobombas",
+  "why": "Fichas técnicas del Tema 10, pp. 20–29. Cifras de esta edición del manual.",
+  "items": [
+   [
+    "Según la ficha, ¿cuál es la cisterna mínima de BUL?",
+    [
+     "2.400 L",
+     "800 L",
+     "3.200 L",
+     "5.500 L"
+    ],
+    1,
+    "BUL: 800 L (pp. 20–29)."
+   ],
+   [
+    "Según la ficha, ¿cuál es la cisterna mínima de BRL?",
+    [
+     "800 L",
+     "2.400 L",
+     "3.200 L",
+     "5.500 L"
+    ],
+    0,
+    "BRL: 800 L (pp. 20–29)."
+   ],
+   [
+    "Según la ficha, ¿cuál es la cisterna mínima de BRP?",
+    [
+     "800 L",
+     "3.200 L",
+     "5.500 L",
+     "2.400 L"
+    ],
+    3,
+    "BRP: 2.400 L (pp. 20–29)."
+   ],
+   [
+    "Según la ficha, ¿cuál es la cisterna mínima de BFP?",
+    [
+     "800 L",
+     "3.200 L",
+     "2.400 L",
+     "5.500 L"
+    ],
+    2,
+    "BFP: 2.400 L (pp. 20–29)."
+   ],
+   [
+    "Según la ficha, ¿cuál es la cisterna mínima de BUP?",
+    [
+     "800 L",
+     "3.200 L",
+     "2.400 L",
+     "5.500 L"
+    ],
+    1,
+    "BUP: 3.200 L (pp. 20–29)."
+   ],
+   [
+    "Según la ficha, ¿cuál es la cisterna mínima de BNL?",
+    [
+     "5.500 L",
+     "800 L",
+     "2.400 L",
+     "3.200 L"
+    ],
+    0,
+    "BNL: 5.500 L (pp. 20–29)."
+   ],
+   [
+    "Según la ficha, ¿cuál es la cisterna mínima de BNP?",
+    [
+     "800 L",
+     "2.400 L",
+     "3.200 L",
+     "8.000 L"
+    ],
+    3,
+    "BNP: 8.000 L (pp. 20–29)."
+   ]
+  ]
+ },
+ {
+  "name": "Prestaciones de vehículos",
+  "why": "Velocidad máxima y potencia/masa según fichas de autobombas pp. 20–29.",
+  "items": [
+   [
+    "¿Qué velocidad máxima indica el manual para BUL?",
+    [
+     "80 km/h",
+     "85 km/h",
+     "90 km/h",
+     "100 km/h"
+    ],
+    2,
+    "BUL: 90 km/h (p. 20)."
+   ],
+   [
+    "¿Qué velocidad máxima indica el manual para BUP?",
+    [
+     "80 km/h",
+     "85 km/h",
+     "90 km/h",
+     "100 km/h"
+    ],
+    3,
+    "BUP: 100 km/h (p. 21)."
+   ],
+   [
+    "¿Qué velocidad máxima indica el manual para BRL y BRP?",
+    [
+     "80 km/h",
+     "85 km/h",
+     "90 km/h",
+     "100 km/h"
+    ],
+    0,
+    "BRL y BRP: 80 km/h (pp. 23–24)."
+   ],
+   [
+    "¿Qué velocidad máxima indica el manual para BFL y BFP?",
+    [
+     "80 km/h",
+     "85 km/h",
+     "90 km/h",
+     "100 km/h"
+    ],
+    1,
+    "Forestales: 85 km/h (pp. 26–27)."
+   ],
+   [
+    "¿Qué relación potencia/masa figura para BRP?",
+    [
+     "8 CV/t",
+     "10 CV/t",
+     "15 CV/t",
+     "20 CV/t"
+    ],
+    1,
+    "BRP: 10 CV/t (p. 24)."
+   ],
+   [
+    "¿Qué relación potencia/masa indica el manual para BNL/BNP?",
+    [
+     "8 CV/t",
+     "10 CV/t",
+     "15 CV/t",
+     "20 CV/t"
+    ],
+    0,
+    "Nodrizas: 8 CV/t (pp. 28–29)."
+   ]
+  ]
+ },
+ {
+  "name": "Componentes y dotaciones",
+  "why": "Apartados 3.1, 3.5 y 3.6 del manual, pp. 12–18.",
+  "items": [
+   [
+    "¿Qué tensión nominal corresponde al equipo eléctrico?",
+    [
+     "12 V",
+     "24 V",
+     "48 V",
+     "230 V"
+    ],
+    1,
+    "24 voltios (p. 12)."
+   ],
+   [
+    "¿Qué diámetro normal de boca de aspiración se indica?",
+    [
+     "25 mm",
+     "45 mm",
+     "70 mm",
+     "100 mm"
+    ],
+    3,
+    "100 mm (p. 14)."
+   ],
+   [
+    "¿Qué diámetro normal de boca de llenado de cisterna se indica?",
+    [
+     "25 mm",
+     "45 mm",
+     "70 mm",
+     "100 mm"
+    ],
+    2,
+    "70 mm (p. 14)."
+   ],
+   [
+    "¿Hasta qué profundidad indica el manual que aspira la bomba?",
+    [
+     "5 m",
+     "7,5 m",
+     "10 m",
+     "12 m"
+    ],
+    1,
+    "7,5 m (p. 14)."
+   ],
+   [
+    "¿Qué peso estimado atribuye el manual a la dotación tipo A?",
+    [
+     "90 kg",
+     "200 kg",
+     "437 kg",
+     "750 kg"
+    ],
+    2,
+    "Tipo A: 437 kg (p. 16)."
+   ],
+   [
+    "¿Qué peso estimado atribuye el manual a la dotación tipo B?",
+    [
+     "90 kg",
+     "200 kg",
+     "437 kg",
+     "750 kg"
+    ],
+    1,
+    "Tipo B: 200 kg (p. 18)."
+   ]
+  ]
+ },
+ {
+  "name": "Códigos y presión de las bombas",
+  "why": "Notación del apartado 3.5.2, p. 15.",
+  "items": [
+   [
+    "En B 16/8, ¿qué caudal nominal representa la cifra 16?",
+    [
+     "160 L/min",
+     "800 L/min",
+     "1.600 L/min",
+     "2.400 L/min"
+    ],
+    2,
+    "16 × 100 = 1.600 L/min (p. 15)."
+   ],
+   [
+    "En B 16/8, ¿qué presión nominal representa la cifra 8?",
+    [
+     "8 bar",
+     "16 bar",
+     "30 bar",
+     "35 bar"
+    ],
+    0,
+    "8 bar (p. 15)."
+   ],
+   [
+    "En c 2/30, ¿qué caudal nominal representa la cifra 2?",
+    [
+     "20 L/min",
+     "200 L/min",
+     "800 L/min",
+     "2.000 L/min"
+    ],
+    1,
+    "2 × 100 = 200 L/min (p. 15)."
+   ],
+   [
+    "En c 2/30, ¿qué presión nominal indica el manual?",
+    [
+     "8 bar",
+     "16 bar",
+     "30 bar",
+     "35 bar"
+    ],
+    2,
+    "30 bar (p. 15)."
+   ]
+  ]
+ }
 ];
 const REVIEW_MATCH_EXTRA=[
  {
@@ -527,4 +779,4 @@ const REVIEW_MATCH_EXTRA=[
   ]
  }
 ];
-for(const item of REVIEW_MATCH_EXTRA)if(!MATCH_SETS.some(set=>set.title===item.title))MATCH_SETS.push(item);
+for(const item of REVIEW_MATCH_EXTRA)if(!MATCH_SETS.some(s=>s.title===item.title))MATCH_SETS.push(item);
