@@ -116,7 +116,7 @@ root.addEventListener("click",event=>{
  case"close-demo":{const sess=current.entrenamiento;if(view==="entrenamiento"&&sess){sess.shownDemo=false;renderTopic();}break;}
  case"fold":{const el=$("fold-cube");if(el){const folded=el.classList.toggle("folded");action.textContent=folded?"Desplegar cubo":"Plegar cubo";}break;}
  case"play-rotation":{const el=$("rotate-demo"),sess=current.entrenamiento;if(el&&sess){el.style.transition="none";el.style.transform="rotate(0deg)";requestAnimationFrame(()=>requestAnimationFrame(()=>{el.style.transition="transform .9s ease";el.style.transform="rotate("+(sess.questions[sess.index].demo.steps*90)+"deg)";}));}break;}
- case"trace":{const path=$(".demo-path");if(path){path.classList.remove("play");requestAnimationFrame(()=>requestAnimationFrame(()=>path.classList.add("play")));}break;}
+ case"trace":{const path=root.querySelector(".demo-path");if(path){path.classList.remove("play");requestAnimationFrame(()=>requestAnimationFrame(()=>path.classList.add("play")));}break;}
  }});
 root.addEventListener("change",event=>{const field=event.target.closest("[data-setting]");if(!field||!topic||view==="contenido")return;const kind=field.dataset.setting;if(kind==="variant"&&(field.value==="todos"||VARIANTS[id].includes(field.value)))settings[view].variant=field.value;if(kind==="length"&&[5,10,15].includes(Number(field.value)))settings[view].length=Number(field.value);});
 window.addEventListener("pagehide",stopTicker);
