@@ -1,0 +1,2 @@
+/* Exámenes de los temas técnicos nuevos: el contenido se define en data.js y se valida. */
+const QUESTIONS=RAW_QUESTIONS.map((entry,i)=>{const [section,q,answer,wrong,why,page]=entry;const correct=(i*7+1)%4;const options=wrong.slice();options.splice(correct,0,answer);return{id:"q"+String(i+1).padStart(3,"0"),section,q,options,correct,why,page,difficulty:"Detalle"};});
