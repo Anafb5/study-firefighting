@@ -12,6 +12,8 @@ try{const saved=JSON.parse(localStorage.getItem(STORE)||"null");if(saved&&typeof
 const save=()=>{try{localStorage.setItem(STORE,JSON.stringify(state));}catch(err){}};
 const section=id=>SECTIONS.find(s=>s.id===id);
 let cardOrder=[],cardIndex=0,cardFlipped=false;
+let cardMode="flip",cardQuizOptions=[],cardQuizCardId=null,cardQuizAnswer=null;
+try{cardMode=localStorage.getItem(STORE+"-cards-mode")==="quiz"?"quiz":"flip";}catch(err){}
 let matchSet=0,matchPairs=[],matchDone=[],matchLeft=null;
 let exam=null,view="inicio",toastTimeout;
 function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toastTimeout);toastTimeout=setTimeout(()=>t.classList.remove("show"),2200);}
@@ -76,21 +78,128 @@ function getCards(){
  const s=$("cards-filter").value,pending=$("cards-pending").checked;
  return CARDS.map((c,i)=>({c,i})).filter(item=>(s==="all"||item.c[0]===s)&&(!pending||!state.mastered.includes(item.i)));
 }
+function resetCardQuestion(){
+ cardQuizCardId=null;cardQuizOptions=[];cardQuizAnswer=null;
+}
+function cardModeToolbar(){
+ return '<div class="flash-mode-bar"><div><strong>Modo de tarjetas</strong><span>La evaluación de la respuesta y tu valoración personal son independientes.</span></div>'+
+ '<div class="flash-mode-options" role="group" aria-label="Modo de tarjetas">'+
+ '<button type="button" class="flash-mode-option'+(cardMode==="flip"?" active":"")+'" data-cards-mode="flip" aria-pressed="'+(cardMode==="flip")+'">↻ Girar tarjeta</button>'+
+ '<button type="button" class="flash-mode-option'+(cardMode==="quiz"?" active":"")+'" data-cards-mode="quiz" aria-pressed="'+(cardMode==="quiz")+'">◉ Elegir respuesta</button></div></div>';
+}
+function cardAnswerKey(value){
+ return String(value==null?"":value).normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/\s+/g," ").trim();
+}
+function prepareCardOptions(item){
+ const correctKey=cardAnswerKey(item.c[2]);
+ const used=new Set([correctKey]);
+ const source=shuffled(CARDS.map((c,i)=>({c,i})).filter(x=>x.i!==item.i&&x.c[1]!==item.c[1]));
+ // Preferir distractores del mismo bloque y de extensión comparable:
+ // no mezclar conceptos ajenos cuando hay opciones razonables en su sección.
+ const rank=x=>(x.c[0]===item.c[0]?0:1000)+Math.abs(String(x.c[2]).length-String(item.c[2]).length);
+ source.sort((a,b)=>rank(a)-rank(b));
+ const others=[];
+ for(const candidate of source){
+  const key=cardAnswerKey(candidate.c[2]);
+  if(!key||used.has(key))continue;
+  // Evitar alternativas que sean literalmente la misma definición con un añadido.
+  if((key.includes(correctKey)||correctKey.includes(key))&&Math.min(key.length,correctKey.length)>18)continue;
+  used.add(key);others.push(candidate.i);
+  if(others.length===3)break;
+ }
+ return shuffled([item.i,...others]);
+}
+function renderCardQuiz(item){
+ if(cardQuizCardId!==item.i){
+  cardQuizCardId=item.i;
+  cardQuizOptions=prepareCardOptions(item);
+  cardQuizAnswer=null;
+ }
+ const answered=cardQuizAnswer!==null;
+ const correctIndex=cardQuizOptions.indexOf(item.i);
+ const actualCorrect=answered&&cardQuizAnswer===correctIndex;
+ const answers=cardQuizOptions.map((index,position)=>{
+  const isCorrect=answered&&position===correctIndex;
+  const isWrong=answered&&position===cardQuizAnswer&&!actualCorrect;
+  return '<button type="button" class="flash-choice'+(isCorrect?" is-correct":isWrong?" is-wrong":"")+'" data-card-answer="'+position+'" '+
+   (answered?'disabled aria-disabled="true"':'')+' aria-label="Opción '+abc[position]+': '+esc(CARDS[index][2])+'">'+
+   '<span class="flash-choice-letter">'+abc[position]+'</span><span class="flash-choice-text">'+esc(CARDS[index][2])+'</span>'+
+   (isCorrect?'<span class="flash-choice-result" aria-hidden="true">✓</span>':isWrong?'<span class="flash-choice-result" aria-hidden="true">×</span>':"")+'</button>';
+ }).join("");
+ const evaluation=answered?'<div class="flash-evaluation" role="status" aria-live="polite"><strong class="'+(actualCorrect?"flash-evaluation-correct":"flash-evaluation-wrong")+'">'+
+ (actualCorrect?"Respuesta correcta.":"Respuesta incorrecta.")+'</strong>'+
+ '<p>Respuesta del temario: <b>'+esc(item.c[2])+'</b></p><small>Referencia: '+esc(item.c[3])+'</small></div>'+
+ '<div class="flash-selfgrade"><strong>¿Consideras que ya dominas esta tarjeta?</strong>'+
+ '<p>Decídelo tú. Puedes acertar por suerte o fallar y haber entendido la explicación.</p>'+
+ '<div class="flash-selfgrade-actions"><button type="button" class="btn btn-outline" data-cards-judge="pending">↻ Necesito repasarla</button>'+
+ '<button type="button" class="btn btn-accent" data-cards-judge="known">✓ Ya la domino</button></div></div>':
+ '<p class="flash-quiz-hint">Selecciona una respuesta para comprobarla. Después decidirás si quieres volver a estudiar esta tarjeta.</p>';
+ return '<div class="flash-quiz"><div class="flash-quiz-head"><span>PREGUNTA · OPCIÓN MÚLTIPLE</span><span>'+esc(item.c[3])+'</span></div>'+
+ '<h3>'+esc(item.c[1])+'</h3><div class="flash-choices" role="group" aria-label="Alternativas de respuesta">'+answers+'</div>'+
+ evaluation+'</div>'+
+ '<div class="flash-actions flash-quiz-navigation"><button type="button" class="btn btn-outline" id="cards-prev">← Anterior</button>'+
+ '<span class="flash-navigation-tip">Puedes pasar sin marcarla; permanecerá pendiente si no la dominabas.</span>'+
+ '<button type="button" class="btn btn-outline" id="cards-next">Siguiente →</button></div>';
+}
 function renderCards(reset){
- const pool=getCards();if(reset){cardOrder=shuffled(pool);cardIndex=0;cardFlipped=false;}
- if(!pool.length){$("flashcard-area").innerHTML='<div class="flashcard-empty"><h3>¡No quedan tarjetas pendientes!</h3><p>Desmarca «Solo pendientes» o elige otro bloque para seguir practicando.</p></div>';return;}
- const allowed=new Set(pool.map(x=>x.i));cardOrder=cardOrder.filter(x=>allowed.has(x.i));if(!cardOrder.length)cardOrder=shuffled(pool);
+ const pool=getCards();
+ if(reset){cardOrder=shuffled(pool);cardIndex=0;cardFlipped=false;resetCardQuestion();}
+ const modeBar=cardModeToolbar();
+ if(!pool.length){cardOrder=[];cardIndex=0;resetCardQuestion();$("flashcard-area").innerHTML=modeBar+
+ '<div class="flashcard-empty"><h3>¡No quedan tarjetas pendientes!</h3><p>Desmarca «Solo pendientes» o elige otro bloque para seguir practicando.</p></div>';return;}
+ const allowed=new Set(pool.map(x=>x.i));
+ cardOrder=cardOrder.filter(x=>allowed.has(x.i));
+ if(!cardOrder.length){cardOrder=shuffled(pool);cardIndex=0;resetCardQuestion();}
  cardIndex=Math.max(0,Math.min(cardIndex,cardOrder.length-1));
- const item=cardOrder[cardIndex];const card=item.c;const known=state.mastered.includes(item.i);
- $("flashcard-area").innerHTML='<div class="flash-progress"><span>'+esc(section(card[0]).title)+'</span><strong>Tarjeta '+(cardIndex+1)+' / '+cardOrder.length+'</strong></div>'+
- '<button class="flashcard'+(cardFlipped?" flipped":"")+'" id="flashcard-flip" aria-label="Girar tarjeta"><span class="face-label">'+(cardFlipped?"RESPUESTA · "+esc(card[3]):"PREGUNTA · PIÉNSALA ANTES DE GIRAR")+'</span><span class="face-text">'+esc(cardFlipped?card[2]:card[1])+'</span><span class="small-help">Pulsa en la tarjeta para '+(cardFlipped?"ver la pregunta":"descubrir la respuesta")+'</span></button>'+
- '<div class="flash-actions"><button class="btn btn-outline" id="cards-prev">← Anterior</button><button class="btn btn-outline" id="cards-flip">↻ Girar</button><button class="btn '+(known?"btn-outline":"btn-accent")+'" id="cards-mark">'+(known?"✓ Dominada":"La domino ✓")+'</button><button class="btn btn-outline" id="cards-next">Siguiente →</button></div>';
+ const item=cardOrder[cardIndex],card=item.c,known=state.mastered.includes(item.i);
+ const progress='<div class="flash-progress"><span>'+esc(section(card[0])?.title||"Tarjetas")+'</span><strong>Tarjeta '+(cardIndex+1)+' / '+cardOrder.length+'</strong></div>';
+ if(cardMode==="quiz"){
+  $("flashcard-area").innerHTML=modeBar+progress+renderCardQuiz(item);
+  return;
+ }
+ $("flashcard-area").innerHTML=modeBar+progress+
+ '<button class="flashcard'+(cardFlipped?" flipped":"")+'" id="flashcard-flip" aria-label="Girar tarjeta"><span class="face-label">'+
+ (cardFlipped?"RESPUESTA · "+esc(card[3]):"PREGUNTA · PIÉNSALA ANTES DE GIRAR")+'</span><span class="face-text">'+
+ esc(cardFlipped?card[2]:card[1])+'</span><span class="small-help">Pulsa en la tarjeta para '+
+ (cardFlipped?"ver la pregunta":"descubrir la respuesta")+'</span></button>'+
+ '<div class="flash-actions"><button class="btn btn-outline" id="cards-prev">← Anterior</button>'+
+ '<button class="btn btn-outline" id="cards-flip">↻ Girar</button>'+
+ '<button class="btn '+(known?"btn-outline":"btn-accent")+'" id="cards-mark">'+(known?"✓ Dominada":"La domino ✓")+'</button>'+
+ '<button class="btn btn-outline" id="cards-next">Siguiente →</button></div>';
+}
+function setCardMode(mode){
+ if(mode!=="flip"&&mode!=="quiz"||cardMode===mode)return;
+ cardMode=mode;cardFlipped=false;resetCardQuestion();
+ try{localStorage.setItem(STORE+"-cards-mode",mode);}catch(err){}
+ renderCards(false);
+}
+function moveCard(direction){
+ if(!cardOrder.length)return;
+ cardIndex=(cardIndex+direction+cardOrder.length)%cardOrder.length;
+ cardFlipped=false;resetCardQuestion();renderCards(false);
 }
 function toggleMastered(){
  const card=cardOrder[cardIndex];if(!card)return;
  if(state.mastered.includes(card.i)){state.mastered=state.mastered.filter(i=>i!==card.i);toast("Marcada como pendiente");}
- else {state.mastered.push(card.i);toast("Tarjeta marcada como dominada");}
+ else{state.mastered.push(card.i);toast("Tarjeta marcada como dominada");}
  save();renderStats();renderCards(false);
+}
+function judgeCard(mastered){
+ if(cardMode!=="quiz"||cardQuizAnswer===null||!cardOrder.length)return;
+ const item=cardOrder[cardIndex];
+ const next=cardOrder[(cardIndex+1)%cardOrder.length];
+ // Acertar/fallar nunca altera el progreso automáticamente; solo esta decisión.
+ if(mastered&&!state.mastered.includes(item.i))state.mastered.push(item.i);
+ if(!mastered)state.mastered=state.mastered.filter(i=>i!==item.i);
+ save();renderStats();
+ const available=new Set(getCards().map(x=>x.i));
+ cardOrder=cardOrder.filter(x=>available.has(x.i));
+ if(cardOrder.length){
+  const nextIndex=cardOrder.findIndex(x=>x.i===next.i);
+  cardIndex=nextIndex>=0?nextIndex:Math.min(cardIndex,cardOrder.length-1);
+ }else cardIndex=0;
+ cardFlipped=false;resetCardQuestion();renderCards(false);
+ toast(mastered?"La dominas · avanzamos a la siguiente":"Queda pendiente · avanzamos a la siguiente");
 }
 function resetMatch(){
  matchPairs=shuffled(MATCH_SETS[matchSet].pairs.map((pair,i)=>({id:i,left:pair[0],right:pair[1]})));
@@ -193,8 +302,17 @@ function handleClick(event){
   toast(done?"Apartado marcado como estudiado":"Apartado marcado como pendiente");
   return;
  }
- if(btn.id==="flashcard-flip"||btn.id==="cards-flip"){cardFlipped=!cardFlipped;renderCards(false);return;}
- if(btn.id==="cards-prev"||btn.id==="cards-next"){cardIndex=(cardIndex+(btn.id==="cards-next"?1:-1)+cardOrder.length)%cardOrder.length;cardFlipped=false;renderCards(false);return;}
+ if(btn.dataset.cardsMode){setCardMode(btn.dataset.cardsMode);return;}
+ if(btn.dataset.cardAnswer!==undefined){
+  const option=Number(btn.dataset.cardAnswer);
+  if(cardMode==="quiz"&&cardQuizAnswer===null&&Number.isInteger(option)&&option>=0&&option<cardQuizOptions.length){
+   cardQuizAnswer=option;renderCards(false);
+  }
+  return;
+ }
+ if(btn.dataset.cardsJudge){judgeCard(btn.dataset.cardsJudge==="known");return;}
+ if(btn.id==="flashcard-flip"||btn.id==="cards-flip"){if(cardMode==="flip"){cardFlipped=!cardFlipped;renderCards(false);}return;}
+ if(btn.id==="cards-prev"||btn.id==="cards-next"){moveCard(btn.id==="cards-next"?1:-1);return;}
  if(btn.id==="cards-mark"){toggleMastered();return;}
  if(btn.dataset.matchLeft!==undefined){handleMatch("left",btn.dataset.matchLeft);return;}
  if(btn.dataset.matchRight!==undefined){handleMatch("right",btn.dataset.matchRight);return;}
@@ -213,7 +331,7 @@ function handleClick(event){
 window.FireStudySession={
  snapshot(){
   return {
-   cards:{order:cardOrder.map(x=>x.i),index:cardIndex,flipped:cardFlipped},
+   cards:{order:cardOrder.map(x=>x.i),index:cardIndex,flipped:cardFlipped,mode:cardMode,quizOptions:cardQuizOptions.slice(),quizAnswer:cardQuizAnswer},
    match:{set:matchSet,leftOrder:matchPairs.map(x=>x.id),rightOrder:(matchPairs._right||[]).map(x=>x.id),done:matchDone.slice(),left:matchLeft},
    exam:exam?{ids:exam.items.map(q=>q.id),pos:exam.pos,answers:{...exam.answers},checked:{...exam.checked},mode:exam.mode,start:exam.start}:null
   };
@@ -225,6 +343,20 @@ window.FireStudySession={
    cardOrder=snapshot.cards.order.filter(x=>Number.isInteger(x)&&available.has(x)).map(i=>({i,c:CARDS[i]}));
    cardIndex=Math.max(0,Math.min(Number(snapshot.cards.index)||0,Math.max(cardOrder.length-1,0)));
    cardFlipped=!!snapshot.cards.flipped;
+   if(snapshot.cards.mode==="flip"||snapshot.cards.mode==="quiz"){
+    cardMode=snapshot.cards.mode;
+    try{localStorage.setItem(STORE+"-cards-mode",cardMode);}catch(err){}
+   }
+   resetCardQuestion();
+   const current=cardOrder[cardIndex];
+   const choices=snapshot.cards.quizOptions;
+   if(current&&cardMode==="quiz"&&Array.isArray(choices)&&choices.length>=3&&choices.length<=4&&
+      choices.includes(current.i)&&new Set(choices).size===choices.length&&choices.every(i=>Number.isInteger(i)&&i>=0&&i<CARDS.length)){
+    cardQuizCardId=current.i;
+    cardQuizOptions=choices.slice();
+    const chosen=snapshot.cards.quizAnswer;
+    if(Number.isInteger(chosen)&&chosen>=0&&chosen<choices.length)cardQuizAnswer=chosen;
+   }
    if(cardOrder.length)renderCards(false);
   }
   if(snapshot.match){
