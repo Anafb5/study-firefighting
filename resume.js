@@ -42,6 +42,13 @@ function getVisualState(){
   const article=node.closest("article.lesson");
   if(article)result["t10-details:"+article.id]=true;
  });
+ document.querySelectorAll("#topic-list [data-n9-select]").forEach(root=>{
+  const active=root.querySelector("button.active[data-n9-choice]");
+  if(active){
+   const article=root.closest("article.lesson");
+   if(article)result["t9:"+article.id]={index:Number(active.dataset.n9Choice)};
+  }
+ });
  return result;
 }
 function nearestLesson(){
@@ -117,6 +124,12 @@ function restoreVisuals(visual){
    const details=article?.querySelector(".t10-details");
    if(details)details.open=true;
   }
+ }
+ for(const [id,info] of Object.entries(visual)){
+  if(!id.startsWith("t9:")||!info||!Number.isInteger(info.index))continue;
+  const article=document.getElementById(id.slice(3));
+  const target=Array.from(article?.querySelectorAll("[data-n9-choice]")||[]).find(node=>Number(node.dataset.n9Choice)===info.index);
+  if(target)target.click();
  }
 }
 function apply(snapshot){
