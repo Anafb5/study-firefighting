@@ -10,11 +10,11 @@ let tab="matching",ci=0,oi=0,vi=0,cs=null,os=null,vs=null,js=null;
 const values=typeof REVIEW_VALUES!=="undefined"?REVIEW_VALUES:[];
 const validTab=["matching","classify","order","values","judge"];
 const score=(n,total)=>'<div class="rv-score"><strong>'+n+' / '+total+'</strong><p>Respuestas correctas en este intento.</p></div>';
-function save(){try{sessionStorage.setItem(KEY,JSON.stringify({tab,ci,oi,vi,cs,os,vs,js}));}catch(e){}}
+function save(){try{sessionStorage.setItem(KEY,JSON.stringify({version:3,tab,ci,oi,vi,cs,os,vs,js}));}catch(e){}}
 function load(){
  try{
   const x=JSON.parse(sessionStorage.getItem(KEY)||"null");
-  if(!x)return;
+  if(!x||x.version!==3)return;
   tab=validTab.includes(x.tab)?x.tab:"matching";
   ci=Number.isInteger(x.ci)?x.ci:0;
   oi=Number.isInteger(x.oi)?x.oi:0;
@@ -62,27 +62,61 @@ function drawOrder(){
  '<button class="rv-btn primary" data-rv="order-reset">Repetir sin pistas</button>':
  '<button class="rv-btn primary" data-rv="order-check">Comprobar secuencia</button>');
 }
+/* Extrae el número (o intervalo) de las respuestas del PDF; admite 2.000/2000 y 4,5/4.5.
+   La unidad se muestra en la explicación, pero el campo no exige escribirla. */
+function numericSignature(value){
+ const cleaned=String(value??"").replace(/(\d)\.(?=\d{3}(?:\D|$))/g,"$1").replace(/,/g,".");
+ const found=cleaned.match(/\d+(?:\.\d+)?/g)||[];
+ return found.map(s=>String(Number(s))).join("|");
+}
 function newValues(){
  const x=values[vi],ids=shuffle(x.items.map((_,i)=>i)),optionOrders=x.items.map(()=>shuffle([0,1,2,3]));
- vs={ids,optionOrders,answers:{},at:0};save();drawValues();
+ vs={ids,optionOrders,answers:{},hints:{},at:0};save();drawValues();
 }
 function drawValues(){
  const target=$("review-values-area"),x=values[vi];
  if(!x||!target)return;
  if(!vs||!Array.isArray(vs.ids)||vs.ids.length!==x.items.length||!Array.isArray(vs.optionOrders)||vs.optionOrders.length!==x.items.length){newValues();return;}
- const done=Object.keys(vs.answers).length;
- const correct=Object.entries(vs.answers).filter(([id,answer])=>x.items[Number(id)]?.[2]===answer).length;
+ const entries=Object.values(vs.answers);
+ const known=entries.filter(a=>a.correct&&!a.hint).length;
+ const helped=entries.filter(a=>a.correct&&a.hint).length;
+ const errors=entries.filter(a=>!a.correct).length;
  if(vs.at>=x.items.length){
-  target.innerHTML=score(correct,x.items.length)+'<p class="rv-hint">Correspondencias que debías recordar:</p>'+
-   x.items.map((item,i)=>'<p class="rv-resultline">'+(vs.answers[i]===item[2]?"✓":"✕")+' '+esc(item[0])+' → <b>'+esc(item[1][item[2]])+'</b></p>').join("")+
-   '<p class="rv-feedback">'+esc(x.why)+'</p><button class="rv-btn primary" data-rv="value-reset">Practicar de nuevo</button>';
+  target.innerHTML='<div class="rv-score"><strong>'+known+' / '+x.items.length+'</strong><p>Aciertos sin pistas · '+helped+' con opciones · '+errors+' incorrectas.</p></div>'+
+   '<p class="rv-hint">Corrección del banco de cifras:</p>'+
+   x.items.map((question,i)=>{
+    const a=vs.answers[i];
+    return '<p class="rv-resultline">'+(a?.correct?(a.hint?"◐":"✓"):"✕")+' '+esc(question[0])+
+     ' → <b>'+esc(question[1][question[2]])+'</b>'+(a&&!a.correct?' (tu respuesta: '+esc(a.text)+')':"")+'</p>';
+   }).join("")+
+   '<p class="rv-feedback">'+esc(x.why)+'</p>'+
+   '<button class="rv-btn primary" data-rv="value-reset">Repetir sin pistas</button>';
   return;
  }
- const id=vs.ids[vs.at],q=x.items[id],answer=vs.answers[id],answered=answer!==undefined,order=vs.optionOrders[id];
- target.innerHTML='<div class="rv-kicker">DATO '+(vs.at+1)+' DE '+x.items.length+' · '+correct+' aciertos</div>'+
- '<div class="rv-prompt">'+esc(q[0])+'</div><div class="rv-options">'+order.map(idx=>
- '<button class="rv-option '+(answered?(idx===q[2]?"right":idx===answer?"wrong":""):"")+'" data-rv-value="'+idx+'" '+(answered?"disabled":"")+'>'+esc(q[1][idx])+'</button>').join("")+'</div>'+
- (answered?'<p class="rv-feedback">'+(answer===q[2]?"Correcto. ":"No es correcto. ")+esc(q[3])+'</p><button class="rv-btn primary" data-rv="value-next">'+(vs.at===x.items.length-1?"Ver resultado":"Siguiente →")+'</button>':"");
+ const id=vs.ids[vs.at],q=x.items[id],answer=vs.answers[id],answered=!!answer,withHint=!!vs.hints[id];
+ const options=withHint?'<div class="rv-options">'+vs.optionOrders[id].map(idx=>
+  '<button class="rv-option '+(answered?(idx===q[2]?"right":q[1][idx]===answer.text?"wrong":""):"")+
+  '" data-rv-value="'+idx+'" '+(answered?"disabled":"")+'>'+esc(q[1][idx])+'</button>').join("")+'</div>':"";
+ target.innerHTML='<div class="rv-kicker">DATO '+(vs.at+1)+' DE '+x.items.length+' · '+known+' sin pistas</div>'+
+ '<div class="rv-prompt">'+esc(q[0])+'</div>'+
+ (!answered?'<div class="rv-freeanswer"><label for="review-value-input">Escribe la cifra o intervalo (sin necesidad de indicar unidades)</label>'+
+ '<div><input id="review-value-input" type="text" inputmode="decimal" autocomplete="off" placeholder="Tu respuesta" aria-label="Respuesta numérica sin pistas">'+
+ '<button class="rv-btn primary" data-rv="value-check">Comprobar</button></div></div>':"")+
+ options+
+ (!answered&&!withHint?'<button class="rv-btn rv-hintbutton" data-rv="value-hint">Necesito una pista: mostrar opciones</button>':"")+
+ (answered?'<p class="rv-feedback"><strong>'+(answer.correct?(answer.hint?"Correcto con ayuda. ":"¡Correcto sin pistas! "):"Respuesta incorrecta. ")+'</strong>'+
+ esc(q[3])+(answer.text&&!answer.correct?" Tu respuesta: "+esc(answer.text)+".":"")+'</p>'+
+ '<button class="rv-btn primary" data-rv="value-next">'+(vs.at===x.items.length-1?"Ver resultado":"Siguiente →")+'</button>':"");
+}
+function submitValue(text,viaHint=false){
+ if(!vs||vs.at>=values[vi].items.length)return;
+ const id=vs.ids[vs.at],q=values[vi].items[id];
+ if(vs.answers[id]!==undefined)return;
+ const raw=String(text??"").trim();
+ if(!raw)return;
+ const correct=numericSignature(raw)===numericSignature(q[1][q[2]]);
+ vs.answers[id]={text:raw,correct,hint:viaHint||!!vs.hints[id]};
+ save();drawValues();
 }
 function newJudge(){
  js={ids:shuffle(REVIEW_JUDGE.map((_,i)=>i)),at:0,answers:{}};save();drawJudge();
@@ -126,7 +160,12 @@ function click(ev){
  if(command==="order-check"){os.checked=true;save();drawOrder();return;}
  if(command==="order-reset"){newOrder();return;}
  if(btn.dataset.rvValue!==undefined){
-  const id=vs.ids[vs.at];if(vs.answers[id]===undefined){vs.answers[id]=Number(btn.dataset.rvValue);save();drawValues();}return;
+  const id=vs.ids[vs.at],q=values[vi].items[id];
+  submitValue(q[1][Number(btn.dataset.rvValue)],true);return;
+ }
+ if(command==="value-check"){submitValue($("review-value-input")?.value||"",false);return;}
+ if(command==="value-hint"){
+  vs.hints[vs.ids[vs.at]]=true;save();drawValues();return;
  }
  if(command==="value-next"){vs.at=Math.min(vs.at+1,vs.ids.length);save();drawValues();return;}
  if(command==="value-reset"){newValues();return;}
@@ -156,6 +195,7 @@ function init(){
   $("review-values-select").addEventListener("change",()=>{vi=Number($("review-values-select").value);newValues();});
  }
  document.addEventListener("click",click);
+ document.addEventListener("keydown",event=>{if(event.key==="Enter"&&event.target.id==="review-value-input"){event.preventDefault();submitValue(event.target.value,false);}});
  if(!cs||cs.ids?.length!==REVIEW_CLASSIFY[ci].items.length)newClass();else drawClass();
  if(!os||os.ids?.length!==REVIEW_ORDER[oi].steps.length)newOrder();else drawOrder();
  if(values.length&&$("review-values-area")){if(!vs||vs.ids?.length!==values[vi].items.length)newValues();else drawValues();}
