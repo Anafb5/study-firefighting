@@ -13,7 +13,7 @@ function clean(x){
 }
 function cleanArticle(x){
  if(!x||typeof x!=="object"||Array.isArray(x))throw Error("Progreso jurídico de artículos incorrecto");
- const valid=x=>typeof x==="string"&&/^[A-Za-zÁÉÍÓÚÑÜa-záéíóúñü0-9 /.-]{1,80}:[0-9]{1,4}(?:\\.[0-9]{1,4})?$/.test(x);
+ const valid=x=>typeof x==="string"&&/^[A-Za-zÁÉÍÓÚÑÜa-záéíóúñü0-9 /.-]{1,80}:[0-9]{1,4}(?:\.[0-9]{1,4})?$/.test(x);
  const mastered=Array.from(new Set((Array.isArray(x.mastered)?x.mastered:[]).filter(valid))).slice(0,600);
  const repeat=Array.from(new Set((Array.isArray(x.repeat)?x.repeat:[]).filter(valid))).slice(0,600);
  const attempts={};
