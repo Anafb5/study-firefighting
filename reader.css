@@ -1,0 +1,16 @@
+/* Contenido técnico estructurado de temas 1–8 */
+.reader-topic{min-width:0}
+.reader-tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0 23px}
+.reader-tile{border:1px solid #e0e8ec;border-radius:9px;padding:17px;background:#f9fbfc}
+.reader-tile strong{font-size:13px;color:#bd613f}
+.reader-tile p{font-size:12px;line-height:1.75;color:#526b7a;margin:7px 0 0}
+.reader-steps{padding:0;list-style:none;counter-reset:step;display:grid;gap:10px;margin:13px 0 27px}
+.reader-steps li{counter-increment:step;background:#f8fafb;border:1px solid #e2e9ed;border-radius:9px;display:grid;grid-template-columns:42px 1fr;padding:15px;gap:13px}
+.reader-steps li:before{content:counter(step,decimal-leading-zero);background:#ffede3;color:#bf5837;font-weight:850;display:grid;place-items:center;width:34px;height:34px;border-radius:8px;font-size:11px}
+.reader-steps .st-line{padding:0;border:0}
+.reader-formulas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin:12px 0 25px}
+.reader-formula{padding:19px;background:#1a3248;color:white;border-radius:9px;display:flex;flex-direction:column;gap:8px}
+.reader-formula span{font-size:11px;color:#a9c0ce}
+.reader-formula strong{font-size:21px;color:#fac2a4;letter-spacing:-.03em;overflow-wrap:anywhere}
+.reader-note{font-size:11px;line-height:1.75;color:#65798c;background:#fafbfc;border-left:3px solid #bd7860;padding:11px 15px;margin:23px 0 3px}
+@media(max-width:700px){.reader-tiles,.reader-formulas{grid-template-columns:1fr}.reader-steps li{grid-template-columns:32px 1fr;padding:13px}}
