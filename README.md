@@ -6,6 +6,7 @@ Web estática, sin servidor ni registro, preparada para estudiar varios temas co
 
 - **Biblioteca de temas**: `/` (archivo `index.html`).
 - **Tema 11 — Prendas y equipos de protección personal**: `/temas/11/`.
+- **Tema 9 — Instalaciones fijas**: `/temas/9/`, completo y disponible en Técnica.
 - **Tema 10 — Vehículos contra incendios**: `/temas/10/`, completo y disponible en el área Técnica.
 - Los futuros temas pueden crearse como `/temas/NUMERO/index.html` y añadirse a `catalog.js`.
 
@@ -13,13 +14,24 @@ Web estática, sin servidor ni registro, preparada para estudiar varios temas co
 
 La portada organiza el estudio en **tres grandes apartados**:
 
-- **Técnica:** reúne los temas técnicos. Contiene los Temas 10 y 11 publicados.
+- **Técnica:** reúne los temas técnicos. Contiene los Temas 9, 10 y 11 publicados.
 - **Jurídica:** sección preparada para temarios de legislación y normativa; aún sin material publicado.
 - **Psicotécnicos:** espacio preparado para baterías de ejercicios de aptitudes y razonamiento; aún sin material publicado.
 
 La selección se realiza en la portada mediante tarjetas y queda reflejada en el fragmento de la URL (`#tecnica`, `#juridica`, `#psicotecnicos`). `catalog.js` mantiene la lista de áreas y metadatos de los temas. **No marques un tema como publicado hasta que exista su página**.
 
 Al incorporar futuros temas, usa un identificador estable y una clave de progreso única por tema: el Tema 11 existente usa `study-firefighting-t11-v1` y sus copias JSON deben seguir funcionando. Si varios bloques tienen temas con el mismo número, evita colisiones de progreso y amplía de forma compatible la lógica de exportación en `progress.js`.
+
+## Tema 9 — Instalaciones fijas
+
+Fuente: PDF facilitado *9. Instalaciones fijas*, Volumen IV, 1ª parte técnica (44 páginas).
+
+- **33 apartados**, en siete bloques: detección y alarma; hidrantes; BIE; columna seca; bombas de presión; extinción fija; abastecimiento.
+- **159 tarjetas** y **137 preguntas de tipo test** con cuatro opciones, justificación y referencias a páginas impresas.
+- **12 conjuntos de asociación**, 6 ejercicios de clasificación, 5 de ordenación y 30 afirmaciones para detectar errores.
+- Material variado: diagramas de flujo (detección, rociadores, espuma, abastecimiento), dibujo de columna seca, comparativas de BIE, hidrantes, detectores y bombas; tablas normativas, listas y cifras.
+- Progreso independiente con clave `study-firefighting-t9-v1`; sesiones y ejercicios también aislados; importación/exportación JSON de los tres temas compatible.
+- **Especial rigor normativo:** todas las cifras de umbrales, distancias, autonomías, periodicidades y UNE se atribuyen al **PDF aportado** y no deben confundirse con la legislación vigente. El tema incluye requisitos para establecimientos industriales que pueden estar desactualizados.
 
 ## Tema 10 — Vehículos contra incendios
 
@@ -47,7 +59,7 @@ El contenido se basa en el PDF del Tema 11 facilitado por la usuaria (44 página
 
 ### Copias de seguridad y cambio de dispositivo
 
-La portada y los Temas 10 y 11 ofrecen **Exportar progreso** e **Importar progreso**.
+La portada y los Temas 9, 10 y 11 ofrecen **Exportar progreso** e **Importar progreso**.
 
 - Exportar descarga un archivo `.json` con apartados marcados, tarjetas dominadas, preguntas falladas e historial de tests de cada tema.
 - Guardar ese archivo fuera del navegador (ordenador, disco en la nube, etc.) permite restaurarlo si se pierde la caché o cambiar a otro dispositivo.
@@ -64,6 +76,7 @@ python -m http.server 8000
 ```
 
 Portada: http://localhost:8000/  
+Tema 9: http://localhost:8000/temas/9/  
 Tema 10: http://localhost:8000/temas/10/  
 Tema 11: http://localhost:8000/temas/11/
 
@@ -72,6 +85,7 @@ Tema 11: http://localhost:8000/temas/11/
 GitHub Pages desde la rama `main` mediante `.github/workflows/deploy.yml`.
 
 - Biblioteca: https://anafb5.github.io/study-firefighting/
+- Tema 9: https://anafb5.github.io/study-firefighting/temas/9/
 - Tema 10: https://anafb5.github.io/study-firefighting/temas/10/
 - Tema 11: https://anafb5.github.io/study-firefighting/temas/11/
 
@@ -81,4 +95,4 @@ El temario contiene discrepancias internas en las categorías NRBQ (p. 15 frente
 
 ### Integración pendiente con la rama Android de Codex
 
-La rama `content/nuevos-temas` contiene el Tema 10 sin tocar archivos nativos de Capacitor. Cuando se integre con la rama de APK, el build debe incorporar **todo** `temas/**` (no solo `temas/11/`) y conservar rutas relativas de recursos web. Se generalizaron de forma compatible las claves de `app.js`, `resume.js` y `review.js` mediante `window.STUDY_CONFIG` (Tema 11 conserva claves antiguas por defecto; Tema 10 usa claves propias). Validar ambos temas en Android tras la integración.
+La rama `content/nuevos-temas` contiene los Temas 9 y 10 sin tocar archivos nativos de Capacitor. Cuando se integre con la rama de APK, el build debe incorporar **todo** `temas/**` (no solo `temas/11/`), incluidos los Temas 9 y 10 y conservar rutas relativas de recursos web. Se generalizaron de forma compatible las claves de `app.js`, `resume.js` y `review.js` mediante `window.STUDY_CONFIG` (Tema 11 conserva claves antiguas por defecto; Tema 10 usa claves propias). Validar ambos temas en Android tras la integración.
