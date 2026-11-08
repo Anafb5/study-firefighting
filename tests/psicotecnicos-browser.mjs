@@ -57,6 +57,17 @@ try{
  assert.equal(await page.locator('[data-answer]').count(),4);
  await page.locator('[data-answer="0"]').click();
  assert.equal(await page.locator(".feedback").count(),1);
+ await page.goto(base+"/psicotecnicos/temas/mecanica/");
+ await page.locator('[data-tab="entrenamiento"]').click();
+ await page.locator("#variant").selectOption("connections");
+ await page.locator("#length").selectOption("5");
+ await page.locator('[data-action="start-session"]').click();
+ const noHintStrokes=await page.locator(".visual svg path").evaluateAll(nodes=>nodes.map(n=>n.getAttribute("stroke")));
+ assert.equal(new Set(noHintStrokes).size,1,"Las conexiones no deben revelar el recorrido antes de responder");
+ await page.locator('[data-answer="0"]').click();
+ await page.locator('[data-action="open-demo"]').click();
+ const demoStrokes=await page.locator("#demonstration svg path").evaluateAll(nodes=>nodes.map(n=>n.getAttribute("stroke")));
+ assert.equal(demoStrokes.filter(s=>s==="#e85e36").length,1,"La solución resalta una conexión solo en la demostración");
  await page.setViewportSize({width:390,height:844});
  await page.goto(base+"/psicotecnicos/temas/espacial/");
  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+1),true,"Diseño móvil sin desbordamiento horizontal");
