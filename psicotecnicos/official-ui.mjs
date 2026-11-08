@@ -106,7 +106,7 @@ export class OfficialExamController{
  async fileChosen(files){
   const file=files?.[0];if(!file)return;
   if(!validPDF(file,this.topicId)){this.status="El archivo no coincide con el PDF de "+this.doc.display+". Selecciona el documento correspondiente del ZIP.";this.rerender();return;}
-  this.setFile(file);const saved=await saveFile(this.topicId,file);this.status=saved?"PDF conservado en el navegador para futuras sesiones.":"PDF cargado para esta sesión; el navegador no permitió guardarlo de forma persistente.";
+  this.setFile(file);this.status="PDF cargado en este dispositivo.";this.rerender();const saved=await saveFile(this.topicId,file);this.status=saved?"PDF conservado en el navegador para futuras sesiones.":"PDF cargado para esta sesión; el navegador no permitió guardarlo de forma persistente.";
   this.rerender();
  }
  onChange(target){
