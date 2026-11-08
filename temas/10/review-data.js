@@ -1,4 +1,4 @@
-/* Ejercicios de repaso revisados: enunciados sin pistas, correcciones y referencias al manual. */
+/* Tema 10 · Repaso revisado con recuento libre de cifras. */
 const REVIEW_CLASSIFY=[
  {
   "name": "Capacidad de paso y terreno",
@@ -594,7 +594,7 @@ const REVIEW_VALUES=[
     "16 × 100 = 1.600 L/min (p. 15)."
    ],
    [
-    "En B 16/8, ¿qué presión nominal representa la cifra 8?",
+    "Según la ficha del BUP, ¿cuál es la presión nominal en la etapa de baja presión?",
     [
      "8 bar",
      "16 bar",
@@ -602,7 +602,7 @@ const REVIEW_VALUES=[
      "35 bar"
     ],
     0,
-    "8 bar (p. 15)."
+    "La bomba de baja presión B 16/8 del BUP trabaja a 8 bar (pp. 15 y 21)."
    ],
    [
     "En c 2/30, ¿qué caudal nominal representa la cifra 2?",
@@ -616,7 +616,7 @@ const REVIEW_VALUES=[
     "2 × 100 = 200 L/min (p. 15)."
    ],
    [
-    "En c 2/30, ¿qué presión nominal indica el manual?",
+    "Según la ficha de la BRP, ¿qué presión nominal alcanza la etapa de alta presión de la bomba combinada?",
     [
      "8 bar",
      "16 bar",
@@ -624,7 +624,7 @@ const REVIEW_VALUES=[
      "35 bar"
     ],
     2,
-    "30 bar (p. 15)."
+    "La bomba combinada Bc 16/8-2/30 de BRP alcanza 30 bar en alta (p. 24)."
    ]
   ]
  }
