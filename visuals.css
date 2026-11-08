@@ -127,3 +127,11 @@
 @media(max-width:700px){.sv-head{padding:21px 16px 11px}.sv-head h3{font-size:19px}.sv-controls{padding:8px 16px 12px}.sv-graph{padding:14px;display:grid}.sv-control-hint{display:none}.sv-node{padding:11px;min-height:90px}.sv-node-name{font-size:12px}.sv-node-short{font-size:10px}.sv-node-index{width:23px;height:23px}.sv-mode-filters,.sv-mode-categories,.sv-mode-boots,.sv-mode-routes{grid-template-columns:repeat(2,minmax(0,1fr))}.sv-mode-spectrum{flex-wrap:wrap}.sv-mode-spectrum .sv-node{flex:1 1 22%}.sv-mode-compare .sv-node{padding:12px;min-height:150px}.sv-mode-compare .sv-node-name{font-size:13px}.sv-mode-compare .sv-node-short{font-size:10px}.sv-helmet-diagram{min-height:250px}.sv-helmet-hotspot{width:28px;height:28px}.sv-extra{margin:0 14px 14px;padding:13px}.sv-recall{margin:0 14px 14px;padding:13px}.sv-details-inner>.schematic{grid-template-columns:1fr}.sv-details-inner{padding:13px}.lesson.open .lesson-header{flex-wrap:wrap}.sv-study-details>summary{padding:14px}.sv-detail-sub{display:none}}
 @media(max-width:390px){.sv-mode-grid,.sv-mode-body,.sv-mode-gloves,.sv-mode-steps,.sv-mode-articles,.sv-mode-tree{grid-template-columns:1fr}.sv-performance,.sv-shield-grid{grid-template-columns:1fr}.sv-nodes .sv-node{min-height:75px}.sv-mode-categories .sv-node{min-height:130px}.sv-mode-compare .sv-node{min-height:158px}.sv-mode-compare .sv-node-short{display:none}}
 @media(prefers-reduced-motion:reduce){.sv-workbench *, .sv-node{animation:none!important;transition:none!important}}
+
+.study-method-banner{display:flex;align-items:center;gap:18px;justify-content:space-between;margin:0 0 20px;border-radius:11px;border:1px solid #dfE6eb;background:linear-gradient(120deg,#172b3f,#253e50);padding:16px 19px;color:#fff}
+.study-method-title{font-size:9px;color:#efa987;letter-spacing:.14em;font-weight:900;line-height:1.65}
+.study-method-title strong{display:block;letter-spacing:0;color:white;font-size:14px}
+.study-method-steps{display:flex;flex-wrap:wrap;gap:7px;justify-content:flex-end}
+.study-method-steps span{background:#ffffff0f;border:1px solid #ffffff1a;padding:7px 9px;border-radius:5px;font-size:10px;color:#d3dfe7}
+.study-method-steps b{color:#ffa47d;margin-right:4px}
+@media(max-width:800px){.study-method-banner{align-items:flex-start;flex-direction:column}.study-method-steps{justify-content:flex-start}}
