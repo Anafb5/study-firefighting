@@ -108,8 +108,20 @@ function answerNow(value){
  data.attempts[a.key]={seen:previous.seen+1,correct:previous.correct+(correct?1:0),aided:previous.aided+(hint?1:0)};
  render();
 }
+function renderNotes(){
+ const target=id("legal-notes");if(!target)return;
+ const notes=Array.isArray(window.LEGAL_NOTICE)?window.LEGAL_NOTICE:[];
+ target.innerHTML=notes.map(note=>{
+  const pdf=esc(note.pdf||""),current=esc(note.official||"");
+  const url=typeof note.url==="string"&&/^https:\/\/(?:www\.)?boe\.es\//.test(note.url)?note.url:null;
+  return '<div class="legal-official-note"><strong>Nota · '+esc(note.tag||"Contraste normativo")+'</strong>'+
+   '<p><b>Según el PDF:</b> '+pdf+'</p><p><b>Texto oficial posterior:</b> '+current+'</p>'+
+   (url?'<a href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">Consultar publicación oficial BOE</a>':"")+'</div>';
+ }).join("");
+}
 function init(){
  if(!id("legal-practice-area"))return;
+ renderNotes();
  const sec=id("legal-section");
  sec.innerHTML='<option value="all">Todos los bloques</option>'+
  (window.LEGAL_SOURCE?.sections||[]).map(x=>'<option value="'+esc(x.id)+'">'+esc(x.title)+'</option>').join("");
@@ -137,5 +149,6 @@ function init(){
  document.addEventListener("keydown",e=>{if(e.key==="Enter"&&document.activeElement?.id==="legal-input"&&answer===null){e.preventDefault();answerNow(id("legal-input").value);}});
  render();
 }
+window.LegalStudy={reset:()=>{data=blank();restart();render();}};
 document.addEventListener("DOMContentLoaded",init);
 })();
