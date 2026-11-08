@@ -107,16 +107,10 @@ test("el controlador mantiene una sola demostración y nunca la ofrece en examen
   click("[data-action]",{dataset:{action:"close-demo"}});
   assert.equal((html.match(/id="demonstration"/g)||[]).length,0);
   click("[data-tab]",{dataset:{tab:"examen"}});
-  change("variant","cubeOpposite");change("length","5");
-  click("[data-action]",{dataset:{action:"start-session"}});
+  assert.ok(html.includes("Pruebas del manual"));
+  assert.ok(html.includes("PDF original de este tema"));
   assert.ok(!html.includes('data-action="open-demo"'));
-  assert.ok(!html.includes("Demostración visual"));
-  for(let i=0;i<5;i++){
-    click("[data-answer]",{dataset:{answer:"0"}});
-    assert.ok(!html.includes("Demostración visual"));
-  }
-  assert.ok(html.includes("Resultado del examen"));
-  assert.ok(!html.includes("Demostración visual"));
+  assert.ok(!html.includes('id="demonstration"'));
  }finally{
   globalThis.document=previous.document;globalThis.window=previous.window;globalThis.localStorage=previous.localStorage;
  }
