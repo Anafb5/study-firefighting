@@ -6,6 +6,8 @@ Web estática de estudio para oposición a bombero basada en el PDF **11. Prenda
 
 - **19 apartados desarrollados** en 4 bloques: EPI y requisitos; prendas y protección respiratoria; NRBQ; Real Decreto 773/1997.
 - Esquemas por concepto, definiciones, cifras, tablas y referencias a páginas impresas.
+- **Esquemas visuales interactivos para los 19 apartados**: casco con puntos seleccionables, tipos de botas, filtros de colores, escalas de guantes, espectro radiológico, comparaciones NRBQ, árboles respiratorios y flujos del RD.
+- En cada apartado: visualización interactiva, ocultación de etiquetas para memorizar, pregunta de recuperación con respuesta oculta y desplegable con apuntes completos sin pérdida de detalle.
 - **63 tarjetas de repaso** con giro, mezcla, filtros por bloque y tarjetas pendientes.
 - **5 ejercicios de asociación** sobre normas UNE, filtros, articulado, categorías y botas.
 - **89 preguntas tipo test** (4 opciones), aleatorias, por bloques o tema entero.
