@@ -1,49 +1,42 @@
-/* Tema 9 · ejercicios de repaso fieles al PDF, sin asociaciones ambiguas. */
+/* Tema 9 · Repaso basado en el PDF aportado, evita respuestas explícitas en los enunciados. */
 const REVIEW_CLASSIFY=[
  {
-  "name": "Tipos de detectores y señal",
+  "name": "Elegir el detector por su comportamiento",
   "groups": [
-   "Calor",
-   "Humo",
-   "Gases",
-   "Llamas",
-   "Multisensor"
+   "Termostático",
+   "Termovelocimétrico",
+   "Óptico de humo",
+   "Iónico de humo",
+   "De llama",
+   "Multisensorial"
   ],
   "items": [
    [
-    "Temperatura alcanza el valor crítico",
+    "Actúa cuando se supera y mantiene una temperatura fijada",
     0
    ],
    [
-    "Aumento brusco de temperatura",
-    0
-   ],
-   [
-    "Partículas producen dispersión óptica",
+    "Responde al cambio térmico muy rápido antes del umbral absoluto",
     1
    ],
    [
-    "Humo altera una corriente eléctrica",
-    1
-   ],
-   [
-    "Sustancias gaseosas de la combustión",
+    "Reconoce pérdida/dispersión de luz al entrar partículas en el sensor",
     2
    ],
    [
-    "Radiación ultravioleta/infrarroja",
+    "Detecta alteraciones de una corriente eléctrica provocadas por humo",
     3
    ],
    [
-    "Dos señales físicas en un único detector",
+    "Actúa al recibir radiación infrarroja o ultravioleta de una combustión",
     4
    ],
    [
-    "Detector óptico de oscurecimiento",
-    1
+    "Contrasta dos principios físicos antes de decidir la alarma",
+    5
    ]
   ],
-  "why": "Clasificación de los detectores del manual, pp. 8–9."
+  "why": "Clasificación funcional de detectores, pp. 8–9."
  },
  {
   "name": "Sistemas de detección: norma asociada",
@@ -84,40 +77,39 @@ const REVIEW_CLASSIFY=[
   "why": "Normas UNE-EN 54 recogidas en las pp. 9–10."
  },
  {
-  "name": "Características de los tipos de hidrante",
+  "name": "Distinguir hidrantes y columna seca de edificio",
   "groups": [
-   "Columna húmeda",
-   "Columna seca",
-   "Bajo tierra",
-   "Sistema interior de columna seca"
+   "Hidrante de columna",
+   "Hidrante enterrado",
+   "Columna seca interior"
   ],
   "items": [
    [
-    "El cuerpo visible está lleno de agua",
+    "Elemento exterior elevado para conectar las mangueras de abastecimiento",
     0
    ],
    [
-    "La columna del hidrante no permanece llena de agua",
+    "Marcado CE de producto según UNE-EN 14384",
+    0
+   ],
+   [
+    "Toma instalada dentro de arqueta en el suelo",
     1
    ],
    [
-    "Instalado en arqueta enterrada",
+    "Marcado CE de producto según UNE-EN 14339",
+    1
+   ],
+   [
+    "Tubería galvanizada DN 80, normalmente vacía, en edificio",
     2
    ],
    [
-    "Tubería DN 80 en edificio alimentada desde fachada",
-    3
-   ],
-   [
-    "UNE-EN 14339 y marcado CE",
+    "Salidas de planta con racores de 45 mm y toma exterior siamesa de 70 mm",
     2
-   ],
-   [
-    "Salida de planta con racores de 45 mm",
-    3
    ]
   ],
-  "why": "Hidrantes pp. 16–17 y columnas secas pp. 25–26. Para UNE-EN 14384 se incluyen tanto columnas húmedas como secas: la clasificación en este ejercicio utiliza el ejemplo húmedo."
+  "why": "Hidrantes pp. 16–17; columna seca de edificio pp. 25–26. Los hidrantes de columna pueden ser húmedos o secos."
  },
  {
   "name": "BIE según riesgo industrial",
@@ -140,11 +132,15 @@ const REVIEW_CLASSIFY=[
     2
    ],
    [
-    "Tipo B con umbral instalación ≥200 m²",
+    "Instalación de BIE en edificio B a partir de 200 m²",
     2
    ],
    [
-    "Tipo C con umbral instalación ≥1.000 m²",
+    "Instalación de BIE en edificio B a partir de 500 m²",
+    1
+   ],
+   [
+    "Instalación BIE en edificio C a partir de 1.000 m²",
     1
    ]
   ],
@@ -210,27 +206,27 @@ const REVIEW_CLASSIFY=[
   ],
   "items": [
    [
-    "Avisar mediante humo y alarma centralizada",
+    "La central recibe señales de humo y dispara sirenas, sin descargar agente",
     0
    ],
    [
-    "Conectar manguera a toma exterior de gran caudal",
+    "Un camión conecta manguera a una boca exterior conectada a red urbana",
     1
    ],
    [
-    "Usar manguera interior desde armario",
+    "Ocupantes encuentran armario interior con devanadera y lanza",
     2
    ],
    [
-    "Alimentar las plantas desde el exterior con racores siameses",
+    "Bomberos alimentan la boca siamesa de fachada para actuar en una planta alta",
     3
    ],
    [
-    "Descargar agua por cápsula termosensible rota",
+    "Una ampolla térmica libera automáticamente descarga de agua desde techo",
     4
    ],
    [
-    "Compensar pequeñas pérdidas de presión sin arrancar bomba principal",
+    "Pequeñas pérdidas de presión se compensan sin encender bombas principales",
     5
    ]
   ],
@@ -239,54 +235,37 @@ const REVIEW_CLASSIFY=[
 ];
 const REVIEW_ORDER=[
  {
-  "name": "Cadena funcional de detección y alarma",
+  "name": "Señal de detector a alarma",
+  "prompt": "Organiza la cadena de funcionamiento de un SDA, desde la presencia de indicios de incendio.",
   "steps": [
-   "Los sensores identifican indicios del incendio",
-   "La señal llega a la central por la instalación",
-   "El equipo de control procesa la señal",
-   "Se activa la alarma / comunicación o extinción programada"
+   "El sensor reconoce alteraciones de calor, humo o llama",
+   "La conducción transmite la señal al equipo de control",
+   "La central procesa la información de detección",
+   "Los dispositivos de alarma avisan o se ejecuta una maniobra programada"
   ],
-  "why": "Diferencia entre detector, conducción, central y salida de alarma, pp. 7–8."
+  "why": "Componentes y función de un SDA, pp. 7–8. Se trata de una cadena funcional."
  },
  {
-  "name": "Activación de rociador automático",
+  "name": "Activación de un rociador automático",
+  "prompt": "Reconstruye la activación física de la descarga de un rociador térmico.",
   "steps": [
-   "El incendio produce aumento de temperatura",
-   "El líquido termosensible de la ampolla se dilata",
-   "La cápsula o elemento obturador se rompe o libera",
-   "El agua se descarga por el rociador"
+   "El entorno del rociador se calienta por el incendio",
+   "El elemento termosensible se dilata",
+   "La ampolla u obturador se rompe o libera",
+   "El agua comienza a salir por el rociador"
   ],
-  "why": "Funcionamiento descrito en p. 30."
+  "why": "Rociadores térmicos del apartado 6.1, p. 30."
  },
  {
-  "name": "Escala de revisión: de menor a mayor periodicidad",
+  "name": "Desde la fuente al consumo del agua",
+  "prompt": "Ordena las partes del circuito que llevan agua al elemento de extinción en un sistema abastecido mediante bombeo.",
   "steps": [
-   "Comprobación trimestral",
-   "Comprobación semestral",
-   "Comprobación anual",
-   "Comprobación quinquenal"
+   "La fuente o depósito dispone del agua de reserva",
+   "El conjunto de bombeo proporciona la impulsión necesaria",
+   "La red general distribuye el suministro",
+   "El hidrante, BIE o rociador recibe el agua"
   ],
-  "why": "Estructura de las tablas de mantenimiento del tema, pp. 14–38."
- },
- {
-  "name": "Proceso de extinción mediante espuma física",
-  "steps": [
-   "Suministro desde la red de tuberías",
-   "Aportación de espumógeno almacenado",
-   "Dosificación del concentrado",
-   "Descarga por boquillas de aplicación"
-  ],
-  "why": "Componentes de un sistema fijo de espuma, p. 32. Es un orden conceptual, no el esquema obligatorio de todas las instalaciones."
- },
- {
-  "name": "De abastecimiento a aplicación de agua",
-  "steps": [
-   "Fuente o reserva de agua",
-   "Equipo de impulsión",
-   "Red general contra incendios",
-   "Instalación receptora: BIE/hidrante/rociador"
-  ],
-  "why": "Conjunto fuente, impulsión y red del punto 7, p. 37."
+  "why": "Sistema de abastecimiento descrito en pp. 37–38. Orden funcional, no secuencia temporal obligatoria."
  }
 ];
 const REVIEW_JUDGE=[
@@ -440,6 +419,379 @@ const REVIEW_JUDGE=[
   true,
   "Seis exigencias y SI 4, p. 11."
  ]
+];
+const REVIEW_VALUES=[
+ {
+  "name": "Detectores, pulsadores y alarmas",
+  "why": "Cifras de la edición del PDF, con referencia al apartado indicado. Comprobar vigencia de requisitos legales.",
+  "items": [
+   [
+    "¿Cuál es el recorrido máximo desde un origen de evacuación hasta un pulsador manual según el PDF?",
+    [
+     "15 m",
+     "25 m",
+     "40 m",
+     "50 m"
+    ],
+    1,
+    "25 m de recorrido (p. 9)."
+   ],
+   [
+    "¿Qué altura mínima se establece para la parte superior del pulsador?",
+    [
+     "60 cm",
+     "80 cm",
+     "100 cm",
+     "120 cm"
+    ],
+    1,
+    "Mínimo 80 cm (p. 9)."
+   ],
+   [
+    "¿Qué altura máxima se establece para la parte superior del pulsador?",
+    [
+     "100 cm",
+     "120 cm",
+     "150 cm",
+     "180 cm"
+    ],
+    1,
+    "Máximo 120 cm (p. 9)."
+   ],
+   [
+    "¿Qué nivel sonoro mínimo se indica para la alarma general?",
+    [
+     ">55 dB",
+     ">60 dB",
+     ">65 dB",
+     ">75 dB"
+    ],
+    2,
+    ">65 dB, además de cumplir el diferencial de ruido persistente (p. 10)."
+   ],
+   [
+    "Si la alarma debe despertar ocupantes, ¿qué nivel sonoro indica el manual?",
+    [
+     ">55 dB",
+     ">60 dB",
+     ">65 dB",
+     ">75 dB"
+    ],
+    3,
+    ">75 dB (p. 10)."
+   ],
+   [
+    "Sin dato del fabricante, ¿qué vida útil se considera para detectores?",
+    [
+     "5 años",
+     "10 años",
+     "15 años",
+     "20 años"
+    ],
+    1,
+    "10 años supletorios (p. 15)."
+   ]
+  ]
+ },
+ {
+  "name": "Hidrantes · caudales, distancias y presiones",
+  "why": "Cifras de la edición del PDF, con referencia al apartado indicado. Comprobar vigencia de requisitos legales.",
+  "items": [
+   [
+    "¿Qué recorrido máximo horizontal se indica hasta un hidrante urbano?",
+    [
+     "<40 m",
+     "<60 m",
+     "<100 m",
+     "<150 m"
+    ],
+    2,
+    "Zona urbana: menos de 100 m (p. 17)."
+   ],
+   [
+    "¿Qué recorrido máximo se indica hasta un hidrante fuera de zona urbana?",
+    [
+     "<40 m",
+     "<60 m",
+     "<100 m",
+     "<150 m"
+    ],
+    0,
+    "Resto: menos de 40 m (p. 17)."
+   ],
+   [
+    "¿Qué caudal mínimo continuo se cita por boca de hidrante?",
+    [
+     "200 L/min",
+     "400 L/min",
+     "500 L/min",
+     "800 L/min"
+    ],
+    2,
+    "Al menos 500 L/min por boca (p. 17)."
+   ],
+   [
+    "¿Qué presión mínima cita el texto cuando el hidrante solo sirve para llenar camiones urbanos?",
+    [
+     "100 kPa",
+     "300 kPa",
+     "500 kPa",
+     "1.470 kPa"
+    ],
+    0,
+    "100 kPa (p. 17)."
+   ],
+   [
+    "¿Qué presión mínima establece para otros usos del hidrante?",
+    [
+     "100 kPa",
+     "300 kPa",
+     "500 kPa",
+     "1.470 kPa"
+    ],
+    2,
+    "500 kPa (p. 17)."
+   ],
+   [
+    "Si el hidrante no está en vía pública, ¿qué separación perpendicular a fachada indica el PDF?",
+    [
+     "1–3 m",
+     "3–5 m",
+     "5–15 m",
+     "15–30 m"
+    ],
+    2,
+    "Entre 5 y 15 m (p. 17)."
+   ]
+  ]
+ },
+ {
+  "name": "BIE · instalación y mangueras",
+  "why": "Cifras de la edición del PDF, con referencia al apartado indicado. Comprobar vigencia de requisitos legales.",
+  "items": [
+   [
+    "¿Qué longitud máxima de manguera plana indica el manual para una BIE?",
+    [
+     "15 m",
+     "20 m",
+     "25 m",
+     "30 m"
+    ],
+    1,
+    "Plana: 20 m (p. 22)."
+   ],
+   [
+    "¿Qué longitud máxima de manguera semirrígida indica el manual para una BIE?",
+    [
+     "15 m",
+     "20 m",
+     "25 m",
+     "30 m"
+    ],
+    3,
+    "Semirrígida: 30 m (p. 22)."
+   ],
+   [
+    "¿Qué separación máxima permite entre BIE y BIE más próxima?",
+    [
+     "20 m",
+     "30 m",
+     "50 m",
+     "60 m"
+    ],
+    2,
+    "50 m (p. 22)."
+   ],
+   [
+    "¿Cuál es la altura máxima de la boquilla/válvula de una BIE?",
+    [
+     "0,90 m",
+     "1,20 m",
+     "1,50 m",
+     "1,80 m"
+    ],
+    2,
+    "1,50 m (p. 21–22)."
+   ],
+   [
+    "¿A qué distancia máxima de una salida de sector se coloca una BIE?",
+    [
+     "5 m",
+     "10 m",
+     "15 m",
+     "25 m"
+    ],
+    0,
+    "5 m (p. 22)."
+   ],
+   [
+    "Para riesgo industrial alto, ¿qué simultaneidad de BIE exige el PDF?",
+    [
+     "1 BIE",
+     "2 BIE",
+     "3 BIE",
+     "4 BIE"
+    ],
+    2,
+    "3 BIE simultáneas y 90 min de autonomía (p. 23)."
+   ],
+   [
+    "Sin indicación del fabricante, ¿qué vida útil se cita para mangueras de BIE?",
+    [
+     "5 años",
+     "10 años",
+     "15 años",
+     "20 años"
+    ],
+    3,
+    "20 años (p. 24)."
+   ]
+  ]
+ },
+ {
+  "name": "Columna seca · diámetros y pruebas",
+  "why": "Cifras de la edición del PDF, con referencia al apartado indicado. Comprobar vigencia de requisitos legales.",
+  "items": [
+   [
+    "¿De qué diámetro son los racores de la toma siamesa de fachada?",
+    [
+     "25 mm",
+     "45 mm",
+     "70 mm",
+     "100 mm"
+    ],
+    2,
+    "70 mm (p. 25)."
+   ],
+   [
+    "¿Qué diámetro tienen los racores de las salidas de plantas?",
+    [
+     "25 mm",
+     "45 mm",
+     "70 mm",
+     "100 mm"
+    ],
+    1,
+    "45 mm (p. 25)."
+   ],
+   [
+    "¿A qué altura se sitúa el centro de las bocas de columna seca?",
+    [
+     "0,70 m",
+     "0,90 m",
+     "1,20 m",
+     "1,50 m"
+    ],
+    1,
+    "0,90 m (p. 25)."
+   ],
+   [
+    "¿Qué presión mínima se exige en prueba de columna hasta 30 m de altura?",
+    [
+     "500 kPa",
+     "1.000 kPa",
+     "1.470 kPa",
+     "2.450 kPa"
+    ],
+    2,
+    "1.470 kPa durante al menos 2 horas sin fugas (p. 26)."
+   ],
+   [
+    "¿Qué presión mínima se exige en prueba de columna de más de 30 m?",
+    [
+     "500 kPa",
+     "1.000 kPa",
+     "1.470 kPa",
+     "2.450 kPa"
+    ],
+    3,
+    "2.450 kPa durante al menos 2 horas sin fugas (p. 26)."
+   ],
+   [
+    "¿Cuál es la duración mínima de la prueba de presión?",
+    [
+     "30 min",
+     "60 min",
+     "90 min",
+     "120 min"
+    ],
+    3,
+    "Al menos 2 horas (120 minutos), p. 26."
+   ]
+  ]
+ },
+ {
+  "name": "Periodicidades de mantenimiento",
+  "why": "Cifras de la edición del PDF, con referencia al apartado indicado. Comprobar vigencia de requisitos legales.",
+  "items": [
+   [
+    "¿Cada cuánto indica el PDF cambiar las juntas de los racores de hidrantes?",
+    [
+     "3 meses",
+     "6 meses",
+     "1 año",
+     "5 años"
+    ],
+    3,
+    "Cada 5 años (p. 20)."
+   ],
+   [
+    "¿Cada cuánto revisar engrase y maniobra de hidrantes?",
+    [
+     "3 meses",
+     "6 meses",
+     "1 año",
+     "5 años"
+    ],
+    1,
+    "Cada 6 meses (p. 20)."
+   ],
+   [
+    "¿Cada cuánto figura la señalización de BIE?",
+    [
+     "3 meses",
+     "6 meses",
+     "1 año",
+     "5 años"
+    ],
+    0,
+    "Trimestral (p. 24)."
+   ],
+   [
+    "¿Cada cuánto se comprueba accesibilidad y maniobra de columna seca?",
+    [
+     "3 meses",
+     "6 meses",
+     "1 año",
+     "5 años"
+    ],
+    1,
+    "Cada 6 meses (p. 27)."
+   ],
+   [
+    "¿Cada cuánto se ensaya la columna seca en condiciones de recepción?",
+    [
+     "3 meses",
+     "6 meses",
+     "1 año",
+     "5 años"
+    ],
+    3,
+    "Cada 5 años (p. 27)."
+   ],
+   [
+    "¿Cada cuánto señala el manual que se prueban las curvas de suministro con fuentes de agua y energía?",
+    [
+     "3 meses",
+     "6 meses",
+     "1 año",
+     "5 años"
+    ],
+    2,
+    "Anual (p. 38)."
+   ]
+  ]
+ }
 ];
 const REVIEW_MATCH_EXTRA=[
  {
