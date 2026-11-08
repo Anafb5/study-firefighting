@@ -1,4 +1,4 @@
-/* Tema 5 · Agentes extintores y mecanismos. Redacción de estudio basada en PDF de 37 páginas. */
+/* Tema 5. Apuntes y ejercicios basados exclusivamente en el PDF aportado. */
 window.READER_SOURCE={
  "sections": [
   {
@@ -649,7 +649,7 @@ window.READER_SOURCE={
       ],
       [
        "Nomenclatura",
-       "El código numérico especifica presencia de átomos de C, F, Cl y Br según convención del documento."
+       "El PDF indica cifras para carbono, cloro, bromo y, si existe, yodo. Se conserva literalmente la convención de la edición del manual."
       ],
       [
        "Interrupción química",
@@ -874,29 +874,7 @@ window.READER_SOURCE={
    "why": "Apartados 2.2 y 4.4 del Tema 5.",
    "items": [
     [
-     "¿Cuántas familias generales de agentes se clasifican por estado físico en el temario?",
-     [
-      "2",
-      "3",
-      "4",
-      "5"
-     ],
-     1,
-     "Líquidos, sólidos y gaseosos (p. 10)."
-    ],
-    [
-     "¿Cuántos mecanismos fundamentales de extinción se distinguen?",
-     [
-      "2",
-      "3",
-      "4",
-      "5"
-     ],
-     2,
-     "Eliminación, sofocación, enfriamiento e inhibición (pp. 7–10)."
-    ],
-    [
-     "Según el temario, ¿qué porcentaje de nitrógeno incluye Argonite?",
+     "Según la tabla de gases inertes, ¿qué porcentaje de nitrógeno contiene Argonite?",
      [
       "25 %",
       "50 %",
@@ -904,7 +882,40 @@ window.READER_SOURCE={
       "90 %"
      ],
      1,
-     "Mezcla con 50 % de nitrógeno y 50 % de argón (p. 28)."
+     "Argonite IG-55: 50 % nitrógeno y 50 % argón (p. 29)."
+    ],
+    [
+     "Según la tabla IG-541, ¿qué porcentaje de N₂ contiene Inergén?",
+     [
+      "8 %",
+      "40 %",
+      "50 %",
+      "52 %"
+     ],
+     3,
+     "IG-541 Inergén: 52 % N₂, 40 % argón y 8 % CO₂ (p. 29)."
+    ],
+    [
+     "En IG-541, ¿qué porcentaje de argón contiene la mezcla?",
+     [
+      "8 %",
+      "40 %",
+      "50 %",
+      "52 %"
+     ],
+     1,
+     "Argón: 40 % (p. 29)."
+    ],
+    [
+     "En IG-541, ¿qué porcentaje de CO₂ contiene la mezcla?",
+     [
+      "8 %",
+      "40 %",
+      "50 %",
+      "52 %"
+     ],
+     0,
+     "CO₂: 8 % (p. 29)."
     ]
    ]
   }
