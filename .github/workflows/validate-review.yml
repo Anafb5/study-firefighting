@@ -7,6 +7,7 @@ on:
       - review.js
       - review-data.js
       - scripts/validate-review.cjs
+      - scripts/validate-all-themes.cjs
       - 'temas/**'
       - '.github/workflows/validate-review.yml'
   pull_request:
@@ -32,3 +33,5 @@ jobs:
           node-version: '22'
       - name: Comprobar bancos de repaso
         run: node scripts/validate-review.cjs
+      - name: Verificar los once temas técnicos
+        run: node scripts/validate-all-themes.cjs
