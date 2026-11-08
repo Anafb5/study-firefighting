@@ -22,8 +22,8 @@ const chapters=[
   published:true,href:"./temas/11/",topics:19,cards:63,questions:89,
   features:["19 apartados","63 tarjetas","89 preguntas","Repaso interactivo"]},
  {id:10,area:"tecnica",title:"Vehículos contra incendios",
-  description:"Reservado para incorporar el tema y sus ejercicios cuando preparemos y publiquemos su contenido.",
-  published:false,href:null,features:["Pendiente de preparar"]}
+  description:"Clasificación, siglas, componentes, bombas hidráulicas, vehículos urbanos, rurales, forestales, nodrizas, salvamento y circulación.",
+  published:true,href:"./temas/10/",topics:29,cards:88,questions:135,features:["29 apartados","88 tarjetas","135 preguntas","Repaso interactivo"]}
 ];
 const esc=v=>String(v??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 let selectedArea="tecnica";
