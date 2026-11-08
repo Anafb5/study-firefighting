@@ -14,6 +14,9 @@ on:
       - scripts/validate-review.cjs
       - scripts/validate-all-themes.cjs
       - 'temas/**'
+      - 'juridica/**'
+      - scripts/validate-legal.cjs
+      - progress.js
       - '.github/workflows/validate-review.yml'
   pull_request:
     paths:
@@ -26,6 +29,9 @@ on:
       - review-data.js
       - scripts/validate-review.cjs
       - 'temas/**'
+      - 'juridica/**'
+      - scripts/validate-legal.cjs
+      - progress.js
       - '.github/workflows/validate-review.yml'
 
 permissions:
@@ -45,3 +51,5 @@ jobs:
         run: node scripts/validate-review.cjs
       - name: Verificar los once temas técnicos
         run: node scripts/validate-all-themes.cjs
+      - name: Verificar los temas jurídicos publicados y catálogo completo
+        run: node scripts/validate-legal.cjs
