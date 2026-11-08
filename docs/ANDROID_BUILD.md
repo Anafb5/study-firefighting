@@ -7,7 +7,7 @@ La aplicación Android empaqueta la web completa en el APK con Capacitor. No car
 - Node.js 22 o posterior.
 - JDK 21. En Windows puede usarse el JDK incluido en Android Studio (`C:\Program Files\Android\Android Studio\jbr`).
 - Android SDK con la plataforma API 36.
-- Identidad estable: `com.studyfirefighting.app`, versión `1.0`, `versionCode 1`.
+- Identidad estable: `com.studyfirefighting.app`, versión `1.0.1`, `versionCode 2`.
 
 ## Compilar en Windows
 
