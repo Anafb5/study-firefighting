@@ -219,7 +219,7 @@ function graphicmatrix(level,rng){
 }
 export function makeAdvancedQuestion(variant,difficulty="basico",rng=Math.random){
  const level=LEVELS.includes(difficulty)?difficulty:"basico";
- const generators={cubeOpposite,cubeAdjacent,cubeCorner,blocks,rotation,symbolsequence,graphicmatrix};
+ const generators={cubeOpposite,cubeAdjacent,cubeCorner,blocks,rotation,symbolsequence:sequence,graphicmatrix};
  if(!generators[variant])throw Error("Subtipo visual desconocido: "+variant);
  return generators[variant](level,rng);
 }
