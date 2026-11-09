@@ -19,9 +19,15 @@ const persist=()=>{
  try{sessionStorage.setItem(sessKey,JSON.stringify({order,cursor,answer,hint,visible}));}catch(e){}
 };
 const normNum=str=>{
- const clean=String(str??"").trim().toLowerCase().replace(/[ºª]/g,"").replace(/\bart(?:[íi]culo)?\.?\s*/gi,"");
- const match=clean.match(/^\s*(\d+)(?:\s*[.,]\s*(\d+))?/);
- return match?match[1]+(match[2]?"."+match[2]:""):"";
+ const clean=String(str??"").normalize("NFKC").trim().toLowerCase()
+  .replace(/[ºª]/g,"").replace(/^art(?:[íi]culo)?\.?\s*/i,"")
+  .replace(/\s+/g," ").trim();
+ // Rechazar sufijos extraños y respetar el apartado y la letra cuando existen.
+ // Ej.: 17, 17.2, 4.1.d, 92 bis y 24 bis; nunca reducir «92 bis» a «92».
+ const match=clean.match(/^(\d{1,4})(?:\s*[.,]\s*(\d{1,3}))?(?:\s*[.,]\s*([a-z]))?(?:\s+(bis|ter|quáter|quater))?$/i);
+ if(!match)return "";
+ return match[1]+(match[2]?"."+match[2]:"")+(match[3]?"."+match[3]:"")+
+  (match[4]?" "+(match[4]==="quater"?"quáter":match[4]):"");
 };
 const pool=()=>records.filter(a=>(data.section==="all"||a.section===data.section)&&(!data.pending||!data.mastered.includes(a.key)));
 const current=()=>records.find(a=>a.id===order[cursor])||null;
