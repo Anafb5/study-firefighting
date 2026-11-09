@@ -1,7 +1,7 @@
 # Módulo jurídico: criterio de fuente y método de estudio
 
 **Entrada recibida:** `PARTE JURÍDICA.zip` (26 PDF, 3 volúmenes).  
-**Rama:** `content/nuevos-temas`.
+**Integración:** rama `feature/juridica-completa-26`, basada en la versión actual de `main` que incluye los psicotécnicos.
 
 ## Principio vinculante del proyecto
 
@@ -9,15 +9,17 @@
 
 En los ejercicios que manejen números de artículos se identificará **norma + artículo + apartado**, cuando lo tenga. Un «artículo 14» sin norma no es suficiente si aparecen CE, LOTC, LPACAP, LRJSP, LO 3/1981 o distintas normas locales.
 
-## Inventario
+## Inventario actual
 
-| Volumen | Temas jurídicos | Estado inicial |
+| Volumen | Temas jurídicos | Situación |
 |---|---|---|
-| I | 1–8 | Temas **1, 2 y 3** publicados y revisados contra sus PDF; 4–8 pendientes |
-| II | 9–14 | Catalogados, pendientes de redacción individual |
-| III | 15–26 | Catalogados, pendientes de redacción individual |
+| I | 1–8 | Ocho temas accesibles con contenido, artículos, tarjetas y test |
+| II | 9–14 | Seis temas accesibles con contenido y práctica |
+| III | 15–26 | Doce temas accesibles; 24–26 elaborados desde sus PDF y 15–23 completados para publicación |
 
-Los 26 aparecen en la biblioteca con su título y volumen. Los pendientes muestran «En preparación» y **no cuentan como terminados** ni se presentan como material verificado.
+**26 de 26 páginas disponibles.** Los temas 1–3 tienen la revisión editorial más extensa. Los demás parten de resúmenes y apartados fundamentados en el PDF, pero **no equivalen a una transcripción íntegra de todas sus páginas**. La referencia normativa principal para estudiar sigue siendo el documento aportado.
+
+La biblioteca principal conserva el tema técnico 11 y los psicotécnicos, y añade una sección jurídica con navegación por volúmenes, progreso por tema y exportación de la memoria de artículos.
 
 ## Primeros temas publicados
 
@@ -31,7 +33,7 @@ Total inicial: **44 apartados, 110 referencias de artículo, 445 tarjetas y 220 
 
 **Solo se crean diagramas cuando existe una relación visual significativa**: cronología documentada, jerarquía, reparto cuantitativo, comparación de reglas o secuencia explícita. No se convierte automáticamente cada lista de conceptos en una cuadrícula de tarjetas. La imagen no sustituye el contenido normativo; debajo del esquema se puede desplegar **«Leer el contenido completo y sus matices (según el PDF)»**.
 
-Se han incorporado inicialmente **9 diagramas en 9 epígrafes** de los tres temas publicados:
+La base original incorporaba **9 diagramas en 9 epígrafes** de los primeros tres temas. Se han añadido algunos esquemas selectivos en otros temas (p. ej., autonomía, provincia, haciendas, bienes y personal), solo cuando aportan relaciones explícitas:
 
 | Tema | Epígrafe | Función pedagógica |
 |---|---|---|
@@ -45,9 +47,9 @@ Se han incorporado inicialmente **9 diagramas en 9 epígrafes** de los tres tema
 | Jurídica 3 | Estatuto parlamentario | Diferenciar inviolabilidad, inmunidad, fuero e incompatibilidades. |
 | Jurídica 3 | Procedimiento legislativo | Hitos del procedimiento ordinario según ejercicio de ordenación del propio PDF. |
 
-Las representaciones se definen **expresamente y por tema** en el campo opcional `topic.visual`; no se infieren por el título. El generador `juridica/legal-builder.js` conserva los metadatos y el componente `juridica/legal-visuals.js` los presenta sin dependencias externas. El lector compartido `reader-layouts.js` los usa **únicamente** cuando hay un diseño especificado; los demás temas, incluidos los 19 técnicos, siguen intactos. Los estilos están en `juridica/legal.css`.
+Las representaciones se definen **expresamente y por tema** en el campo opcional `topic.visual`; no se infieren por el título. El generador `juridica/legal-builder.js` conserva los metadatos y el componente `juridica/legal-visuals.js` los presenta sin dependencias externas. El lector compartido `reader-layouts.js` los usa **únicamente** cuando hay un diseño especificado; los demás temas y el Tema 11 técnico de `main` siguen intactos. Los estilos están en `juridica/legal.css`.
 
-Comprobar con `node scripts/validate-legal.cjs` que los nueve diagramas se renderizan y que los detalles de cada artículo siguen accesibles. **El gráfico es una orientación para estudiar**: números, fechas, excepciones y palabras legales deben contrastarse siempre con el epígrafe completo del PDF.
+Comprobar con `node scripts/validate-legal.cjs` que los diagramas definidos se renderizan y que los detalles de cada artículo siguen accesibles. **El gráfico es una orientación para estudiar**: números, fechas, excepciones y palabras legales deben contrastarse siempre con el epígrafe completo del PDF.
 
 ## Entrenador de artículos
 
@@ -88,6 +90,10 @@ Fuente oficial: https://www.boe.es/buscar/act.php?id=BOE-A-1978-31229
 - Si hay contradicción o posible desfase jurídico, mostrar una **nota de aviso**. Nunca corregir el PDF en silencio.
 - Ejecutar `node scripts/validate-legal.cjs` y revisar manualmente las preguntas y distractores; pasar pruebas en móvil y después en la APK de Codex.
 
-## Situación de Android
+## Compilación y despliegue
 
-Los cambios se han escrito **en la rama de contenido**. Los ficheros nativos de la futura APK preparados por Codex no se han modificado ni se ha generado otra APK. Integrar el directorio `juridica/` y los ajustes en `catalog.js`, `progress.js` y `app.js` al hacer el merge.
+El directorio `juridica/` se incluye completo en `scripts/build-web.mjs` junto con las páginas técnicas y psicotécnicas, de modo que los 26 temas se sirven desde GitHub Pages y funcionan dentro de la APK sin recursos de red.
+
+El portal jurídico usa `juridica/portal.js`; la lógica jurídica se mantiene aislada bajo `juridica/legal-app.js`, `juridica/legal-review.js` y `juridica/legal-resume.js`, sin reemplazar el motor del Tema 11 técnico.
+
+La validación final incluye `npm test`, `node scripts/validate-legal.cjs` y `node tests/juridica-browser.mjs` en un navegador Chromium de CI. Una revisión jurídica completa de vigencia normativa requiere contrastar el PDF con el BOE y las bases de la convocatoria; no se confunde con la validación técnica de la web.

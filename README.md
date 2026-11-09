@@ -57,3 +57,12 @@ GitHub Pages desde la rama `main` mediante `.github/workflows/deploy.yml`.
 ## Nota de rigor
 
 El temario contiene discrepancias internas en las categorías NRBQ (p. 15 frente al apartado 3.4.1, p. 32), señaladas en los apuntes. Las referencias a normas UNE, filtros y factores de protección se presentan según la edición facilitada. Contrasta su vigencia con la convocatoria y la legislación y normas aplicables: esta web es un recurso de estudio, no una fuente normativa oficial.
+
+
+## Módulo jurídico — 26 temas
+
+El portal de la biblioteca incluye los **26 temas de `PARTE JURÍDICA.zip`**, organizados en tres volúmenes, con contenidos por epígrafe, tarjetas, memorización de artículos, ejercicios de clasificación/ordenación y tests. Los PDF aportados son la fuente principal de las respuestas y se identifican por tema y página; cualquier contraste con normativa más reciente debe presentarse aparte.
+
+Los datos, motores y estilos están en `juridica/`. El progreso jurídico y el entrenador de artículos quedan incluidos en el JSON de copia de seguridad sin perder la exportación Android ni los datos del Tema 11.
+
+Pruebas: `npm test` y `node scripts/validate-legal.cjs`. Detalles y límites de revisión en `docs/JURIDICA_METODOLOGIA.md`.
