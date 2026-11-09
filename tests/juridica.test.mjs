@@ -100,3 +100,22 @@ test("los temas jurídicos reforzados tienen bancos de test suficientes para ses
   }
  }
 });
+
+test("las preguntas manuales varían las posiciones A–D sin cambiar su respuesta correcta",async()=>{
+ const builder=await readFile("juridica/legal-builder.js","utf8");
+ for(const n of [16,19,22]){
+  const source=await readFile("juridica/"+n+"/data.js","utf8");
+  const ctx=vm.createContext({window:{}});
+  vm.runInContext(source,ctx);vm.runInContext(builder,ctx);
+  const result=vm.runInContext("QUESTIONS.filter(x=>x.id.startsWith('manual-'))",ctx);
+  const original=ctx.window.LEGAL_SOURCE.extraQuestions;
+  assert.equal(result.length,original.length);
+  const positions=new Set();
+  result.forEach((q,i)=>{
+   positions.add(q.correct);
+   assert.equal(q.options[q.correct],original[i].options[original[i].correct],"Tema "+n+" pregunta "+i);
+   assert.equal(new Set(q.options).size,4);
+  });
+  assert.ok(positions.size>=3,"Tema "+n+": respuestas casi siempre en la misma posición");
+ }
+});
