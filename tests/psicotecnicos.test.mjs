@@ -4,7 +4,8 @@ import {readFile,access} from "node:fs/promises";
 import {fileURLToPath} from "node:url";
 import {dirname,resolve} from "node:path";
 import {TOPICS,TOPIC_BY_ID} from "../psicotecnicos/topics.mjs";
-import {VARIANTS,createQuestion,createSession} from "../psicotecnicos/generator.mjs";
+import {VARIANTS,createQuestion,createSession,chooseAdaptiveLevel} from "../psicotecnicos/generator.mjs";
+import {foldNet,oppositesOf,applyTransform,maskOperate} from "../psicotecnicos/advanced-visual.mjs";
 const root=resolve(dirname(fileURLToPath(import.meta.url)),"..");
 
 test("el índice respeta ocho PDF de habilidades independientes",()=>{
@@ -28,23 +29,68 @@ test("el generador produce cuatro respuestas distintas, incluida la correcta, pa
     }
   }
 });
-test("las reglas espaciales y mecánicas se comprueban independientemente",()=>{
-  const opposite=[5,3,4,1,2,0];
-  for(let k=0;k<150;k++){
-    for(const type of ["cubeOpposite","cubeAdjacent"]){
-      const q=createQuestion("espacial",type);
-      assert.equal(q.answer,q.visual.marks[opposite[q.visual.selected]]);
-    }
-    const paths=createQuestion("mecanica","path");
-    const turns=paths.visual.directions.reduce((sum,d,i,a)=>sum+(i>0&&d!==a[i-1]?1:0),0);
-    assert.equal(Number(paths.answer),turns);
-    const balance=createQuestion("mecanica","balance");
-    assert.equal(Number(balance.answer),balance.visual.unit*balance.visual.amount);
-    const connections=createQuestion("mecanica","connections");
-    assert.equal(Number(connections.answer),connections.visual.map[connections.visual.selected]);
-    const blocks=createQuestion("espacial","blocks");
-    assert.equal(Number(blocks.answer),blocks.visual.heights.reduce((sum,v)=>sum+v,0));
+test("plegado espacial: seis normales únicas, pares opuestos y vértices",()=>{
+ const neg=v=>v.map(n=>-n).join(","),axis=v=>v.map(Math.abs).join(",");
+ for(const difficulty of ["basico","intermedio","avanzado"])for(let k=0;k<160;k++){
+  const q=createQuestion("espacial","cubeOpposite",Math.random,difficulty);
+  const v=q.visual,normals=foldNet(v.positions);
+  assert.equal(new Set(normals.map(n=>n.join(","))).size,6);
+  assert.deepEqual(oppositesOf(normals),v.opposites);
+  assert.equal(q.answer,v.labels[v.opposites[v.selected]]);
+  const adj=createQuestion("espacial","cubeAdjacent",Math.random,difficulty);
+  for(const option of adj.options){
+   const pair=option.split(" · ").map(x=>adj.visual.labels.indexOf(x));
+   assert.equal(pair.length,2);
+   assert.equal(adj.visual.opposites[pair[0]]!==pair[1],option===adj.answer);
   }
+  const corner=createQuestion("espacial","cubeCorner",Math.random,difficulty);
+  for(const option of corner.options){
+   const inds=option.split(" · ").map(x=>corner.visual.labels.indexOf(x));
+   const noOpp=inds.every((i,j)=>inds.every((other,k)=>j===k||corner.visual.opposites[i]!==other));
+   assert.equal(noOpp,option===corner.answer);
+  }
+  const blocks=createQuestion("espacial","blocks",Math.random,difficulty);
+  assert.equal(Number(blocks.answer),blocks.visual.heights.reduce((sum,v)=>sum+v,0));
+  assert.equal(blocks.visual.heights.length,blocks.visual.cols*blocks.visual.rows);
+ }
+});
+test("rotaciones, espejos y series visuales reproducen exactamente la respuesta",()=>{
+ for(const difficulty of ["basico","intermedio","avanzado"])for(let k=0;k<180;k++){
+  const r=createQuestion("grafico","rotation",Math.random,difficulty);
+  assert.deepEqual(r.optionVisuals[r.answer],applyTransform(r.visual.steps,r.visual.initial));
+  assert.equal(new Set(Object.values(r.optionVisuals).map(JSON.stringify)).size,4);
+  const s=createQuestion("grafico","symbolsequence",Math.random,difficulty);
+  const models=s.visual.sequence,correct=s.optionVisuals[s.answer];
+  const shift=((models[1].angle-models[0].angle)%360+360)%360;
+  assert.equal(correct.angle,(models[4].angle+shift)%360);
+  assert.equal(correct.fill,difficulty==="basico"?models[0].fill:!models[4].fill);
+  assert.equal(correct.dots,difficulty==="avanzado"?models[4].dots%3+1:1);
+  assert.equal(new Set(Object.values(s.optionVisuals).map(JSON.stringify)).size,4);
+ }
+});
+test("matrices gráficas: unión, XOR, coincidencia y diferencia verificadas por bits",()=>{
+ for(const difficulty of ["basico","intermedio","avanzado"])for(let k=0;k<250;k++){
+  const q=createQuestion("grafico","graphicmatrix",Math.random,difficulty),v=q.visual;
+  const a=v.cells[v.transpose?2:6],b=v.cells[v.transpose?5:7];
+  assert.equal(q.optionVisuals[q.answer],maskOperate(v.mode,a,b));
+  const rows=v.transpose?[[v.cells[0],v.cells[3],v.cells[6]],[v.cells[1],v.cells[4],v.cells[7]]]:
+                           [[v.cells[0],v.cells[1],v.cells[2]],[v.cells[3],v.cells[4],v.cells[5]]];
+  for(const [x,y,result] of rows)assert.equal(maskOperate(v.mode,x,y),result);
+  assert.equal(new Set(Object.values(q.optionVisuals)).size,4);
+ }
+});
+test("dificultad progresiva y ajuste según resultados sin alterar los exámenes",()=>{
+ for(const topic of ["grafico","espacial"]){
+  const session=createSession(topic,15,"todos",Math.random,{difficulty:"progresiva"});
+  assert.deepEqual(session.map(q=>q.difficulty),[...Array(5).fill("basico"),...Array(5).fill("intermedio"),...Array(5).fill("avanzado")]);
+  assert.equal(new Set(session.map(q=>q.variant)).size,VARIANTS[topic].length);
+ }
+ const sample=(difficulty,ok)=>({mode:"entrenamiento",variant:"graphicmatrix",difficulty,ok});
+ assert.equal(chooseAdaptiveLevel([],"graphicmatrix"),"basico");
+ assert.equal(chooseAdaptiveLevel(Array(5).fill(sample("basico",true)),"graphicmatrix"),"intermedio");
+ assert.equal(chooseAdaptiveLevel(Array(5).fill(sample("intermedio",true)),"graphicmatrix"),"avanzado");
+ assert.equal(chooseAdaptiveLevel(Array(5).fill(sample("avanzado",false)),"graphicmatrix"),"intermedio");
+ assert.equal(chooseAdaptiveLevel(Array(5).fill(sample("intermedio",false)),"graphicmatrix"),"basico");
 });
 test("las reglas de percepción son consistentes con sus secuencias",()=>{
  for(let k=0;k<200;k++){
