@@ -25,7 +25,7 @@ export class OfficialExamController {
   this.rerender=rerender;this.record=record;
   this.ready=bankLoad().then(bank=>{this.bank=bank.groups[topicId];this.status="";this.rerender();}).catch(err=>{this.status="No se han podido cargar las preguntas: "+err.message;this.rerender();});
  }
- questions(){return this.bank?.[this.group]??[];}
+ questions(){const list=this.bank?.[this.group]??[];return this.topicId==="espacial"?list.filter(q=>q.img||q.refImg||q.n<8):list;}
  remaining(){return Math.max(0,Math.ceil((this.deadline-Date.now())/1000));}
  duration(){return this.questions().length*45000;}
  schedule(){this.stopTimer();if(!["study","exam"].includes(this.phase))return;this.timer=setInterval(()=>this.tick(),250);this.tick();}
@@ -51,8 +51,8 @@ export class OfficialExamController {
   if(this.phase!=="exam")return;
   this.stopTimer();this.phase="result";
   if(!this.didRecord){
-   const answers=getOfficialQuestions(this.topicId,this.group);
-   for(const q of answers){if(q.invalid)continue;
+   const available=new Set(this.questions().map(x=>x.n));const answers=getOfficialQuestions(this.topicId,this.group);
+   for(const q of answers){if(q.invalid||!available.has(q.number))continue;
      this.record("examen",{variant:"original-"+this.group+"-"+q.number,answer:q.key},this.answers[q.number]??null);
    }
    this.didRecord=true;
@@ -78,9 +78,9 @@ export class OfficialExamController {
     (primary?img(primary,"Lámina original del ejercicio, con sus opciones gráficas"):"");
  }
  review(){
-  const keys=getOfficialQuestions(this.topicId,this.group),results=keys.map(k=>({k,item:this.questions().find(q=>q.n===k.number)}));
-  const count=keys.filter(q=>!q.invalid).length;
-  const score=scoreOfficial(this.topicId,this.group,this.answers);
+  const available=new Set(this.questions().map(q=>q.n));const keys=getOfficialQuestions(this.topicId,this.group).filter(q=>available.has(q.number));const results=keys.map(k=>({k,item:this.questions().find(q=>q.n===k.number)}));
+  const count=keys.filter(q=>!q.invalid).length;const correct=keys.filter(q=>!q.invalid&&this.answers[q.number]===q.key).length;
+  const score={correct,percentage:count?Math.round(correct/count*100):0,unanswered:keys.filter(q=>!q.invalid&&this.answers[q.number]==null).length};
   return '<div class="result"><h2 class="section-head">Resultado · Prueba '+esc(this.group)+'</h2>'+
    '<div class="score">'+score.percentage+' %</div><p>'+score.correct+' respuestas correctas de '+count+' evaluables. '+score.unanswered+' sin responder.</p>'+
    '<p class="muted small">Las preguntas cuya clave está ausente o es incompatible con las opciones no se puntúan.</p><ol class="answer-review">'+results.map(({k,item})=>
@@ -97,7 +97,7 @@ export class OfficialExamController {
    return header+'<div class="trainer-settings"><div class="field"><label for="official-set">Prueba del manual</label><select id="official-set">'+
     Object.entries(this.doc.groups).map(([key,value])=>'<option value="'+esc(key)+'" '+(key===this.group?"selected":"")+'>'+esc(value.label)+'</option>').join("")+
     '</select></div><div class="field"><label>Preguntas y tiempo</label><p class="muted small">'+count+' preguntas · '+Math.round(this.duration()/60000)+' minutos</p></div></div>'+
-    '<div class="notice">Las figuras originales ya están incluidas en el examen. No necesitas seleccionar ni subir ningún PDF. En memoria dispondrás de dos minutos para estudiar la lista, que después desaparecerá.</div>'+
+    '<div class="notice">No necesitas seleccionar ni subir ningún PDF. En memoria dispondrás de dos minutos para estudiar la lista, que después desaparecerá.'+(this.topicId==="espacial"?' Los ejercicios 8–10 de cada prueba espacial están temporalmente excluidos porque su figura de referencia todavía no se ha incorporado: no se te harán preguntas sin dibujo.':"")+'.</div>'+
     (this.doc.groups[this.group].notes?'<p class="source">'+esc(this.doc.groups[this.group].notes)+'</p>':"")+
     '<div class="board-actions"><button class="btn accent" data-official-action="start">Comenzar prueba '+esc(this.group)+'</button></div></div>';
   }
