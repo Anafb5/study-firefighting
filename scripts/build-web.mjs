@@ -11,7 +11,7 @@ const files = [
   "app.js", "resume.js", "temas/11/index.html", "psicotecnicos/index.html",
   "psicotecnicos/app.mjs",
   "psicotecnicos/official-exams.mjs", "psicotecnicos/official-ui.mjs", "psicotecnicos/official-bank.json",
-  "psicotecnicos/generator.mjs",
+  "psicotecnicos/generator.mjs", "psicotecnicos/advanced-visual.mjs", "psicotecnicos/visual-render.mjs",
   "psicotecnicos/topics.mjs",
   "psicotecnicos/styles.css",
   "psicotecnicos/temas/linguistico/index.html",
