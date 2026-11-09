@@ -119,3 +119,24 @@ test("las preguntas manuales varían las posiciones A–D sin cambiar su respues
   assert.ok(positions.size>=3,"Tema "+n+": respuestas casi siempre en la misma posición");
  }
 });
+
+test("exportación/importación JSON mantiene progreso técnico, jurídico y artículos con bis",async()=>{
+ const script=await readFile("progress.js","utf8");
+ const entries=[
+ ["study-firefighting-t11-v1",{read:["1-1"],mastered:[0],wrong:[],history:[]}],
+ ["study-firefighting-j24-v1",{read:["1-1","1-2"],mastered:[0],wrong:[],history:[]}],
+ ["study-firefighting-j17-articles-v1",{mastered:["LBRL:92 bis","LBRL:4.1.d"],repeat:["LBRL:24 bis"],attempts:{},direction:"to-number",section:"all",pending:false}]
+ ];
+ const store=new Map(entries.map(([k,v])=>[k,JSON.stringify(v)]));
+ const localStorage={getItem:k=>store.get(k)||null,key:i=>[...store.keys()][i]||null,get length(){return store.size;}};
+ const ctx=vm.createContext({window:{},document:{addEventListener(){}},localStorage,console});
+ vm.runInContext(script,ctx);
+ const api=ctx.window.FireStudyBackup,backup=api.buildBackup();
+ assert.equal(backup.format,"fire-study-backup");
+ assert.equal(backup.version,1);
+ assert.deepEqual(Object.keys(backup.topics).sort(),entries.map(e=>e[0]).sort());
+ assert.equal(backup.topics["study-firefighting-j17-articles-v1"].mastered.length,2);
+ const restored=api.validateBackup(backup);
+ assert.equal(restored.length,3);
+ assert.equal(restored.find(x=>x[0]==="study-firefighting-j17-articles-v1")[1].repeat[0],"LBRL:24 bis");
+});
