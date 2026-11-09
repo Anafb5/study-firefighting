@@ -8,7 +8,7 @@ const TOPICS=[
 "El municipio","La provincia","Otras entidades locales","Ingresos tributarios locales","Presupuesto de las entidades locales",
 "El gasto público local","Las haciendas locales","Los bienes de las entidades locales","Contratación administrativa local",
 "Personal al servicio de las entidades locales"];
-const escapeHTML=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;'}[c]));
+const escapeHTML=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const items=TOPICS.map((title,i)=>({title,id:i+1,volume:i<8?"I":i<14?"II":"III"}));
 function statistics(topic){
  let progress={};
