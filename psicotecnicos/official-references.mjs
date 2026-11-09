@@ -46,3 +46,29 @@ export function countPair(table,columns,pair){
   return subtotal+count;
  },0),0);
 }
+
+export const PERCEPTUAL_OPERATIONS={
+ B:{questions:[8,9,10],sourcePage:7,operations:[
+  ["&","Sumar 7","+",7],["%","Sumar 5","+",5],["$","Restar 2","-",2],["Ð","Restar 8","-",8],
+  ["®","Multiplicar por 2","*",2],["¶","Multiplicar por 3","*",3],["*","Dividir entre 2","/",2],["¥","Dividir entre 4","/",4]
+ ]},
+ D:{questions:[8,9,10],sourcePage:14,operations:[
+  ["&","Sumar 4","+",4],["%","Sumar 1","+",1],["$","Restar 3","-",3],["Ð","Restar 2","-",2],
+  ["®","Multiplicar por 3","*",3],["¶","Multiplicar por 1","*",1],["*","Dividir entre 1","/",1],["¥","Dividir entre 2","/",2]
+ ]}
+};
+export function perceptualOperationsFor(group,number){
+ const data=PERCEPTUAL_OPERATIONS[group];
+ return data?.questions.includes(number)?data:null;
+}
+export function applyPerceptualOperations(group,start,symbols){
+ const dictionary=Object.fromEntries((PERCEPTUAL_OPERATIONS[group]?.operations||[]).map(([symbol,,op,amount])=>[symbol,[op,amount]]));
+ return [...symbols].reduce((value,symbol)=>{
+  const [operation,n]=dictionary[symbol]||[];
+  if(operation==="+")return value+n;
+  if(operation==="-")return value-n;
+  if(operation==="*")return value*n;
+  if(operation==="/")return value/n;
+  throw new Error("Operador de la prueba desconocido: "+symbol);
+ },start);
+}
