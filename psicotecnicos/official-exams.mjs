@@ -23,11 +23,11 @@ export const OFFICIAL_EXAMS={
  mecanica:{pdf:"PRUEBAS_APTITUD_MECANICA.pdf",display:"Pruebas de aptitud mecánica.pdf",groups:groups([
   ["A",2,4,"AAABCADBCB"],["B",5,8,"AABDACBBCB"],
   ["C",9,12,"BAC-CCBBCA",{notes:"La solución impresa de la pregunta 4 figura como E, aunque las opciones visibles son A–D; no se puntúa."}],
-  ["D",13,16,"DBBDCCDBCA",{notes:"La página 16 contiene el solucionario. Para no revelar respuestas, se excluye la pregunta 10 de la evaluación."}]
+  ["D",13,16,"DBBDCCDBCA"]
  ])},
  perceptiva:{pdf:"PRUEBAS_APTITUD_PERCEPTIVA.pdf",display:"Pruebas de aptitud perceptiva.pdf",groups:groups([
   ["A",2,4,"BADADBDCDC"],["B",5,8,"DBABCCCBCA"],["C",9,11,"CDCCAD BDBD".replace(/ /g,"")],
-  ["D",12,15,"CABCCBCABB",{notes:"La página 15 contiene el solucionario. Para no revelar respuestas, se excluye la pregunta 10 de la evaluación."}]
+  ["D",12,15,"CABCCBCABB"]
  ])},
  memoria:{pdf:"FLO_07_PRUEBAS_MEMORIA.pdf",display:"Pruebas de aptitud de memoria.pdf",groups:groups([
   ["A",2,4,"CCABBCDAAD",{studyPage:2,questionPage:3}],
