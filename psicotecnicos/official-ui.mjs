@@ -61,7 +61,7 @@ export class OfficialExamController {
  }
  getVisual(q){
   const primary=q.img,reference=q.refImg;
-  if(!primary&&!reference)return "";
+
   const img=(s,caption)=>'<figure class="official-figure"><img alt="Figura original del ejercicio '+q.n+'" loading="lazy" src="data:image/png;base64,'+s+'"><figcaption>'+caption+'</figcaption></figure>';
   // Some mechanical questions refer to a diagram shared with the preceding item.
   let altReference=reference;
