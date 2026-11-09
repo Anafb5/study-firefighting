@@ -12,7 +12,7 @@ test("cada uno de los ocho temas tiene pruebas originales del manual y claves ve
    assert.ok(group.pages.length>=2);
    assert.ok(group.pages.every(n=>Number.isInteger(n)&&n>0));
    assert.equal(group.answers.length,topic==="grafico"?11:10,topic+"/"+id);
-   assert.ok(/^[ABCD-]+$/.test(group.answers));
+   assert.ok(/^[ABCDE-]+$/.test(group.answers));
    const questions=getOfficialQuestions(topic,id);
    assert.equal(questions.length,group.answers.length);
    assert.deepEqual(questions.map(x=>x.number),questions.map((_,i)=>group.first+i));
@@ -29,9 +29,12 @@ test("las inconsistencias del solucionario no se puntúan ni alteran el porcenta
  assert.equal(spatial.find(q=>q.number===6).key,null);
  assert.equal(spatial.find(q=>q.number===6).invalid,true);
  const mechanical=getOfficialQuestions("mecanica","C");
- assert.equal(mechanical.find(q=>q.number===4).invalid,true);
- const a=scoreOfficial("mecanica","C",{1:"B",2:"A",3:"C",4:"D",5:"C",6:"C",7:"B",8:"B",9:"C",10:"A"});
- assert.deepEqual(a,{correct:9,graded:9,unanswered:0,percentage:100});
+ assert.equal(mechanical.find(q=>q.number===4).key,"E");
+ assert.equal(mechanical.find(q=>q.number===4).invalid,false,"El PDF tiene cinco alternativas reales");
+ const a=scoreOfficial("mecanica","C",{1:"B",2:"A",3:"C",4:"E",5:"C",6:"C",7:"B",8:"B",9:"C",10:"A"});
+ assert.deepEqual(a,{correct:10,graded:10,unanswered:0,percentage:100});
+ assert.equal(getOfficialQuestions("perceptiva","D").find(q=>q.number===3).invalid,true);
+ assert.equal(getOfficialQuestions("numerico","D").find(q=>q.number===5).invalid,true);
  assert.equal(getOfficialQuestions("mecanica","D").find(q=>q.number===10).invalid,false);
  assert.equal(getOfficialQuestions("perceptiva","D").find(q=>q.number===10).invalid,false);
 });
