@@ -41,3 +41,24 @@ test("el diagnóstico gráfico contiene exactamente las 55 preguntas originales"
  assert.deepEqual(qs.map(x=>x.number),Array.from({length:55},(_,i)=>i+1));
  assert.equal(qs.filter(q=>!q.invalid).length,55);
 });
+
+test("el banco integrado contiene las 335 preguntas originales y figuras espaciales completas",async()=>{
+ const {readFile}=await import("node:fs/promises");
+ const bank=JSON.parse(await readFile("psicotecnicos/official-bank.json","utf8"));
+ let total=0;
+ for(const [topic,groups] of Object.entries(bank.groups)){
+  for(const [set,questions] of Object.entries(groups)){
+   assert.equal(questions.length,topic==="grafico"?11:10,`${topic}/${set}`);
+   for(const q of questions){
+    total++;
+    assert.equal(q.k,getOfficialQuestions(topic,set).find(k=>k.number===q.n)?.key??"-",`${topic}/${set}/${q.n}`);
+    assert.ok(typeof q.q==="string"&&q.q.length>0);
+    if(topic==="grafico"||topic==="espacial"){
+      assert.ok(q.img||q.refImg,`Figura obligatoria ${topic}/${set}/${q.n}`);
+      for(const value of [q.img,q.refImg].filter(Boolean)) assert.ok(value.startsWith("iVBORw0KGgo"),"PNG válido en base64");
+    }
+   }
+  }
+ }
+ assert.equal(total,335);
+});
