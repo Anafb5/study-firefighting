@@ -48,7 +48,12 @@ try{
  assert.equal(await page.locator(".choice-art .mask-svg").count(),4);
  assert.ok((await page.locator(".board-head .pill").innerText()).includes("Avanzado"));
  assert.equal(await page.locator("#demonstration").count(),0);
+ assert.equal(await page.locator('[data-action="show-hint"]').count(),1);
+ await page.locator('[data-action="show-hint"]').click();
+ assert.equal(await page.locator(".hint-callout").count(),1);
+ assert.equal(await page.locator('[data-action="show-hint"]').count(),0,"La pista no puede duplicarse");
  await page.locator('[data-answer="0"]').click();
+ assert.equal(await page.locator(".hint-callout").count(),1);
  await page.locator('[data-action="open-demo"]').click();
  assert.equal(await page.locator("#demonstration").count(),1);
  assert.equal(await page.locator("#demonstration .logic-target .mask-svg").count(),1);
