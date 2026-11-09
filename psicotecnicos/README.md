@@ -21,6 +21,11 @@ Los PDF de introducción, enlaces y solucionarios se describen en **Material com
 - Página de tema: `/psicotecnicos/temas/<identificador>/`.
 - **Contenido**: síntesis didáctica por apartado, método y ejemplo con referencias a las secciones/páginas del PDF.
 - **Entrenamiento**: selección de subtipo y número de preguntas, corrección inmediata; demostración gráfica *solo después de responder* y únicamente si existe una visualización significativa.
+  - **Nivel de dificultad** para razonamiento gráfico y espacial: Básico, Intermedio, Avanzado, Progresiva (de menor a mayor en una sesión) y Adaptativa (según aciertos de cada subtipo).
+  - **Espacial**: ocho desarrollos válidos de cubos (caras opuestas, parejas contiguas y tres caras en un vértice), cubo 3D que se puede girar y construcciones de 6, 9 o 12 columnas.
+  - **Gráfico**: figuras asimétricas con giros, reflejos y composiciones; series con orientación, relleno y puntos; matrices por unión, intersección, diferencia y XOR de segmentos, por filas o columnas.
+  - **Pistas anteriores a la respuesta**: orientan el método sin revelar la solución. Se registra si se usaron y esos aciertos no elevan automáticamente la dificultad adaptativa.
+  - **Revisión posterior**: solución razonada, representación visual y desglose de aciertos por subtipo al finalizar. No se añade una segunda instancia del demostrador.
 - **Examen**: 335 enunciados originales del material aportado: pruebas A–D de siete temas y 55 ejercicios gráficos de diagnóstico. Las preguntas de texto son HTML nativo; los dibujos, cubos, laberintos y opciones gráficas se incluyen como recortes de las láminas. **No hay que subir PDF alguno**.
 - **Distribución offline**: `official-bank.json` se copia con la web y la APK. No hay servidor, cuentas ni carga de ficheros.
 - **Memoria en examen**: observación de la lista original durante 2 minutos; al comenzar las preguntas la lista desaparece.
@@ -31,7 +36,8 @@ Los PDF de introducción, enlaces y solucionarios se describen en **Material com
 ## Implementación
 
 - `topics.mjs`: contenido y referencias académicas de los ocho temas.
-- `generator.mjs`: generadores puros sin DOM; respuestas y distracciones validadas.
+- `generator.mjs` y `advanced-visual.mjs`: generadores puros sin DOM, plegados 3D, operaciones de conjuntos de segmentos y progresión de dificultad; respuestas y distractores validados.
+- `visual-render.mjs`: representaciones SVG locales y cubo 3D interactivo.
 - `app.mjs`: biblioteca, navegación y estados de contenido y entrenamiento.
 - `official-exams.mjs`, `official-bank.json` y `official-ui.mjs`: claves, enunciados y figuras extraídas, y corrección de exámenes sin cargar PDFs.
 - `styles.css`: estilo responsive y visualizaciones locales, sin dependencias externas.
@@ -46,6 +52,6 @@ npm ci
 npm test
 ```
 
-Las pruebas `tests/psicotecnicos.test.mjs` y `tests/official-exams.test.mjs` verifican las preguntas originales, claves, anomalías y todos los subtipos de ejercicios de forma repetida, sus invariantes matemáticos, las ocho rutas, la navegación y la regresión de «duplicar demostración». La workflow `psicotecnicos-ci.yml` ejecuta las pruebas y una navegación real con Chromium en la rama y en la Pull Request. La compilación `build:web` incluye los recursos para la APK offline.
+Las pruebas `tests/psicotecnicos.test.mjs` y `tests/official-exams.test.mjs` verifican las preguntas originales, claves, anomalías y miles de casos de plegados, intersecciones de trazos, rotaciones, reflejos y subtipos de ejercicios de forma repetida, sus invariantes matemáticos, las ocho rutas, la navegación y la regresión de «duplicar demostración». La workflow `psicotecnicos-ci.yml` ejecuta las pruebas y una navegación real con Chromium en la rama y en la Pull Request. La compilación `build:web` incluye los recursos para la APK offline.
 
 **Pendiente antes de fusionar:** revisión visual final en móvil real; terminar la revisión visual manual de todos los recortes y los enunciados, especialmente los que reutilizan un diagrama en varias preguntas.
