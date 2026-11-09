@@ -21,7 +21,10 @@ const files = [
   "psicotecnicos/temas/mecanica/index.html",
   "psicotecnicos/temas/perceptiva/index.html",
   "psicotecnicos/temas/memoria/index.html",
-  "psicotecnicos/temas/abstracto/index.html"
+  "psicotecnicos/temas/abstracto/index.html",
+  "reader-layouts.js", "reader.css",
+  ...["legal-app.js","legal-base.css","legal-resume.js","legal-review.js","legal-review.css","legal-builder.js","legal-visuals.js","legal-study.js","legal.css","portal.js","portal.css","catalogo-pdfs.json"].map(name=>"juridica/"+name),
+  ...Array.from({length:26},(_,i)=>["juridica/"+(i+1)+"/data.js","juridica/"+(i+1)+"/index.html"]).flat()
 ];
 
 await rm(output, { recursive: true, force: true });
