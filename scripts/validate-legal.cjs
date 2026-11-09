@@ -4,9 +4,9 @@
 const fs=require("node:fs"),path=require("node:path"),vm=require("node:vm"),assert=require("node:assert/strict");
 const root=path.resolve(__dirname,"..");
 const read=p=>fs.readFileSync(path.join(root,p),"utf8");
-const catalog=read("catalog.js");
-assert(catalog.includes("const legalTitles="),"Falta listado de los 26 temas jurídicos");
-assert(catalog.includes("study-firefighting-j"),"Falta clave jurídica aislada");
+const portal=read("juridica/portal.js"),home=read("index.html");
+assert(portal.includes("const TOPICS=")&&portal.includes("study-firefighting-j"),"Falta listado y progreso de los 26 temas jurídicos");
+assert(home.includes("id=\"juridica\"")&&home.includes("legal-topic-grid"),"Falta acceso desde la biblioteca principal");
 for(const file of ["juridica/legal-builder.js","juridica/legal-study.js","juridica/legal-visuals.js","juridica/legal.css","progress.js","app.js"])assert(fs.existsSync(path.join(root,file)),"Falta "+file);
 const audit=[];
 for(let i=1;i<=26;i++){
