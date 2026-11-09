@@ -29,7 +29,8 @@ Los PDF de introducción, enlaces y solucionarios se describen en **Material com
 - **Examen**: 335 enunciados originales del material aportado: pruebas A–D de siete temas y 55 ejercicios gráficos de diagnóstico. Las preguntas de texto son HTML nativo; los dibujos, cubos, laberintos y opciones gráficas se incluyen como recortes de las láminas. **No hay que subir PDF alguno**.
 - **Distribución offline**: `official-bank.json` se copia con la web y la APK. No hay servidor, cuentas ni carga de ficheros.
 - **Memoria en examen**: observación de la lista original durante 2 minutos; al comenzar las preguntas la lista desaparece.
-- **Anomalías del solucionario**: no se puntúan espacial A6 (respuesta ausente) ni mecánica C4 (respuesta E cuando las alternativas son A–D). Las últimas preguntas D10 de mecánica y perceptiva sí se evalúan, porque ahora se muestran individualmente sin las claves de la página.
+- **Auditoría de exámenes**: 335 ejercicios incorporados, de los que **332 son puntuables**. Se excluyen de puntuación espacial A6 (sin clave), perceptiva D3 (la tabla contiene cinco letras posteriores a la R, pero la clave impresa marca cuatro) y numérico D5 (hay dos afirmaciones falsas). **Mecánica C4 sí es puntuable**: el PDF original contiene cinco alternativas A–E y se ha restaurado la E, que indica el solucionario.
+- **Contexto recuperado del PDF**: cuatro tablas perceptivas reutilizadas en sus preguntas dependientes; cuatro comparaciones numéricas remaquetadas como dos columnas, sin alterar la secuencia de cifras; dos leyendas de operaciones que se mantienen visibles en las seis preguntas que las necesitan. No hace falta consultar otro fichero.
 - Los ejercicios de **entrenamiento** siguen siendo variantes didácticas generadas mediante reglas: no se confunden con los originales del manual. El material aportado no equivale a pruebas oficiales de una convocatoria.
 - El progreso de lectura y los resultados de respuestas se guardan en `localStorage` bajo `fire-study-psico-v2`. Esta clave **no se incluye todavía** en las copias JSON de la parte técnica.
 
@@ -40,6 +41,7 @@ Los PDF de introducción, enlaces y solucionarios se describen en **Material com
 - `visual-render.mjs`: representaciones SVG locales y cubo 3D interactivo.
 - `app.mjs`: biblioteca, navegación y estados de contenido y entrenamiento.
 - `official-exams.mjs`, `official-bank.json` y `official-ui.mjs`: claves, enunciados y figuras extraídas, y corrección de exámenes sin cargar PDFs.
+- `official-references.mjs`: tablas, comparaciones y operadores transcritos con su contexto original, además de funciones verificables para recuento y operaciones.
 - `styles.css`: estilo responsive y visualizaciones locales, sin dependencias externas.
 - `temas/*/index.html`: páginas estáticas de tema, compartiendo el mismo motor.
 
@@ -52,6 +54,6 @@ npm ci
 npm test
 ```
 
-Las pruebas `tests/psicotecnicos.test.mjs` y `tests/official-exams.test.mjs` verifican las preguntas originales, claves, anomalías y miles de casos de plegados, intersecciones de trazos, rotaciones, reflejos y subtipos de ejercicios de forma repetida, sus invariantes matemáticos, las ocho rutas, la navegación y la regresión de «duplicar demostración». La workflow `psicotecnicos-ci.yml` ejecuta las pruebas y una navegación real con Chromium en la rama y en la Pull Request. La compilación `build:web` incluye los recursos para la APK offline.
+Las pruebas `tests/psicotecnicos.test.mjs`, `tests/official-exams.test.mjs` y `tests/official-references.test.mjs` verifican las preguntas originales, claves, anomalías y miles de casos de plegados, intersecciones de trazos, rotaciones, reflejos y subtipos de ejercicios de forma repetida, sus invariantes matemáticos, las ocho rutas, la navegación y la regresión de «duplicar demostración». La workflow `psicotecnicos-ci.yml` ejecuta las pruebas y una navegación real con Chromium en la rama y en la Pull Request. La compilación `build:web` incluye los recursos para la APK offline.
 
-**Pendiente antes de fusionar:** revisión visual final en móvil real; terminar la revisión visual manual de todos los recortes y los enunciados, especialmente los que reutilizan un diagrama en varias preguntas.
+**Pendiente antes de fusionar:** revisión visual final en móvil real y comprobación humana de la legibilidad de todos los recortes gráficos. Los controles automatizados validan integridad y cobertura, pero no sustituyen la comprobación del contenido visual de cada imagen.
