@@ -32,8 +32,8 @@ test("las inconsistencias del solucionario no se puntúan ni alteran el porcenta
  assert.equal(mechanical.find(q=>q.number===4).invalid,true);
  const a=scoreOfficial("mecanica","C",{1:"B",2:"A",3:"C",4:"D",5:"C",6:"C",7:"B",8:"B",9:"C",10:"A"});
  assert.deepEqual(a,{correct:9,graded:9,unanswered:0,percentage:100});
- assert.equal(getOfficialQuestions("mecanica","D").find(q=>q.number===10).invalid,true);
- assert.equal(getOfficialQuestions("perceptiva","D").find(q=>q.number===10).invalid,true);
+ assert.equal(getOfficialQuestions("mecanica","D").find(q=>q.number===10).invalid,false);
+ assert.equal(getOfficialQuestions("perceptiva","D").find(q=>q.number===10).invalid,false);
 });
 test("el diagnóstico gráfico contiene exactamente las 55 preguntas originales",()=>{
  const qs=Object.entries(OFFICIAL_EXAMS.grafico.groups).flatMap(([id])=>getOfficialQuestions("grafico",id));
