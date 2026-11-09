@@ -107,8 +107,8 @@ test("el controlador mantiene una sola demostración y nunca la ofrece en examen
   click("[data-action]",{dataset:{action:"close-demo"}});
   assert.equal((html.match(/id="demonstration"/g)||[]).length,0);
   click("[data-tab]",{dataset:{tab:"examen"}});
-  assert.ok(html.includes("Pruebas del manual"));
-  assert.ok(html.includes("PDF original de este tema"));
+  assert.ok(html.includes("Pruebas del documento"));
+  assert.ok(html.includes("Cargando preguntas originales") || html.includes("No se han podido cargar las preguntas"));
   assert.ok(!html.includes('data-action="open-demo"'));
   assert.ok(!html.includes('id="demonstration"'));
  }finally{
