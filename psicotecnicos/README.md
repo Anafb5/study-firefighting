@@ -48,4 +48,4 @@ npm test
 
 Las pruebas `tests/psicotecnicos.test.mjs` y `tests/official-exams.test.mjs` verifican las preguntas originales, claves, anomalías y todos los subtipos de ejercicios de forma repetida, sus invariantes matemáticos, las ocho rutas, la navegación y la regresión de «duplicar demostración». La workflow `psicotecnicos-ci.yml` ejecuta las pruebas y una navegación real con Chromium en la rama y en la Pull Request. La compilación `build:web` incluye los recursos para la APK offline.
 
-**Pendiente antes de fusionar:** revisión visual final en móvil real; revisar las preguntas espaciales que comparten un dibujo de referencia en la página anterior al enunciado y los diagramas que se reutilizan en mecánica.
+**Pendiente antes de fusionar:** revisión visual final en móvil real; terminar la revisión visual manual de todos los recortes y los enunciados, especialmente los que reutilizan un diagrama en varias preguntas.
