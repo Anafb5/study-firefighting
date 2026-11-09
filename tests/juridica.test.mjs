@@ -65,3 +65,18 @@ test("referencias normativas del tema 24 cotejadas con el PDF y actividades espe
  assert.ok(contratos.articles.some(a=>a[1]==="LCSP"&&a[2]==="71"));
  assert.ok(personal.articles.some(a=>a[1]==="TREBEP"&&a[2]==="97"));
 });
+
+test("entrenador jurídico distingue artículos bis, apartados y letras",async()=>{
+ const source=await readFile("juridica/legal-study.js","utf8");
+ const begin=source.indexOf("const normNum=str=>{"),end=source.indexOf("const pool=()=>",begin);
+ assert.ok(begin>=0&&end>begin);
+ const normalize=vm.runInNewContext(source.slice(begin,end)+"\n normNum");
+ const cases=[
+  ["14","14"],["Artículo 17.2","17.2"],["Art. 4.1.d","4.1.d"],
+  ["92 bis","92 bis"],["artículo 24 bis","24 bis"],
+  ["Art 132,1","132.1"],["Art. 24 TER","24 ter"],
+  ["92","92"],["92 bis texto extra",""],["92 ter","92 ter"]
+ ];
+ for(const [input,expected] of cases)assert.equal(normalize(input),expected,input);
+ assert.notEqual(normalize("92"),normalize("92 bis"));
+});
