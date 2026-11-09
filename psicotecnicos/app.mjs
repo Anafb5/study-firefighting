@@ -96,9 +96,24 @@ else if(d.kind==="rotation")scene='<div class="rotate-demo"><div class="rotate-f
 else scene='<div class="visual">'+renderVisual(q,"entrenamiento","answer",true)+'</div><p>'+escapeHTML(q.explanation)+'</p>'+(["path","connections"].includes(d.kind)?btn("Seguir recorrido","trace","accent"):"");
 return '<section class="demo" id="demonstration" aria-label="Demostración de la respuesta"><div class="demo-head"><h4>Demostración visual</h4>'+btn("Cerrar","close-demo")+'</div>'+scene+'</section>';}
 function scoreResult(sess){const count=sess.questions.length,correct=sess.questions.reduce((n,q,i)=>n+(sess.answers[i]===q.answer?1:0),0),pct=Math.round(correct/count*100);return{count,correct,pct};}
-function resultsHTML(mode,sess){const score=scoreResult(sess);return '<div class="result"><span class="eyebrow" style="color:#be5d3f">SESIÓN FINALIZADA</span><h2 class="section-head">'+(mode==="examen"?"Resultado del examen":"Resultado del entrenamiento")+'</h2><div class="score">'+score.pct+' %</div><p class="muted">'+score.correct+' aciertos de '+score.count+' preguntas.</p><h3>Revisión de respuestas</h3><ol class="answer-review">'+sess.questions.map((q,i)=>'<li><span class="'+(sess.answers[i]===q.answer?"ok":"bad")+'">'+(sess.answers[i]===q.answer?"✓":"✕")+'</span> <strong>'+escapeHTML(VARIANT_LABELS[q.variant])+'</strong> · '+escapeHTML(q.prompt)+'<div>Tu respuesta: '+(sess.answers[i]==null?"Sin responder":escapeHTML(sess.answers[i]))+' · Correcta: <strong>'+escapeHTML(q.answer)+'</strong></div>'+(mode==="entrenamiento"?'<div class="muted">'+escapeHTML(q.explanation)+'</div>':"")+'</li>').join("")+'</ol>'+btn("Iniciar otra sesión","reset-session","accent")+'</div>';}
+function resultsHTML(mode,sess){
+ const score=scoreResult(sess);
+ const groups=new Map();
+ sess.questions.forEach((q,i)=>{
+  const name=VARIANT_LABELS[q.variant]||q.variant,entry=groups.get(name)||{name,answered:0,correct:0};
+  entry.answered++;if(sess.answers[i]===q.answer)entry.correct++;groups.set(name,entry);
+ });
+ const ranked=[...groups.values()].sort((a,b)=>a.correct/a.answered-b.correct/b.answered);
+ const breakdown='<h3>Resultado por habilidad</h3><div class="skill-breakdown">'+ranked.map(x=>
+  '<div class="skill-breakdown-item"><strong>'+escapeHTML(x.name)+'</strong><span>'+x.correct+'/'+x.answered+' aciertos · '+Math.round(x.correct/x.answered*100)+' %</span></div>').join("")+'</div>';
+ const assisted=sess.hints?.filter(Boolean).length||0;
+ const advice=ranked.length&&ranked[0].correct/ranked[0].answered<0.8?
+ '<p class="muted small">Para reforzar: vuelve a practicar <strong>'+escapeHTML(ranked[0].name)+
+ '</strong> y revisa las demostraciones. Cuando aciertes sin pistas, aumenta la dificultad.</p>':
+ '<p class="muted small">Buen resultado. Puedes avanzar de nivel o pasar al examen original del tema.</p>';
+ return '<div class="result"><span class="eyebrow" style="color:#be5d3f">SESIÓN FINALIZADA</span><h2 class="section-head">'+(mode==="examen"?"Resultado del examen":"Resultado del entrenamiento")+'</h2><div class="score">'+score.pct+' %</div><p class="muted">'+score.correct+' aciertos de '+score.count+' preguntas.</p><h3>Revisión de respuestas</h3><ol class="answer-review">'+sess.questions.map((q,i)=>'<li><span class="'+(sess.answers[i]===q.answer?"ok":"bad")+'">'+(sess.answers[i]===q.answer?"✓":"✕")+'</span> <strong>'+escapeHTML(VARIANT_LABELS[q.variant])+'</strong> · '+escapeHTML(q.prompt)+'<div>Tu respuesta: '+(sess.answers[i]==null?"Sin responder":escapeHTML(sess.answers[i]))+' · Correcta: <strong>'+escapeHTML(q.answer)+'</strong></div>'+(mode==="entrenamiento"?'<div class="muted">'+escapeHTML(q.explanation)+'</div>':"")+'</li>').join("")+'</ol>'+breakdown+'<p class="muted small">Pistas utilizadas: '+assisted+'</p>'+advice+btn("Iniciar otra sesión","reset-session","accent")+'</div>';}
 function beginQuestion(sess,mode){const q=sess.questions[sess.index];sess.stage=q.visual.kind==="memory"?"observe":"answer";sess.shownDemo=false;sess.shownHint=false;sess.expiresAt=sess.stage==="observe"?Date.now()+25000:mode==="examen"?Date.now()+45000:0;}
-function initSession(mode){const cfg=settings[mode];current[mode]={questions:createSession(id,cfg.length,cfg.variant,Math.random,{difficulty:cfg.difficulty||"basico",history:safeStats(id).attempts}),answers:[],index:0,stage:"answer",expiresAt:0,shownDemo:false,complete:false};beginQuestion(current[mode],mode);renderTopic();}
+function initSession(mode){const cfg=settings[mode];current[mode]={questions:createSession(id,cfg.length,cfg.variant,Math.random,{difficulty:cfg.difficulty||"basico",history:safeStats(id).attempts}),answers:[],hints:[],index:0,stage:"answer",expiresAt:0,shownDemo:false,complete:false};beginQuestion(current[mode],mode);renderTopic();}
 function advance(mode){const sess=current[mode];if(!sess)return;if(sess.index+1>=sess.questions.length){sess.complete=true;if(mode==="examen"&&!sess.recorded){sess.questions.forEach((q,i)=>record("examen",q,sess.answers[i]));sess.recorded=true;}}else{sess.index++;beginQuestion(sess,mode);}renderTopic();}
 function closeObservation(){const sess=current[view];if(!sess||sess.complete||sess.stage!=="observe")return;sess.stage="answer";sess.expiresAt=view==="examen"?Date.now()+45000:0;renderTopic();}
 function respond(value){const mode=view,sess=current[mode];if(!sess||sess.complete||sess.stage!=="answer"||sess.answers[sess.index]!==undefined)return;
@@ -130,7 +145,7 @@ root.addEventListener("click",event=>{
  case"reset-session":current[view]=null;renderTopic();break;
  case"hide-memory":closeObservation();break;
  case"next-question":{const sess=current[view];if(view==="entrenamiento"&&sess&&sess.answers[sess.index]!==undefined)advance(view);break;}
- case"show-hint":{const sess=current.entrenamiento;if(view==="entrenamiento"&&sess&&!sess.complete&&sess.stage==="answer"&&sess.answers[sess.index]===undefined&&sess.questions[sess.index].hint&&!sess.shownHint){sess.shownHint=true;renderTopic();}break;}
+ case"show-hint":{const sess=current.entrenamiento;if(view==="entrenamiento"&&sess&&!sess.complete&&sess.stage==="answer"&&sess.answers[sess.index]===undefined&&sess.questions[sess.index].hint&&!sess.shownHint){sess.shownHint=true;sess.hints[sess.index]=true;renderTopic();}break;}
  case"open-demo":{const sess=current.entrenamiento;if(view==="entrenamiento"&&sess&&!sess.complete&&sess.stage==="answer"&&sess.answers[sess.index]!==undefined&&sess.questions[sess.index].demo&&!sess.shownDemo){sess.shownDemo=true;renderTopic();}break;}
  case"close-demo":{const sess=current.entrenamiento;if(view==="entrenamiento"&&sess){sess.shownDemo=false;renderTopic();}break;}
  case"fold":{const el=$("fold-cube");if(el){const folded=el.classList.toggle("folded");action.textContent=folded?"Desplegar cubo":"Plegar cubo";}break;}
