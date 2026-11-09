@@ -49,3 +49,19 @@ test("la copia de seguridad conserva soporte para artículos y exportación nati
  assert.match(c,/cleanArticle/);
  assert.match(c,/capacitor\.isNativePlatform/);
 });
+
+test("referencias normativas del tema 24 cotejadas con el PDF y actividades específicas del 25/26",async()=>{
+ const load=async i=>{const txt=await readFile("juridica/"+i+"/data.js","utf8");const win={};vm.runInNewContext(txt,{window:win});return win.LEGAL_SOURCE;};
+ const bienes=await load(24),contratos=await load(25),personal=await load(26);
+ const refs=bienes.articles.map(a=>a[1]+":"+a[2]);
+ for(const n of ["74","75","76"])assert.ok(refs.includes("TRRL:"+n),"Tema 24: art. "+n+" debe citar TRRL, no RBEL");
+ for(const n of ["74","75","76"])assert.ok(!refs.includes("RBEL:"+n));
+ const a74=bienes.articles.find(a=>a[1]==="TRRL"&&a[2]==="74");
+ const a75=bienes.articles.find(a=>a[1]==="TRRL"&&a[2]==="75");
+ const a76=bienes.articles.find(a=>a[1]==="TRRL"&&a[2]==="76");
+ assert.equal(a74[4],23);
+ assert.equal(a75[4],24);
+ assert.equal(a76[4],25);
+ assert.ok(contratos.articles.some(a=>a[1]==="LCSP"&&a[2]==="71"));
+ assert.ok(personal.articles.some(a=>a[1]==="TREBEP"&&a[2]==="97"));
+});
