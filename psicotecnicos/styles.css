@@ -110,3 +110,13 @@
  .logic-cell{min-height:68px;padding:3px}
  .net-face{font-size:18px}
 }
+
+
+.hint-callout{margin:13px 0 0;padding:14px 16px;border-radius:9px;border-left:4px solid #d69a42;background:#fffaf0}
+.hint-callout strong{display:block;color:#764c1d;font-size:12px}
+.hint-callout p{margin:4px 0 0;color:#64573d;font-size:13px}
+.skill-breakdown{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:10px 0 16px}
+.skill-breakdown-item{border:1px solid #dae4ea;border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:2px;background:white}
+.skill-breakdown-item strong{font-size:12px}
+.skill-breakdown-item span{font-size:11px;color:#5b7180}
+@media(max-width:620px){.skill-breakdown{grid-template-columns:1fr}}
