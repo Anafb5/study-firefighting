@@ -72,3 +72,36 @@ export function applyPerceptualOperations(group,start,symbols){
   throw new Error("Operador de la prueba desconocido: "+symbol);
  },start);
 }
+
+export const PERCEPTUAL_COMPARISONS={
+ A:{question:4,page:3,rows:[
+ ["6384927492729402","6384627492729402"],
+ ["7224932902749092","7224932992749092"],
+ ["8382920018390920","8389920018390420"]
+ ]},
+ B:{question:2,page:5,rows:[
+ ["458933803294803248","458933803294803248"],
+ ["398318479382470389","398319479382470389"],
+ ["348912483294320929","348912483294320909"],
+ ["438924873298473298","438924873298473298"]
+ ]},
+ C:{question:4,page:10,rows:[
+ ["849037498509384032974538947459823859358","849037498509884032974538947459823856358"],
+ ["938502385098273540932843297509230502453","938502385098273540932873297509130502453"],
+ ["932085982475987425987432905802025924320","932065982475687425987432905802025924320"]
+ ]},
+ D:{question:2,page:12,rows:[
+ ["894575290732039588042975089472507404928","8945752907320395880429750894725074049286"],
+ ["68094760427607430674209578439857489375984","80947604276074306742095784398574893759847"],
+ ["7869043054129058415034857439275439839","869043054129058415034857439275439839"]
+ ],normalizeWrap:true}
+};
+export function perceptualComparisonFor(group,number){
+ const data=PERCEPTUAL_COMPARISONS[group];
+ return data?.question===number?data:null;
+}
+export function countDigitDifferences(ref){
+ const left=ref.rows.map(row=>row[0]).join(""),right=ref.rows.map(row=>row[1]).join("");
+ if(left.length!==right.length)throw new Error("Columnas con distinta longitud");
+ return [...left].filter((digit,i)=>digit!==right[i]).length;
+}
