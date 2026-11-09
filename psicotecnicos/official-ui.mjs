@@ -25,7 +25,7 @@ export class OfficialExamController {
   this.rerender=rerender;this.record=record;
   this.ready=bankLoad().then(bank=>{this.bank=bank.groups[topicId];this.status="";this.rerender();}).catch(err=>{this.status="No se han podido cargar las preguntas: "+err.message;this.rerender();});
  }
- questions(){const list=this.bank?.[this.group]??[];return this.topicId==="espacial"?list.filter(q=>q.img||q.refImg||q.n<8):list;}
+ questions(){return this.bank?.[this.group]??[];}
  remaining(){return Math.max(0,Math.ceil((this.deadline-Date.now())/1000));}
  duration(){return this.questions().length*45000;}
  schedule(){this.stopTimer();if(!["study","exam"].includes(this.phase))return;this.timer=setInterval(()=>this.tick(),250);this.tick();}
@@ -97,7 +97,7 @@ export class OfficialExamController {
    return header+'<div class="trainer-settings"><div class="field"><label for="official-set">Prueba del manual</label><select id="official-set">'+
     Object.entries(this.doc.groups).map(([key,value])=>'<option value="'+esc(key)+'" '+(key===this.group?"selected":"")+'>'+esc(value.label)+'</option>').join("")+
     '</select></div><div class="field"><label>Preguntas y tiempo</label><p class="muted small">'+count+' preguntas · '+Math.round(this.duration()/60000)+' minutos</p></div></div>'+
-    '<div class="notice">No necesitas seleccionar ni subir ningún PDF. En memoria dispondrás de dos minutos para estudiar la lista, que después desaparecerá.'+(this.topicId==="espacial"?' Los ejercicios 8–10 de cada prueba espacial están temporalmente excluidos porque su figura de referencia todavía no se ha incorporado: no se te harán preguntas sin dibujo.':"")+'.</div>'+
+    '<div class="notice">No necesitas seleccionar ni subir ningún PDF. En memoria dispondrás de dos minutos para estudiar la lista, que después desaparecerá.'+""+'.</div>'+
     (this.doc.groups[this.group].notes?'<p class="source">'+esc(this.doc.groups[this.group].notes)+'</p>':"")+
     '<div class="board-actions"><button class="btn accent" data-official-action="start">Comenzar prueba '+esc(this.group)+'</button></div></div>';
   }
