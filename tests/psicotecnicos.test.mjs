@@ -88,6 +88,7 @@ test("dificultad progresiva y ajuste según resultados sin alterar los exámenes
  const sample=(difficulty,ok)=>({mode:"entrenamiento",variant:"graphicmatrix",difficulty,ok});
  assert.equal(chooseAdaptiveLevel([],"graphicmatrix"),"basico");
  assert.equal(chooseAdaptiveLevel(Array(5).fill(sample("basico",true)),"graphicmatrix"),"intermedio");
+ assert.equal(chooseAdaptiveLevel(Array(5).fill({...sample("basico",true),assisted:true}),"graphicmatrix"),"basico","Los aciertos con pistas no acreditan dominio autónomo");
  assert.equal(chooseAdaptiveLevel(Array(5).fill(sample("intermedio",true)),"graphicmatrix"),"avanzado");
  assert.equal(chooseAdaptiveLevel(Array(5).fill(sample("avanzado",false)),"graphicmatrix"),"intermedio");
  assert.equal(chooseAdaptiveLevel(Array(5).fill(sample("intermedio",false)),"graphicmatrix"),"basico");
