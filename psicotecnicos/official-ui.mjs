@@ -1,4 +1,5 @@
 import {OFFICIAL_EXAMS,getOfficialQuestions,scoreOfficial} from "./official-exams.mjs";
+import {perceptualTableFor} from "./official-references.mjs";
 
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const opts=["A","B","C","D"];
@@ -109,7 +110,9 @@ export class OfficialExamController {
   const qs=this.questions(),q=qs[this.index],answered=Object.keys(this.answers).length;
   if(!q)return header+'<div class="notice">No se ha encontrado esta pregunta en el material.</div></div>';
   const key=getOfficialQuestions(this.topicId,this.group).find(k=>k.number===q.n);
-  const renderQuestion=esc(/^\d+º\)$/.test(q.q?.trim())?"Selecciona la opción que corresponde a la figura propuesta.":(q.q||"Examina la figura y selecciona la respuesta que corresponde.")).replaceAll("con traproducente","contraproducente").replaceAll("mode lo","modelo").replaceAll("necesaria mente","necesariamente").replaceAll("co rrectas","correctas");
+  const tableReference=this.topicId==="perceptiva"?perceptualTableFor(this.group,q.n):null;
+  const cleanQuestion=tableReference?q.q.replace(/\s+Columna A\s+Columna B[\s\S]*/i,""):q.q;
+  const renderQuestion=esc(/^\d+º\)$/.test(cleanQuestion?.trim())?"Selecciona la opción que corresponde a la figura propuesta.":(cleanQuestion||"Examina la figura y selecciona la respuesta que corresponde.")).replaceAll("con traproducente","contraproducente").replaceAll("mode lo","modelo").replaceAll("necesaria mente","necesariamente").replaceAll("co rrectas","correctas");
   return header+'<div class="board-head"><span class="pill">Pregunta '+(this.index+1)+' de '+qs.length+' · '+answered+' respondidas</span><span class="timer" id="official-time">Tiempo de examen</span></div>'+
    '<div class="official-single-question"><h3>Pregunta '+q.n+(key?.invalid?' · Sin puntuación':'')+'</h3>'+
    '<p class="official-prompt">'+renderQuestion+'</p>'+this.getVisual(q)+
