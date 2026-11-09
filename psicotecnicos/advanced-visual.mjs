@@ -221,5 +221,15 @@ export function makeAdvancedQuestion(variant,difficulty="basico",rng=Math.random
  const level=LEVELS.includes(difficulty)?difficulty:"basico";
  const generators={cubeOpposite,cubeAdjacent,cubeCorner,blocks,rotation,symbolsequence:sequence,graphicmatrix};
  if(!generators[variant])throw Error("Subtipo visual desconocido: "+variant);
- return generators[variant](level,rng);
+ const q=generators[variant](level,rng);
+ const hints={
+  cubeOpposite:"Elige una cara base y pliega mentalmente sus cuatro vecinas. Solo la sexta cara podrá quedar enfrentada a ella.",
+  cubeAdjacent:"Primero identifica las tres parejas opuestas: nunca comparten arista. Después comprueba cuál de las cuatro parejas sí puede tocarse.",
+  cubeCorner:"En un vértice se reúnen tres caras, pero nunca dos opuestas. Descarta las ternas que contengan una pareja enfrentada.",
+  blocks:"No cuentes solo los techos visibles. Cada pila puede ocultar cubos inferiores: suma las alturas por filas.",
+  rotation:"Localiza la marca naranja. Un espejo cambia su lado, mientras que un giro conserva la orientación relativa de la marca y la flecha.",
+  symbolsequence:"Divide el problema: sigue por separado la dirección, el relleno y, si los hay, los puntos. Después combina las tres reglas.",
+  graphicmatrix:"Compara las dos primeras casillas con la tercera en dos filas o columnas completas: ¿los trazos se suman, se repiten o se cancelan?"
+ };
+ return {...q,hint:hints[variant]};
 }
