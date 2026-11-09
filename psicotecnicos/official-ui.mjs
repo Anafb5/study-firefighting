@@ -60,7 +60,8 @@ export class OfficialExamController {
   this.rerender();
  }
  getVisual(q){
-  const primary=q.img,reference=q.refImg;
+  let primary=q.img;const reference=q.refImg;
+  if(this.topicId==="mecanica"&&q.n===2)primary=null;
 
   const img=(s,caption)=>'<figure class="official-figure"><img alt="Figura original del ejercicio '+q.n+'" loading="lazy" src="data:image/png;base64,'+s+'"><figcaption>'+caption+'</figcaption></figure>';
   // Some mechanical questions refer to a diagram shared with the preceding item.
@@ -72,7 +73,8 @@ export class OfficialExamController {
   if(!altReference&&this.topicId==="perceptiva"&&/tabla anterior/i.test(q.q)){
    altReference=this.questions().find(x=>x.n===q.n-1)?.img;
   }
-  return (altReference?img(altReference,"Figura de referencia compartida con otras preguntas"):"")+
+  if(!altReference&&this.topicId==="perceptiva"&&/tabla anterior/i.test(q.q)){const prev=this.questions().find(x=>x.n===q.n-1);if(prev)return '<div class="notice"><strong>Tabla de referencia</strong><p>'+esc(prev.q)+'</p></div>'+(primary?img(primary,"Lámina original del ejercicio"):"");}
+  return (altReference?img(altReference,"Figura original de referencia para esta pregunta"):"")+
     (primary?img(primary,"Lámina original del ejercicio, con sus opciones gráficas"):"");
  }
  review(){
@@ -107,7 +109,7 @@ export class OfficialExamController {
   const qs=this.questions(),q=qs[this.index],answered=Object.keys(this.answers).length;
   if(!q)return header+'<div class="notice">No se ha encontrado esta pregunta en el material.</div></div>';
   const key=getOfficialQuestions(this.topicId,this.group).find(k=>k.number===q.n);
-  const renderQuestion=esc(q.q||"Examina la figura y selecciona la respuesta que corresponde.");
+  const renderQuestion=esc(/^\d+º\)$/.test(q.q?.trim())?"Selecciona la opción que corresponde a la figura propuesta.":(q.q||"Examina la figura y selecciona la respuesta que corresponde.")).replaceAll("con traproducente","contraproducente").replaceAll("mode lo","modelo").replaceAll("necesaria mente","necesariamente").replaceAll("co rrectas","correctas");
   return header+'<div class="board-head"><span class="pill">Pregunta '+(this.index+1)+' de '+qs.length+' · '+answered+' respondidas</span><span class="timer" id="official-time">Tiempo de examen</span></div>'+
    '<div class="official-single-question"><h3>Pregunta '+q.n+(key?.invalid?' · Sin puntuación':'')+'</h3>'+
    '<p class="official-prompt">'+renderQuestion+'</p>'+this.getVisual(q)+
