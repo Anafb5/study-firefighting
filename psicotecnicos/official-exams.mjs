@@ -53,7 +53,7 @@ export function getOfficialGroup(topicId,groupId){return OFFICIAL_EXAMS[topicId]
 export function getOfficialQuestions(topicId,groupId){
  const group=getOfficialGroup(topicId,groupId);if(!group)throw Error("Prueba original desconocida");
  return Array.from(group.answers, (key,i)=>({number:group.first+i,key:/^[ABCD]$/.test(key)?key:null,
-  invalid:key==="-"||(topicId==="mecanica"&&groupId==="D"&&i===9)||(topicId==="perceptiva"&&groupId==="D"&&i===9)
+  invalid:key==="-"
  }));
 }
 export function scoreOfficial(topicId,groupId,responses){
