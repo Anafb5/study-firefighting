@@ -27,7 +27,7 @@ export const OFFICIAL_EXAMS={
  ])},
  perceptiva:{pdf:"PRUEBAS_APTITUD_PERCEPTIVA.pdf",display:"Pruebas de aptitud perceptiva.pdf",groups:groups([
   ["A",2,4,"BADADBDCDC"],["B",5,8,"DBABCCCBCA"],["C",9,11,"CDCCAD BDBD".replace(/ /g,"")],
-  ["D",12,15,"CABCCBCABB"]
+  ["D",12,15,"CABCCBCABB",{notes:"La pregunta 3 tiene una discrepancia en el solucionario: la tabla contiene cinco letras posteriores a la R (dos S, T, U, X), por lo que la respuesta deducida es C, pero la clave impresa indica B. Se presenta para practicar, sin puntuar."}]
  ])},
  memoria:{pdf:"FLO_07_PRUEBAS_MEMORIA.pdf",display:"Pruebas de aptitud de memoria.pdf",groups:groups([
   ["A",2,4,"CCABBCDAAD",{studyPage:2,questionPage:3}],
@@ -53,7 +53,7 @@ export function getOfficialGroup(topicId,groupId){return OFFICIAL_EXAMS[topicId]
 export function getOfficialQuestions(topicId,groupId){
  const group=getOfficialGroup(topicId,groupId);if(!group)throw Error("Prueba original desconocida");
  return Array.from(group.answers, (key,i)=>({number:group.first+i,key:/^[ABCD]$/.test(key)?key:null,
-  invalid:key==="-"
+  invalid:key==="-"||(topicId==="perceptiva"&&groupId==="D"&&i===2)
  }));
 }
 export function scoreOfficial(topicId,groupId,responses){
