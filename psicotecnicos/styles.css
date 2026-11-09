@@ -120,3 +120,15 @@
 .skill-breakdown-item strong{font-size:12px}
 .skill-breakdown-item span{font-size:11px;color:#5b7180}
 @media(max-width:620px){.skill-breakdown{grid-template-columns:1fr}}
+
+
+/* Tablas del manual perceptivo, conservando la alineación por filas y columnas. */
+.exam-reference{margin:14px 0;background:#f8fbfc;border:1px solid #d4e0e8;border-radius:10px;padding:12px;max-width:100%}
+.exam-reference figcaption{font-size:12px;font-weight:730;color:#476476;margin:0 0 10px}
+.exam-table-scroll{overflow-x:auto;max-width:100%;overscroll-behavior-x:contain;scrollbar-gutter:stable}
+.exam-reference-table{border-collapse:collapse;min-width:max-content;width:100%;font:600 12px/1.35 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:nowrap;color:#253e50}
+.exam-reference-table th,.exam-reference-table td{text-align:center;padding:11px 9px;border:1px solid #d7e2e9}
+.exam-reference-table thead th{background:#e6eef4;font-weight:850}
+.exam-reference-table tbody th{position:sticky;left:0;z-index:1;background:#eff4f7;font-weight:850}
+.exam-reference-table tbody tr:nth-child(2n) td{background:#f0f6f9}
+@media(max-width:650px){.exam-reference{padding:9px}.exam-reference-table th,.exam-reference-table td{padding:8px 7px}.exam-reference-table{font-size:11px}}
