@@ -71,7 +71,7 @@ export function chooseAdaptiveLevel(history,variant){
  const current=valid.at(-1).difficulty;
  const recent=valid.filter(a=>a.difficulty===current).slice(-6);
  if(recent.length<4)return current;
- const rate=recent.filter(a=>a.ok).length/recent.length;
+ const rate=recent.filter(a=>a.ok&&!a.assisted).length/recent.length;
  if(current==="basico")return rate>=0.8?"intermedio":"basico";
  if(current==="intermedio")return rate>=0.75?"avanzado":rate<0.5?"basico":"intermedio";
  return rate<0.5?"intermedio":"avanzado";
