@@ -132,3 +132,13 @@
 .exam-reference-table tbody th{position:sticky;left:0;z-index:1;background:#eff4f7;font-weight:850}
 .exam-reference-table tbody tr:nth-child(2n) td{background:#f0f6f9}
 @media(max-width:650px){.exam-reference{padding:9px}.exam-reference-table th,.exam-reference-table td{padding:8px 7px}.exam-reference-table{font-size:11px}}
+
+
+/* Claves operativas compartidas por varias preguntas perceptivas. */
+.exam-operator-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.exam-operator{display:flex;align-items:center;gap:10px;border:1px solid #d5e2ea;background:#fff;border-radius:8px;padding:9px 10px;min-width:0}
+.exam-operator strong{flex:none;min-width:23px;display:grid;place-items:center;color:#a65338;font-size:21px}
+.exam-operator span{font-size:11px;color:#3d5e75}
+.exam-reference-table.comparison{font-size:12px;table-layout:auto}
+.exam-reference-table.comparison td{letter-spacing:0.045em;font-variant-numeric:tabular-nums}
+@media(max-width:700px){.exam-operator-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
