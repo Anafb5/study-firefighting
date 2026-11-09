@@ -1,6 +1,7 @@
 // Motor puro y comprobable: las preguntas generan su solución con la misma regla.
 // Sin acceso a DOM, localStorage ni dependencias de red.
 import {TOPIC_BY_ID} from "./topics.mjs";
+import {makeAdvancedQuestion,LEVELS} from "./advanced-visual.mjs";
 const random=(rng=Math.random)=>rng();
 const int=(lo,hi,rng=Math.random)=>lo+Math.floor(random(rng)*(hi-lo+1));
 const take=(arr,rng=Math.random)=>arr[int(0,arr.length-1,rng)];
@@ -51,7 +52,7 @@ export const VARIANTS=Object.freeze({
  linguistico:["exclusion","analogy","verbalorder"],
  numerico:["sequence","matrix","equation","mental"],
  grafico:["rotation","symbolsequence","graphicmatrix"],
- espacial:["cubeOpposite","cubeAdjacent","blocks"],
+ espacial:["cubeOpposite","cubeAdjacent","cubeCorner","blocks"],
  mecanica:["path","connections","balance"],
  perceptiva:["count","difference","pairCount"],
  memoria:["memoryCategory","memoryPosition","memoryRepeat"],
@@ -59,21 +60,40 @@ export const VARIANTS=Object.freeze({
 });
 export const VARIANT_LABELS={
  exclusion:"Exclusiones",analogy:"Analogías",verbalorder:"Lógica verbal",sequence:"Series",matrix:"Matrices",equation:"Ecuaciones",mental:"Cálculo mental",
- rotation:"Rotaciones",symbolsequence:"Secuencias",graphicmatrix:"Matrices gráficas",cubeOpposite:"Caras opuestas",cubeAdjacent:"Caras contiguas",blocks:"Composición 3D",
+ rotation:"Rotaciones",symbolsequence:"Secuencias",graphicmatrix:"Matrices gráficas",cubeOpposite:"Caras opuestas",cubeAdjacent:"Caras contiguas",cubeCorner:"Tres caras por vértice",blocks:"Composición 3D",
  path:"Recorridos",connections:"Conexiones",balance:"Balanzas",count:"Recuentos",difference:"Diferencias",pairCount:"Parejas de cifras",
  memoryCategory:"Categorías",memoryPosition:"Posición",memoryRepeat:"Repeticiones",equivalence:"Equivalencias",abstractSequence:"Alternancias",symbolMatrix:"Matrices simbólicas"
 };
-export function createQuestion(topicId,variantId,rng=Math.random){
+const COMPLEX_VISUAL=new Set(["cubeOpposite","cubeAdjacent","cubeCorner","blocks","rotation","symbolsequence","graphicmatrix"]);
+export function chooseAdaptiveLevel(history,variant){
+ const valid=(Array.isArray(history)?history:[]).filter(a=>a?.mode==="entrenamiento"&&a.variant===variant&&LEVELS.includes(a.difficulty));
+ if(!valid.length)return "basico";
+ const current=valid.at(-1).difficulty;
+ const recent=valid.filter(a=>a.difficulty===current).slice(-6);
+ if(recent.length<4)return current;
+ const rate=recent.filter(a=>a.ok).length/recent.length;
+ if(current==="basico")return rate>=0.8?"intermedio":"basico";
+ if(current==="intermedio")return rate>=0.75?"avanzado":rate<0.5?"basico":"intermedio";
+ return rate<0.5?"intermedio":"avanzado";
+}
+export function createQuestion(topicId,variantId,rng=Math.random,difficulty="basico"){
  if(!TOPIC_BY_ID[topicId])throw Error("Tema desconocido: "+topicId);
  if(!VARIANTS[topicId].includes(variantId))throw Error("Tipo ajeno al tema: "+variantId);
- const q=families[variantId](rng);
+ const level=LEVELS.includes(difficulty)?difficulty:"basico";
+ const q=COMPLEX_VISUAL.has(variantId)?makeAdvancedQuestion(variantId,level,rng):families[variantId](rng);
  if(q.options.length!==4||new Set(q.options).size!==4||!q.options.includes(q.answer))throw Error("Opciones inválidas: "+variantId);
- return {...q,topicId};
+ return {...q,topicId,difficulty:level};
 }
-export function createSession(topicId,length=10,variant="todos",rng=Math.random){
+export function createSession(topicId,length=10,variant="todos",rng=Math.random,options={}){
  if(!Number.isSafeInteger(length)||length<1||length>50)throw Error("Número de preguntas fuera de rango");
  const pool=variant==="todos"?VARIANTS[topicId]:[variant];
  if(!pool||pool.some(v=>!VARIANTS[topicId].includes(v)))throw Error("Selección inválida");
  const ordered=shuffle(Array.from({length},(_,i)=>pool[i%pool.length]),rng);
- return ordered.map(type=>createQuestion(topicId,type,rng));
+ const config=options.difficulty||"basico";
+ if(!["basico","intermedio","avanzado","progresiva","adaptativa"].includes(config))throw Error("Dificultad desconocida");
+ return ordered.map((type,i)=>{
+  const level=config==="progresiva"?LEVELS[Math.min(2,Math.floor(i*3/length))]:
+   config==="adaptativa"?chooseAdaptiveLevel(options.history,type):config;
+  return createQuestion(topicId,type,rng,level);
+ });
 }
