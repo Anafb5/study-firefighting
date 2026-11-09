@@ -80,3 +80,23 @@ test("entrenador jurídico distingue artículos bis, apartados y letras",async()
  for(const [input,expected] of cases)assert.equal(normalize(input),expected,input);
  assert.notEqual(normalize("92"),normalize("92 bis"));
 });
+
+test("los temas jurídicos reforzados tienen bancos de test suficientes para sesiones de repaso",async()=>{
+ const expected=new Map([[16,20],[19,20],[22,28]]);
+ for(const [id,minimum] of expected){
+  const source=await readFile("juridica/"+id+"/data.js","utf8"),win={};
+  vm.runInNewContext(source,{window:win});
+  const data=win.LEGAL_SOURCE;
+  const derived=data.articles.filter(a=>data.articles.filter(b=>b[1]===a[1]).length>=4).length;
+  const automatic=derived*2;
+  const manual=data.extraQuestions?.length||0;
+  assert.ok(automatic+manual>=minimum,
+   "Tema "+id+" tiene solo "+(automatic+manual)+" preguntas potenciales");
+  for(const q of data.extraQuestions||[]){
+   assert.ok(q.q&&q.why&&q.page&&q.section);
+   assert.equal(q.options.length,4);
+   assert.equal(new Set(q.options).size,4);
+   assert.ok(q.correct>=0&&q.correct<4);
+  }
+ }
+});
