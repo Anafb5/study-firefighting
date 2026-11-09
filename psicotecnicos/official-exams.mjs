@@ -7,7 +7,7 @@ export const OFFICIAL_EXAMS={
   ["A",19,21,"BACCDACBBC"],["B",22,23,"CBCABCCCCC"],["C",24,25,"CACDBCDBBB"],["D",26,27,"CCBDDBCACA"]
  ])},
  numerico:{pdf:"PRUEBAS_NUMERICAS_RAZONAMIENTO.pdf",display:"Pruebas numéricas de razonamiento.pdf",groups:groups([
-  ["A",65,66,"ABABADCDCC"],["B",67,68,"DDCBCBBBAC"],["C",69,70,"DCCBDCABDC"],["D",71,72,"CBDDBDCDCA"]
+  ["A",65,66,"ABABADCDCC"],["B",67,68,"DDCBCBBBAC"],["C",69,70,"DCCBDCABDC"],["D",71,72,"CBDDBDCDCA",{notes:"La pregunta 5 tiene dos opciones incorrectas (A y B), aunque el solucionario solo marca B. Se presenta sin puntuar."}]
  ])},
  grafico:{pdf:"PRUEBAS_GRAFICAS_RAZONAMIENTO.pdf",display:"Pruebas gráficas de razonamiento.pdf",groups:{
   "1":def("Diagnóstico · preguntas 1–11",2,4,"BDCABCBBABB",{first:1}),
@@ -22,7 +22,7 @@ export const OFFICIAL_EXAMS={
  ])},
  mecanica:{pdf:"PRUEBAS_APTITUD_MECANICA.pdf",display:"Pruebas de aptitud mecánica.pdf",groups:groups([
   ["A",2,4,"AAABCADBCB"],["B",5,8,"AABDACBBCB"],
-  ["C",9,12,"BAC-CCBBCA",{notes:"La solución impresa de la pregunta 4 figura como E, aunque las opciones visibles son A–D; no se puntúa."}],
+  ["C",9,12,"BACECCBBCA"],
   ["D",13,16,"DBBDCCDBCA"]
  ])},
  perceptiva:{pdf:"PRUEBAS_APTITUD_PERCEPTIVA.pdf",display:"Pruebas de aptitud perceptiva.pdf",groups:groups([
@@ -52,8 +52,8 @@ export const PDF_ALIASES={
 export function getOfficialGroup(topicId,groupId){return OFFICIAL_EXAMS[topicId]?.groups[groupId]||null;}
 export function getOfficialQuestions(topicId,groupId){
  const group=getOfficialGroup(topicId,groupId);if(!group)throw Error("Prueba original desconocida");
- return Array.from(group.answers, (key,i)=>({number:group.first+i,key:/^[ABCD]$/.test(key)?key:null,
-  invalid:key==="-"||(topicId==="perceptiva"&&groupId==="D"&&i===2)
+ return Array.from(group.answers, (key,i)=>({number:group.first+i,key:/^[ABCDE]$/.test(key)?key:null,
+  invalid:key==="-"||(topicId==="perceptiva"&&groupId==="D"&&i===2)||(topicId==="numerico"&&groupId==="D"&&i===4)
  }));
 }
 export function scoreOfficial(topicId,groupId,responses){
