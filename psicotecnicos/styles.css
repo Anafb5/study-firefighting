@@ -30,3 +30,20 @@
 .official-answer:has(input:checked),.official-answer.chosen{background:#e9f1f7;border-color:#6b9dc0;color:#194e75}
 .official-answer input{accent-color:#2f6b98}
 @media(max-width:640px){.original-pages{padding:10px}.official-answer-grid{grid-template-columns:1fr}.original-viewer{min-height:330px}.original-viewer iframe{height:490px}.official-q{padding:13px}}
+
+/* Láminas originales incorporadas: no se requiere visor PDF ni subir archivos. */
+.official-single-question{margin:19px 0;border:1px solid var(--line);border-radius:11px;background:#fff;padding:21px}
+.official-single-question h3{margin:0;font-size:15px;color:#b55636}
+.official-prompt{font-size:17px;line-height:1.65;font-weight:650;white-space:pre-line;color:var(--ink)!important;margin:12px 0 18px}
+.official-figure{border:1px solid #e3e9ed;border-radius:9px;background:#fff;padding:12px;margin:15px 0;text-align:center}
+.official-figure img{display:block;width:auto;max-width:100%;height:auto;max-height:680px;margin:auto;image-rendering:auto}
+.official-figure figcaption{font-size:11px;color:var(--sub);margin-top:9px}
+.official-options{border:0;padding:0;margin:18px 0 0;display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.official-options legend{font-size:12px;font-weight:800;margin-bottom:9px}
+.official-choice{padding:11px 12px;background:#fff;border:1px solid #cfdce4;border-radius:8px;display:flex;align-items:center;gap:10px;min-height:50px;cursor:pointer}
+.official-choice:has(input:checked){background:#e9f3fa;border-color:#5b94bc}
+.official-choice input{accent-color:#286e9f;flex:none}
+.official-choice b{font-size:12px;color:#234e6d}
+.official-choice span{font-size:13px;overflow-wrap:anywhere}
+.official-memory-list{background:#fcfaf4;border:1px solid #e8d9b5;border-radius:10px;padding:24px 18px;text-align:center;white-space:pre-line;line-height:2.2;font-weight:800;font-size:18px;letter-spacing:.02em;margin:18px 0}
+@media(max-width:640px){.official-options{grid-template-columns:1fr}.official-single-question{padding:14px}.official-prompt{font-size:15px}.official-figure{padding:7px}.official-memory-list{padding:18px 12px;font-size:15px}}
