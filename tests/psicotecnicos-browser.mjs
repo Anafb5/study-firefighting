@@ -54,7 +54,7 @@ try{
   await page.locator('[data-official-action="start"]').click();
   for(let i=0;i<7;i++)await page.locator('[data-official-action="next"]').click();
   assert.equal(await page.locator('.official-single-question h3').innerText(),"Pregunta 8");
-  assert.ok(await page.locator('.official-figure img').first().evaluate(img=>img.complete&&img.naturalWidth>0),"La referencia espacial de "+set+" debe cargar");
+  await page.waitForFunction(()=>{const img=document.querySelector(".official-figure img");return img&&img.complete&&img.naturalWidth>0;},{},{timeout:3000});
   await page.locator('[data-official-action="finish"]').click();
   await page.locator('[data-official-action="reset"]').click();
  }
