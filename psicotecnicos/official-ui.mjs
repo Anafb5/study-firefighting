@@ -93,6 +93,10 @@ export class OfficialExamController {
   if(this.topicId==="perceptiva"){
    const ref=perceptualTableFor(this.group,q.n);
    if(ref)return this.renderPerceptualTable(ref);
+   const comparison=perceptualComparisonFor(this.group,q.n);
+   if(comparison)return this.renderPerceptualComparison(comparison);
+   const operations=perceptualOperationsFor(this.group,q.n);
+   if(operations)return this.renderPerceptualOperations(operations);
   }
 
   let primary=q.img;const reference=q.refImg;
@@ -145,13 +149,15 @@ export class OfficialExamController {
   if(!q)return header+'<div class="notice">No se ha encontrado esta pregunta en el material.</div></div>';
   const key=getOfficialQuestions(this.topicId,this.group).find(k=>k.number===q.n);
   const tableReference=this.topicId==="perceptiva"?perceptualTableFor(this.group,q.n):null;
-  const cleanQuestion=tableReference?q.q.replace(/\s+Columna A\s+Columna B[\s\S]*/i,""):q.q;
+  const comparisonReference=this.topicId==="perceptiva"?perceptualComparisonFor(this.group,q.n):null;
+  const cleanQuestion=tableReference?q.q.replace(/\s+Columna A\s+Columna B[\s\S]*/i,""):
+    comparisonReference?q.q.replace(/\s+\d{12,}\s+\d{12,}[\s\S]*/,""):q.q;
   const renderQuestion=esc(/^\d+º\)$/.test(cleanQuestion?.trim())?"Selecciona la opción que corresponde a la figura propuesta.":(cleanQuestion||"Examina la figura y selecciona la respuesta que corresponde.")).replaceAll("con traproducente","contraproducente").replaceAll("mode lo","modelo").replaceAll("necesaria mente","necesariamente").replaceAll("co rrectas","correctas");
   return header+'<div class="board-head"><span class="pill">Pregunta '+(this.index+1)+' de '+qs.length+' · '+answered+' respondidas</span><span class="timer" id="official-time">Tiempo de examen</span></div>'+
    '<div class="official-single-question"><h3>Pregunta '+q.n+(key?.invalid?' · Sin puntuación':'')+'</h3>'+
    '<p class="official-prompt">'+renderQuestion+'</p>'+this.getVisual(q)+
    '<fieldset class="official-options" aria-label="Opciones de la pregunta '+q.n+'"><legend>Selecciona tu respuesta</legend>'+
-    opts.map(opt=>'<label class="official-choice"><input type="radio" name="official-answer-'+q.n+'" value="'+opt+'" '+(this.answers[q.n]===opt?"checked":"")+'><b>'+opt+'</b><span>'+esc(q.o?.[opt]||"Opción "+opt+" de la figura")+'</span></label>').join("")+'</fieldset></div>'+
+    (Object.keys(q.o||{}).length===5?opts:opts.slice(0,4)).map(opt=>'<label class="official-choice"><input type="radio" name="official-answer-'+q.n+'" value="'+opt+'" '+(this.answers[q.n]===opt?"checked":"")+'><b>'+opt+'</b><span>'+esc(q.o?.[opt]||"Opción "+opt+" de la figura")+'</span></label>').join("")+'</fieldset></div>'+
    '<div class="board-actions"><button class="btn secondary" data-official-action="prev" '+(this.index===0?"disabled":"")+'>← Anterior</button>'+
    '<button class="btn secondary" data-official-action="next" '+(this.index===qs.length-1?"disabled":"")+'>Siguiente →</button>'+
    '<button class="btn accent" data-official-action="finish">Entregar examen</button></div>'+
