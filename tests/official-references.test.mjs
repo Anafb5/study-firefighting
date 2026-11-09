@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {readFile} from "node:fs/promises";
-import {PERCEPTUAL_REFERENCES,countSymbol,countPair,perceptualTableFor} from "../psicotecnicos/official-references.mjs";
+import {PERCEPTUAL_REFERENCES,countSymbol,countPair,perceptualTableFor,PERCEPTUAL_OPERATIONS,perceptualOperationsFor,applyPerceptualOperations,PERCEPTUAL_COMPARISONS,perceptualComparisonFor,countDigitDifferences} from "../psicotecnicos/official-references.mjs";
 import {getOfficialQuestions} from "../psicotecnicos/official-exams.mjs";
 
 const answer=(set,n)=>getOfficialQuestions("perceptiva",set).find(q=>q.number===n);
@@ -68,7 +68,7 @@ test("cada pregunta integrada tiene respuesta, alternativas legibles o figura y 
    assert.equal(q.k,key.key??"-","Respuesta transcrita distinta "+topic+"/"+set+"/"+q.n);
    assert.ok(q.q.trim().length>0);
    const values=Object.values(q.o||{});
-   assert.ok(values.length===4||q.img||q.refImg,"Alternativas y figuras ausentes "+topic+"/"+set+"/"+q.n);
+   assert.ok((values.length>=4&&values.length<=5)||q.img||q.refImg,"Alternativas y figuras ausentes "+topic+"/"+set+"/"+q.n);
    for(const option of values){
     assert.ok(typeof option==="string"&&option.trim().length>0);
     assert.doesNotMatch(option,/Observa (la siguiente|el siguiente).*(imagen|laberinto)|responde a las preguntas:/i,
@@ -78,4 +78,45 @@ test("cada pregunta integrada tiene respuesta, alternativas legibles o figura y 
  }
  assert.equal(total,335);
  assert.equal(invalid,3);
+});
+
+test("operadores del PDF: leyendas visibles y seis respuestas matemáticas contrastadas",()=>{
+ const cases=[
+  ["B",8,6,"&¶Ð$",29,"B"],["B",9,12,"¥¶%®",28,"C"],["B",10,43,"Ð®&%¶*$",121,"A"],
+  ["D",8,9,"$¥¶$",0,"A"],["D",9,3,"&®$¥Ð",7,"B"],["D",10,98,"¥%®$*¶",147,"B"]
+ ];
+ assert.deepEqual(Object.keys(PERCEPTUAL_OPERATIONS),["B","D"]);
+ for(const [set,n,start,symbols,expected,key] of cases){
+  assert.equal(perceptualOperationsFor(set,n)?.questions.includes(n),true);
+  assert.equal(perceptualOperationsFor(set,n).operations.length,8);
+  assert.equal(applyPerceptualOperations(set,start,symbols),expected);
+  assert.equal(answer(set,n).key,key);
+ }
+ assert.equal(perceptualOperationsFor("A",8),null);
+});
+test("comparación de columnas: cuatro respuestas comprobadas a partir de cifras originales",()=>{
+ const expected={A:[4,4,"A"],B:[2,2,"B"],C:[4,6,"C"],D:[2,0,"A"]};
+ for(const [set,[n,count,key]] of Object.entries(expected)){
+  const ref=perceptualComparisonFor(set,n);
+  assert.equal(ref,PERCEPTUAL_COMPARISONS[set]);
+  assert.equal(countDigitDifferences(ref),count);
+  assert.equal(answer(set,n).key,key);
+ }
+ const d=PERCEPTUAL_COMPARISONS.D.rows;
+ assert.equal(d.map(row=>row[0]).join(""),d.map(row=>row[1]).join(""),
+ "En la D2 el PDF corta las dos columnas a distinta altura, pero las cadenas completas son iguales");
+});
+test("la pregunta mecánica C4 tiene cinco alternativas reales; la numérica D5 es ambigua",()=>{
+ const q=bank.groups.mecanica.C.find(q=>q.n===4);
+ assert.deepEqual(Object.keys(q.o),["A","B","C","D","E"]);
+ assert.equal(q.o.D,"6 y 8");
+ assert.equal(q.o.E,"7 y 8");
+ assert.equal(q.k,"E");
+ const ambiguous=bank.groups.numerico.D.find(q=>q.n===5);
+ assert.match(ambiguous.o.A,/el cociente será siempre par/);
+ assert.match(ambiguous.o.B,/El resto siempre es menor que el cociente/);
+ assert.equal(getOfficialQuestions("numerico","D").find(q=>q.number===5).invalid,true);
+ // 6 / 2 = 3 (A falsa) y 14 / 8 = 1, resto 6 (B falsa).
+ assert.equal(6/2%2===0,false);
+ assert.equal(14%8<Math.floor(14/8),false);
 });
