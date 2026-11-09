@@ -47,6 +47,17 @@ try{
  await page.locator('[data-official-action="finish"]').click();
  assert.equal(await page.getByText("Resultado · Prueba A").count(),1);
  assert.equal(await page.locator("#demonstration").count(),0);
+ await page.goto(base+"/psicotecnicos/temas/espacial/");
+ await page.locator('[data-tab="examen"]').click();
+ for(const set of ["A","B","C","D"]){
+  await page.locator("#official-set").selectOption(set);
+  await page.locator('[data-official-action="start"]').click();
+  for(let i=0;i<7;i++)await page.locator('[data-official-action="next"]').click();
+  assert.equal(await page.locator('.official-single-question h3').innerText(),"Pregunta 8");
+  assert.ok(await page.locator('.official-figure img').first().evaluate(img=>img.complete&&img.naturalWidth>0),"La referencia espacial de "+set+" debe cargar");
+  await page.locator('[data-official-action="finish"]').click();
+  await page.locator('[data-official-action="reset"]').click();
+ }
  await page.goto(base+"/psicotecnicos/temas/memoria/");
  await page.locator('[data-tab="entrenamiento"]').click();
  await page.locator("#variant").selectOption("memoryCategory");
