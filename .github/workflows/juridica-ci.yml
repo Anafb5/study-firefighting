@@ -1,0 +1,48 @@
+name: Validar temario jurídico
+on:
+  push:
+    branches:
+      - feature/juridica-completa-26
+  pull_request:
+    paths:
+      - "juridica/**"
+      - "reader-layouts.js"
+      - "reader.css"
+      - "progress.js"
+      - "scripts/build-web.mjs"
+      - "scripts/validate-legal.cjs"
+      - "tests/juridica*"
+      - ".github/workflows/juridica-ci.yml"
+jobs:
+  comprobar:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - name: Instalar dependencias
+        run: npm ci
+      - name: Validar JavaScript y contenidos
+        run: |
+          node --check juridica/legal-app.js
+          node --check juridica/legal-builder.js
+          node --check juridica/legal-study.js
+          node --check juridica/portal.js
+          npm test
+          node scripts/validate-legal.cjs
+      - name: Instalar Chromium
+        run: |
+          npm install --no-save playwright@1.58.2
+          npx playwright install --with-deps chromium
+      - name: Validar las 26 páginas en navegador
+        run: node tests/juridica-browser.mjs
+      - name: Validar recursos offline
+        run: |
+          test -f www/juridica/1/index.html
+          test -f www/juridica/24/index.html
+          test -f www/juridica/25/index.html
+          test -f www/juridica/26/index.html
+          test -f www/psicotecnicos/index.html
+          test -f www/temas/11/index.html
