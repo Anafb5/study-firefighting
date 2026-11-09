@@ -60,7 +60,23 @@ export class OfficialExamController {
   }
   this.rerender();
  }
+ renderPerceptualTable(ref){
+  const headers=Array.from({length:ref.rows[0].length},(_,i)=>String.fromCharCode(65+i));
+  return '<figure class="exam-reference"><figcaption>Tabla original de referencia · página '+ref.sourcePage+
+   '. Utilízala también para las preguntas que indican «tabla anterior».</figcaption>'+
+   '<div class="exam-table-scroll" tabindex="0" aria-label="Desplazar tabla de izquierda a derecha">'+
+   '<table class="exam-reference-table"><thead><tr><th scope="col">Fila</th>'+
+   headers.map(h=>'<th scope="col">Columna '+h+'</th>').join("")+'</tr></thead><tbody>'+
+   ref.rows.map((row,i)=>'<tr><th scope="row">'+String.fromCharCode(65+i)+'</th>'+
+   row.map(value=>'<td>'+esc(value)+'</td>').join("")+'</tr>').join("")+
+   '</tbody></table></div></figure>';
+ }
  getVisual(q){
+  if(this.topicId==="perceptiva"){
+   const ref=perceptualTableFor(this.group,q.n);
+   if(ref)return this.renderPerceptualTable(ref);
+  }
+
   let primary=q.img;const reference=q.refImg;
   if(this.topicId==="mecanica"&&q.n===2)primary=null;
 
