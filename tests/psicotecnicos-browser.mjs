@@ -95,6 +95,27 @@ try{
   await page.locator('[data-official-action="finish"]').click();
   await page.locator('[data-official-action="reset"]').click();
  }
+ await page.goto(base+"/psicotecnicos/temas/perceptiva/");
+ await page.locator('[data-tab="examen"]').click();
+ await page.locator('[data-official-action="start"]').waitFor();
+ await page.locator('[data-official-action="start"]').click();
+ for(let i=0;i<7;i++)await page.locator('[data-official-action="next"]').click();
+ assert.equal(await page.locator(".official-single-question h3").innerText(),"Pregunta 8");
+ assert.equal(await page.locator(".exam-reference-table tbody tr").count(),5);
+ assert.equal(await page.locator(".exam-reference-table tbody tr:first-child td").count(),5);
+ assert.ok(!(await page.locator(".official-prompt").innerText()).includes("Columna A"),"No duplicar la tabla como texto plano");
+ await page.locator('[data-official-action="next"]').click();
+ assert.equal(await page.locator(".official-single-question h3").innerText(),"Pregunta 9");
+ assert.equal(await page.locator(".exam-reference-table tbody tr").count(),5,"La tabla anterior sigue visible");
+ await page.locator('[data-official-action="finish"]').click();
+ await page.locator('[data-official-action="reset"]').click();
+ await page.locator("#official-set").selectOption("D");
+ await page.locator('[data-official-action="start"]').click();
+ await page.locator('[data-official-action="next"]').click();
+ await page.locator('[data-official-action="next"]').click();
+ assert.match(await page.locator(".official-single-question h3").innerText(),/Pregunta 3.*Sin puntuación/);
+ assert.equal(await page.locator(".exam-reference-table tbody tr").count(),4);
+ await page.locator('[data-official-action="finish"]').click();
  await page.goto(base+"/psicotecnicos/temas/memoria/");
  await page.locator('[data-tab="entrenamiento"]').click();
  await page.locator("#variant").selectOption("memoryCategory");
