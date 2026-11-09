@@ -1,8 +1,8 @@
 import {OFFICIAL_EXAMS,getOfficialQuestions,scoreOfficial} from "./official-exams.mjs";
-import {perceptualTableFor} from "./official-references.mjs";
+import {perceptualTableFor,perceptualOperationsFor,perceptualComparisonFor} from "./official-references.mjs";
 
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const opts=["A","B","C","D"];
+const opts=["A","B","C","D","E"];
 const memoryLists={
  A:"JIRAFA · MARTILLO · AGUA · RAMÓN · TROMPETA · GATO · RUEDA · AGUA · SALUD · TROMPETA · ATÚN · OJO · TROMPETA · MANUEL · JAMÓN · BRAZO · SOL",
  B:"GATO – PERRO\nPANTALLA – LUZ\nCAJA – CÍRCULO\nCUATRO – NUEVE\nAZUL – VERDE\nCABELLO – CABALLO\nCORTINA – VENTANA\nMANZANA – MELÓN\nHELICÓPTERO – AVIONETA\nSOFÁ – COJÍN",
@@ -70,6 +70,24 @@ export class OfficialExamController {
    ref.rows.map((row,i)=>'<tr><th scope="row">'+String.fromCharCode(65+i)+'</th>'+
    row.map(value=>'<td>'+esc(value)+'</td>').join("")+'</tr>').join("")+
    '</tbody></table></div></figure>';
+ }
+ renderPerceptualOperations(ref){
+  return '<figure class="exam-reference"><figcaption>Equivalencias de los operadores de esta prueba · página '+ref.sourcePage+
+   '. Usa estas mismas equivalencias en las preguntas 8, 9 y 10.</figcaption>'+
+   '<div class="exam-operator-grid">'+ref.operations.map(([symbol,meaning])=>
+   '<div class="exam-operator"><strong>'+esc(symbol)+'</strong><span>'+esc(meaning)+'</span></div>').join("")+'</div></figure>';
+ }
+ renderPerceptualComparison(ref){
+  const left=ref.rows.map(row=>row[0]).join(""),right=ref.rows.map(row=>row[1]).join("");
+  const blockSize=ref.normalizeWrap?30:ref.rows[0][0].length;
+  const leftChunks=[],rightChunks=[];
+  for(let i=0;i<left.length;i+=blockSize){leftChunks.push(left.slice(i,i+blockSize));rightChunks.push(right.slice(i,i+blockSize));}
+  return '<figure class="exam-reference"><figcaption>Comparación de dos columnas · página '+ref.page+
+    '. Lee cifra a cifra de izquierda a derecha; los saltos de línea son solo de presentación.</figcaption>'+
+    '<div class="exam-table-scroll" tabindex="0" aria-label="Dos secuencias numéricas para comparar">'+
+    '<table class="exam-reference-table comparison"><thead><tr><th>Modelo</th><th>Copia</th></tr></thead><tbody>'+
+    leftChunks.map((l,i)=>'<tr><td>'+esc(l)+'</td><td>'+esc(rightChunks[i])+'</td></tr>').join("")+
+    '</tbody></table></div></figure>';
  }
  getVisual(q){
   if(this.topicId==="perceptiva"){
