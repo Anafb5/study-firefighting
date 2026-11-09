@@ -1,0 +1,45 @@
+name: Validar psicotécnicos
+on:
+  pull_request:
+    paths:
+      - "psicotecnicos/**"
+      - "tests/psicotecnicos.test.mjs"
+      - "scripts/build-web.mjs"
+      - ".github/workflows/psicotecnicos-ci.yml"
+  push:
+    branches:
+      - "feature/entrenador-psicotecnicos"
+jobs:
+  validar:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Descargar código
+        uses: actions/checkout@v4
+      - name: Preparar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+      - name: Instalar dependencias
+        run: npm ci
+      - name: Comprobar sintaxis
+        run: |
+          node --check psicotecnicos/topics.mjs
+          node --check psicotecnicos/generator.mjs
+          node --check psicotecnicos/app.mjs
+      - name: Pruebas y compilación web
+        run: npm test
+      - name: Instalar navegador para pruebas reales
+        run: |
+          npm install --no-save playwright@1.58.2
+          npx playwright install --with-deps chromium
+      - name: Pruebas end-to-end en Chromium
+        run: node tests/psicotecnicos-browser.mjs
+      - name: Revisar empaquetado offline
+        run: |
+          test -f www/psicotecnicos/index.html
+          test -f www/psicotecnicos/app.mjs
+          test -f www/psicotecnicos/generator.mjs
+          test -f www/psicotecnicos/styles.css
+          test -f www/psicotecnicos/temas/espacial/index.html
+          test -f www/psicotecnicos/temas/abstracto/index.html
