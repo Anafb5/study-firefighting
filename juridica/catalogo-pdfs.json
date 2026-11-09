@@ -1,0 +1,214 @@
+{
+  "reference": "PARTE JURÍDICA.zip",
+  "topics": [
+    {
+      "id": 1,
+      "volume": "I",
+      "original_file": "1. La Constitución española de 1978.pdf",
+      "pages": 52,
+      "publication": "published",
+      "priority": "pdf-original"
+    },
+    {
+      "id": 2,
+      "volume": "I",
+      "original_file": "2. El Tribunal Constitucional.pdf",
+      "pages": 46,
+      "publication": "published",
+      "priority": "pdf-original"
+    },
+    {
+      "id": 3,
+      "volume": "I",
+      "original_file": "3. Las Cortes Generales.pdf",
+      "pages": 50,
+      "publication": "published",
+      "priority": "pdf-original"
+    },
+    {
+      "id": 4,
+      "volume": "I",
+      "original_file": "4. El Poder Judicial.pdf",
+      "pages": 76,
+      "publication": "published",
+      "priority": "pdf-original"
+    },
+    {
+      "id": 5,
+      "volume": "I",
+      "original_file": "5. El Gobierno y la Administración.pdf",
+      "pages": 42,
+      "publication": "published",
+      "priority": "pdf-original"
+    },
+    {
+      "id": 6,
+      "volume": "I",
+      "original_file": "6. La Administración General del Estado.pdf",
+      "pages": 46,
+      "publication": "published",
+      "priority": "pdf-original"
+    },
+    {
+      "id": 7,
+      "volume": "I",
+      "original_file": "7. La Organización territorial del Estado.pdf",
+      "pages": 50,
+      "publication": "published",
+      "priority": "pdf-original"
+    },
+    {
+      "id": 8,
+      "volume": "I",
+      "original_file": "8. Organización de la Unión Europea.pdf",
+      "pages": 68,
+      "publication": "published",
+      "priority": "pdf-original"
+    },
+    {
+      "id": 9,
+      "volume": "II",
+      "original_file": "9. Sometimiento de la Administración a la Ley y al Derecho.pdf",
+      "pages": 44,
+      "publication": "published",
+      "priority": "pdf-original"
+    },
+    {
+      "id": 10,
+      "volume": "II",
+      "original_file": "10. La relación Jurídico Administrativa.pdf",
+      "pages": 46,
+      "publication": "published",
+      "priority": "pdf-original"
+    },
+    {
+      "id": 11,
+      "volume": "II",
+      "original_file": "11. El Acto Administrativo.pdf",
+      "pages": 54,
+      "publication": "published",
+      "priority": "pdf-original"
+    },
+    {
+      "id": 12,
+      "volume": "II",
+      "original_file": "12. Procedimiento Administrativo.pdf",
+      "pages": 76,
+      "publication": "published",
+      "priority": "pdf-original"
+    },
+    {
+      "id": 13,
+      "volume": "II",
+      "original_file": "13. Políticas de Igualdad de género.pdf",
+      "pages": 80,
+      "publication": "published",
+      "priority": "pdf-original"
+    },
+    {
+      "id": 14,
+      "volume": "II",
+      "original_file": "14. Prevención de Riesgos Laborales.pdf",
+      "pages": 30,
+      "publication": "published",
+      "priority": "pdf-original"
+    },
+    {
+      "id": 15,
+      "volume": "III",
+      "original_file": "15. Formas de la Acción Administrativa.pdf",
+      "pages": 46,
+      "publication": "published",
+      "priority": "pdf-original"
+    },
+    {
+      "id": 16,
+      "volume": "III",
+      "original_file": "16. El Régimen Local Español.pdf",
+      "pages": 34,
+      "publication": "published",
+      "priority": "pdf-original"
+    },
+    {
+      "id": 17,
+      "volume": "III",
+      "original_file": "17. El Municipio.pdf",
+      "pages": 62,
+      "publication": "published",
+      "priority": "pdf-original"
+    },
+    {
+      "id": 18,
+      "volume": "III",
+      "original_file": "18. La Provincia.pdf",
+      "pages": 30,
+      "publication": "published",
+      "priority": "pdf-original"
+    },
+    {
+      "id": 19,
+      "volume": "III",
+      "original_file": "19. Otras entidades locales.pdf",
+      "pages": 30,
+      "publication": "published",
+      "priority": "pdf-original"
+    },
+    {
+      "id": 20,
+      "volume": "III",
+      "original_file": "20. Estudio especial de los ingresos tributarios.pdf",
+      "pages": 60,
+      "publication": "published",
+      "priority": "pdf-original"
+    },
+    {
+      "id": 21,
+      "volume": "III",
+      "original_file": "21. Presupuesto de las Entidades Locales.pdf",
+      "pages": 38,
+      "publication": "published",
+      "priority": "pdf-original"
+    },
+    {
+      "id": 22,
+      "volume": "III",
+      "original_file": "22. El Gasto Público Local.pdf",
+      "pages": 34,
+      "publication": "published",
+      "priority": "pdf-original"
+    },
+    {
+      "id": 23,
+      "volume": "III",
+      "original_file": "23. Las Haciendas Locales.pdf",
+      "pages": 36,
+      "publication": "published",
+      "priority": "pdf-original"
+    },
+    {
+      "id": 24,
+      "volume": "III",
+      "original_file": "24. Los Bienes de las entidades Locales.pdf",
+      "pages": 30,
+      "publication": "published",
+      "priority": "pdf-original"
+    },
+    {
+      "id": 25,
+      "volume": "III",
+      "original_file": "25. Contratación Administrativa en la Esfera Local.pdf",
+      "pages": 38,
+      "publication": "published",
+      "priority": "pdf-original"
+    },
+    {
+      "id": 26,
+      "volume": "III",
+      "original_file": "26. Personal al Servicio de las Entidades Locales.pdf",
+      "pages": 58,
+      "publication": "published",
+      "priority": "pdf-original"
+    }
+  ],
+  "editorial_rule": "Para los ejercicios manda el PDF. Las diferencias normativas se documentan como notas separadas."
+}

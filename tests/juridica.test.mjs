@@ -1,0 +1,142 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import {spawnSync} from "node:child_process";
+import {readFile,access} from "node:fs/promises";
+import vm from "node:vm";
+import {resolve} from "node:path";
+
+test("los 26 temas jurídicos pasan las validaciones de artículos, esquemas y ejercicios",()=>{
+ const proc=spawnSync(process.execPath,["scripts/validate-legal.cjs"],{encoding:"utf8",timeout:30000});
+ assert.equal(proc.status,0,proc.stdout+"\n"+proc.stderr);
+ const s=proc.stdout.match(/Jurídica validada estructuralmente: (\[[^\n]+\])/);
+ assert.ok(s,proc.stdout);
+ const audit=JSON.parse(s[1]);
+ assert.equal(audit.length,26);
+ assert.equal(audit.every(t=>t.apartados>=6&&t.articulos>=2&&t.tarjetas>0&&t.preguntas>0),true,JSON.stringify(audit));
+});
+test("cada tema jurídico incluye páginas, artículos, prácticas y claves de progreso independientes",async()=>{
+ const keys=new Set();
+ for(let i=1;i<=26;i++){
+  const base="juridica/"+i+"/";
+  const source=await readFile(base+"data.js","utf8"),html=await readFile(base+"index.html","utf8");
+  const context=vm.createContext({window:{}});vm.runInContext(source,context,{filename:base+"data.js"});
+  const info=context.window.LEGAL_SOURCE;
+  assert.ok(info.sections.length>=2);
+  assert.ok(info.articles.length>=2);
+  assert.ok(info.classify?.length&&info.order?.length&&info.judge?.length&&info.values?.length);
+  assert.equal(new Set(info.sections.map(s=>s.id)).size,info.sections.length);
+  assert.ok(info.sections.every(s=>s.topics.every(t=>t.points.length>=4&&t.pages)));
+  const key="study-firefighting-j"+i+"-v1";
+  assert.ok(html.includes(key),"Progreso faltante: "+i);assert.ok(!keys.has(key));keys.add(key);
+  for(const file of ["../legal-base.css","../legal-app.js","../legal-builder.js","../legal-visuals.js","../legal-study.js"]){
+   await access(resolve(base,file));
+  }
+  assert.ok(!/Unidades SI, magnitudes|Buscar EPI, UNE/.test(html),"Texto técnico heredado en "+i);
+ }
+});
+test("se preservan las rutas de técnica y psicotécnicos y la biblioteca muestra jurídica",async()=>{
+ const home=await readFile("index.html","utf8");
+ assert.match(home,/href="#juridica"/);
+ assert.match(home,/href="\.\/psicotecnicos\//);
+ assert.match(home,/id="legal-topic-grid"/);
+ assert.match(await readFile("juridica/portal.js","utf8"),/Personal al servicio/);
+ assert.match(await readFile("temas/11/index.html","utf8"),/questions\.js/);
+ assert.match(await readFile("psicotecnicos/temas/espacial/index.html","utf8"),/data-topic="espacial"/);
+});
+test("la copia de seguridad conserva soporte para artículos y exportación nativa Android",async()=>{
+ const c=await readFile("progress.js","utf8");
+ assert.match(c,/j\[0-9\]\+-articles-v1/);
+ assert.match(c,/cleanArticle/);
+ assert.match(c,/capacitor\.isNativePlatform/);
+});
+
+test("referencias normativas del tema 24 cotejadas con el PDF y actividades específicas del 25/26",async()=>{
+ const load=async i=>{const txt=await readFile("juridica/"+i+"/data.js","utf8");const win={};vm.runInNewContext(txt,{window:win});return win.LEGAL_SOURCE;};
+ const bienes=await load(24),contratos=await load(25),personal=await load(26);
+ const refs=bienes.articles.map(a=>a[1]+":"+a[2]);
+ for(const n of ["74","75","76"])assert.ok(refs.includes("TRRL:"+n),"Tema 24: art. "+n+" debe citar TRRL, no RBEL");
+ for(const n of ["74","75","76"])assert.ok(!refs.includes("RBEL:"+n));
+ const a74=bienes.articles.find(a=>a[1]==="TRRL"&&a[2]==="74");
+ const a75=bienes.articles.find(a=>a[1]==="TRRL"&&a[2]==="75");
+ const a76=bienes.articles.find(a=>a[1]==="TRRL"&&a[2]==="76");
+ assert.equal(a74[4],23);
+ assert.equal(a75[4],24);
+ assert.equal(a76[4],25);
+ assert.ok(contratos.articles.some(a=>a[1]==="LCSP"&&a[2]==="71"));
+ assert.ok(personal.articles.some(a=>a[1]==="TREBEP"&&a[2]==="97"));
+});
+
+test("entrenador jurídico distingue artículos bis, apartados y letras",async()=>{
+ const source=await readFile("juridica/legal-study.js","utf8");
+ const begin=source.indexOf("const normNum=str=>{"),end=source.indexOf("const pool=()=>",begin);
+ assert.ok(begin>=0&&end>begin);
+ const normalize=vm.runInNewContext(source.slice(begin,end)+"\n normNum");
+ const cases=[
+  ["14","14"],["Artículo 17.2","17.2"],["Art. 4.1.d","4.1.d"],
+  ["92 bis","92 bis"],["artículo 24 bis","24 bis"],
+  ["Art 132,1","132.1"],["Art. 24 TER","24 ter"],
+  ["92","92"],["92 bis texto extra",""],["92 ter","92 ter"]
+ ];
+ for(const [input,expected] of cases)assert.equal(normalize(input),expected,input);
+ assert.notEqual(normalize("92"),normalize("92 bis"));
+});
+
+test("los temas jurídicos reforzados tienen bancos de test suficientes para sesiones de repaso",async()=>{
+ const expected=new Map([[16,20],[19,20],[22,28]]);
+ for(const [id,minimum] of expected){
+  const source=await readFile("juridica/"+id+"/data.js","utf8"),win={};
+  vm.runInNewContext(source,{window:win});
+  const data=win.LEGAL_SOURCE;
+  const derived=data.articles.filter(a=>data.articles.filter(b=>b[1]===a[1]).length>=4).length;
+  const automatic=derived*2;
+  const manual=data.extraQuestions?.length||0;
+  assert.ok(automatic+manual>=minimum,
+   "Tema "+id+" tiene solo "+(automatic+manual)+" preguntas potenciales");
+  for(const q of data.extraQuestions||[]){
+   assert.ok(q.q&&q.why&&q.page&&q.section);
+   assert.equal(q.options.length,4);
+   assert.equal(new Set(q.options).size,4);
+   assert.ok(q.correct>=0&&q.correct<4);
+  }
+ }
+});
+
+test("las preguntas manuales varían las posiciones A–D sin cambiar su respuesta correcta",async()=>{
+ const builder=await readFile("juridica/legal-builder.js","utf8");
+ for(const n of [16,19,22]){
+  const source=await readFile("juridica/"+n+"/data.js","utf8");
+  const ctx=vm.createContext({window:{}});
+  vm.runInContext(source,ctx);vm.runInContext(builder,ctx);
+  const result=vm.runInContext("QUESTIONS.filter(x=>x.id.startsWith('manual-'))",ctx);
+  const original=ctx.window.LEGAL_SOURCE.extraQuestions;
+  assert.equal(result.length,original.length);
+  const positions=new Set();
+  result.forEach((q,i)=>{
+   positions.add(q.correct);
+   assert.equal(q.options[q.correct],original[i].options[original[i].correct],"Tema "+n+" pregunta "+i);
+   assert.equal(new Set(q.options).size,4);
+  });
+  assert.ok(positions.size>=3,"Tema "+n+": respuestas casi siempre en la misma posición");
+ }
+});
+
+test("exportación/importación JSON mantiene progreso técnico, jurídico y artículos con bis",async()=>{
+ const script=await readFile("progress.js","utf8");
+ const entries=[
+ ["study-firefighting-t11-v1",{read:["1-1"],mastered:[0],wrong:[],history:[]}],
+ ["study-firefighting-j24-v1",{read:["1-1","1-2"],mastered:[0],wrong:[],history:[]}],
+ ["study-firefighting-j17-articles-v1",{mastered:["LBRL:92 bis","LBRL:4.1.d"],repeat:["LBRL:24 bis"],attempts:{},direction:"to-number",section:"all",pending:false}]
+ ];
+ const store=new Map(entries.map(([k,v])=>[k,JSON.stringify(v)]));
+ const localStorage={getItem:k=>store.get(k)||null,key:i=>[...store.keys()][i]||null,get length(){return store.size;}};
+ const ctx=vm.createContext({window:{},document:{addEventListener(){}},localStorage,console});
+ vm.runInContext(script,ctx);
+ const api=ctx.window.FireStudyBackup,backup=api.buildBackup();
+ assert.equal(backup.format,"fire-study-backup");
+ assert.equal(backup.version,1);
+ assert.deepEqual(Object.keys(backup.topics).sort(),entries.map(e=>e[0]).sort());
+ assert.equal(backup.topics["study-firefighting-j17-articles-v1"].mastered.length,2);
+ const restored=api.validateBackup(backup);
+ assert.equal(restored.length,3);
+ assert.equal(restored.find(x=>x[0]==="study-firefighting-j17-articles-v1")[1].repeat[0],"LBRL:24 bis");
+});

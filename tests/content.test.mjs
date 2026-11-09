@@ -32,10 +32,13 @@ test("la navegación y todos los recursos de las páginas son locales", async ()
 
 test("build:web empaqueta únicamente la aplicación estática", async () => {
   const root = (await readdir("www")).sort();
-  assert.deepEqual(root, ["app.js", "catalog.css", "catalog.js", "data.js", "index.html", "mobile.js", "progress.js", "psicotecnicos", "questions.js", "resume.js", "review-data.js", "review.css", "review.js", "study-layouts.css", "study-layouts.js", "styles.css", "temas"]);
+  assert.deepEqual(root, ["app.js", "catalog.css", "catalog.js", "data.js", "index.html", "juridica", "mobile.js", "progress.js", "psicotecnicos", "questions.js", "reader-layouts.js", "reader.css", "resume.js", "review-data.js", "review.css", "review.js", "study-layouts.css", "study-layouts.js", "styles.css", "temas"]);
   assert.equal((await readFile("www/temas/11/index.html", "utf8")).includes('src="questions.js"'), true);
   assert.match(await readFile("www/psicotecnicos/index.html","utf8"), /app\.mjs/);
   assert.match(await readFile("www/psicotecnicos/temas/espacial/index.html","utf8"), /data-topic="espacial"/);
+  assert.match(await readFile("www/juridica/26/index.html","utf8"), /study-firefighting-j26-v1/);
+  assert.match(await readFile("www/juridica/24/data.js","utf8"), /Los bienes de las entidades locales/);
+  assert.match(await readFile("www/index.html","utf8"), /id="juridica"/);
 });
 
 test("la base del Tema 11 resuelve sus estilos en Capacitor y GitHub Pages", async () => {
